@@ -53,6 +53,18 @@ bool IsSuppliesListEmpty(SuppliesList supplies_list) {
   return (supplies_list == NULL);
 }
 
+bool IsSuppliesCodeValid(SuppliesList supplies_list, char * code) {
+  if (supplies_list == NULL) return true;
+
+  if (strcmp(supplies->code, supplies_list->data.code) < 0)
+    return IsSuppliesCodeValid(supplies_list->left_node);
+
+  if (strcmp(supplies->code, supplies_list->data.code) > 0)
+    return IsSuppliesCodeValid(supplies_list->right_node, supplies);
+
+  return false;
+}
+
 /* count */
 
 int SuppliesListCount(SuppliesList supplies_list) {
