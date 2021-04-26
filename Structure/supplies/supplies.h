@@ -70,6 +70,7 @@ SuppliesList NewSuppliesList();
 
 // Yes or no
 bool IsSuppliesListEmpty(SuppliesList);
+bool IsSuppliesCodeValid(SuppliesList, char * code);
 
 // Count
 int SuppliesListCount(SuppliesList);
