@@ -1,0 +1,95 @@
+INVOICE DETAIL
+--------------
+
+-----------------------------------------------------
+Struct
+-----------------------------------------------------
+
+InvoiceDetail
+--------------------------------------
+  supplies_code | string | max len: 10
+  amount        | int    |
+  price         | float  |
+  vat           | float  |
+
+InvoiceDetailList
+-----------------------------------------------------
+  count         | int             |
+  items         | InvoiceDetail * | max size: 20
+
+-----------------------------------------------------
+Method
+-----------------------------------------------------
+Include:
+  Object methods:
+    - New and Destroy methods
+  List methods:
+    - New and Destroy methods
+    - Logic methods
+    - Insert methods
+    - Get methods
+    - Delete methods
+-----------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+Object methods
+-----------------------------------------------------------------------------------------
+
+New and Destroy methods
+-----------------------------------------------------------------------------------------
+NewInvoiceDetail     | Create a new InvoiceDetail
+DestroyInvoiceDetail | Destroy a InvoiceDetail
+
+-----------------------------------------------------------------------------------------
+List methods
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+New and Destroy methods
+-----------------------------------------------------------------------------------------
+NewInvoiceDetailList                     | Create a new InvoiceDetailList
+DestroyInvoiceDetailList                 | Destroy a InvoiceDetailList
+
+-----------------------------------------------------------------------------------------
+Logic methods
+-----------------------------------------------------------------------------------------
+IsInvoiceDetailListEmpty                 | Is InvoiceDetailList empty?
+IsInvoiceDetailListFull                  | Is InvoiceDetailList full?
+
+-----------------------------------------------------------------------------------------
+Insert methods
+-----------------------------------------------------------------------------------------
+AddItemToInvoiceDetailList               | Add a item to InvoiceDetailList
+InsertItemToBeginningOfInvoiceDetailList | Insert a item to beginning of InvoiceDetailList
+InsertItemToEndOfInvoiceDetailList       | Insert a item to end of InvoiceDetailList
+InsertItemToInvoiceDetailListByIndex     | Insert a item to InvoiceDetailList by index
+
+-----------------------------------------------------------------------------------------
+Get methods
+-----------------------------------------------------------------------------------------
+GetFirstItemInInvoiceDetailList          | Get first InvoiceDetail in InvoiceDetailList
+GetLastItemInInvoiceDetailList           | Get last InvoiceDetail in InvoiceDetailList
+GetInvoiceDetailInListByIndex            | Get InvoiceDetail in InvoiceDetailList by index
+
+-----------------------------------------------------------------------------------------
+Remove methods
+-----------------------------------------------------------------------------------------
+RemoveItemInInvoice                      | Remove item in InvoiceDetailList
+RemoveFirstItemInInvoiceDetailList       | Remove first item in InvoiceDetailList
+RemoveLastItemInInvoiceDetailList        | Remove last item in InvoiceDetailList
+RemoveItemInInvoiceDetailListByIndex     | Remove item in InvoiceDetailList by index
+
+-----------------------------------------------------------------------
+Example
+-----------------------------------------------------------------------
+// Create new a InvoiceDetailList
+InvoiceDetailList invoice_detail_list = NewInvoiceDetailList();
+
+// Create new a InvoiceDetail
+InvoiceDetail invoice_detail = NewInvoiceDetail("abc", 0, 0.0f, 0.0f);
+
+// Add InvoiceDetail to InvoiceDetailList
+AddItemToInvoiceDetailList(invoice_detail_list, invoice_detail);
+
+// Remove InvoiceDetail in InvoiceDetailList
+RemoveItemInInvoice(invoice_detail_list, invoice_detail);
