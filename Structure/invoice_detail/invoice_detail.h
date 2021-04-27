@@ -34,40 +34,49 @@
 extern "C" {
 #endif
 
-typedef struct InvoiceDetail {
+typedef struct InvoiceDetailT {
   char supplies_code[SUPPLIES_CODE_MAX_LEN];
   int amount;
   float price;
   float vat;
-} InvoiceDetail;
+} InvoiceDetailT, * InvoiceDetail;
 
-typedef struct InvoiceDetailList {
+typedef struct InvoiceDetailListT {
   int count;
-  InvoiceDetail * items[INVOICE_DETAIL_LIST_MAX_ITEMS];
-} InvoiceDetailList;
+  InvoiceDetail items[INVOICE_DETAIL_LIST_MAX_ITEMS];
+} InvoiceDetailListT, InvoiceDetailList;
 
-InvoiceDetail * NewInvoiceDetail(const char *, int, float, float);
-void DestroyInvoiceDetail(InvoiceDetail * &invoice_detail);
+/* Object methods */
+InvoiceDetail NewInvoiceDetail(const char *, int, float, float);
+void DestroyInvoiceDetail(InvoiceDetail &invoice_detail);
 
+/* List methods */
+
+// New and Destroy
 InvoiceDetailList NewInvoiceDetailList();
+void DestroyInvoiceDetailList(InvoiceDetailList &);
 
-/* yes or no */
+// Logic
 bool IsInvoiceDetailListEmpty(InvoiceDetailList);
 bool IsInvoiceDetailListFull(InvoiceDetailList);
 
-/* Add invoice detail */
-error_tp AddInvoiceDetailToList(InvoiceDetailList &, InvoiceDetail *);
+// Insert
+error_tp AddItemToInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
+error_tp InsertItemToBeginningOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
+error_tp InsertItemToEndOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
+error_tp InsertItemToInvoiceDetailListByIndex(InvoiceDetailList &, InvoiceDetail, int);
+
 
 /* Get */
-InvoiceDetail * GetFirstInvoiceDetailFromList(InvoiceDetailList);
-InvoiceDetail * GetLastInvoiceDetailFromList(InvoiceDetailList);
-InvoiceDetail * GetInvoiceDetailFromListByIndex(InvoiceDetailList, int);
+InvoiceDetail GetFirstItemInInvoiceDetailList(InvoiceDetailList);
+InvoiceDetail GetLastItemInInvoiceDetailList(InvoiceDetailList);
+InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList, int);
 
 /* Delete */
-error_tp DeleteFirstInvoiceDetailFromList(InvoiceDetailList &);
-error_tp DeleteLastInvoiceDetailFromList(InvoiceDetailList &);
-error_tp DeleteInvoiceDetailFromListByIndex(InvoiceDetailList &, int);
-void EmptyInvoiceDetailList(InvoiceDetailList &);
+error_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &);
+error_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &);
+error_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
+error_tp RemoveItemInInvoice(InvoiceDetailList &, InvoiceDetail);
 
 #include "invoice_detail.cpp"
 
