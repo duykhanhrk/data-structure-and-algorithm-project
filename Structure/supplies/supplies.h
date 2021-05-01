@@ -21,6 +21,10 @@
 
 /* Errors */
 
+#ifndef error_tp
+#define error_tp int
+#endif
+
 #ifndef NO_ERRORS
 #define NO_ERRORS 0
 #endif
@@ -45,28 +49,31 @@ extern "C" {
 
 /* structure */
 
-typedef struct Supplies {
+typedef struct SuppliesT {
   char code[SUPPLIES_CODE_MAX_LEN];
   char name[SUPPLIES_NAME_MAX_LEN];
   char unit[SUPPLIES_UNIT_MAX_LEN];
   int quantity;
-} Supplies;
+} SuppliesT, * Supplies;
 
-typedef struct SuppliesNode {
-  Supplies data;
-  SuppliesNode * left_node;
-  SuppliesNode * right_node;
-} SuppliesNode, * SuppliesList;
+typedef struct SuppliesNodeT {
+  SuppliesT supplies;
+  SuppliesNodeT * left_node;
+  SuppliesNodeT * right_node;
+} SuppliesNodeT, * SuppliesNode, * SuppliesList;
 
-/* methods */
+/* object methods */
 
-Supplies * NewSupplies(const char *, const char *, const char *, int);
-void DestroySupplies(Supplies * &);
+Supplies NewSupplies(const char *, const char *, const char *, int);
+void DestroySupplies(Supplies &);
 
-SuppliesNode * NewSuppliesNode(Supplies *);
-void DestroySuppliesNode(SuppliesNode * &);
+/* node methods */
+SuppliesNode NewSuppliesNode(Supplies);
+void DestroySuppliesNode(SuppliesNode &);
 
+/* list methods */
 SuppliesList NewSuppliesList();
+void DestroySuppliesList(SuppliesList &);
 
 // Yes or no
 bool IsSuppliesListEmpty(SuppliesList);
@@ -76,14 +83,16 @@ bool IsSuppliesCodeValid(SuppliesList, char * code);
 int SuppliesListCount(SuppliesList);
 
 // Add to list
-int AddSuppliesToList(SuppliesList &, Supplies *);
+error_tp AddItemToSuppliesList(SuppliesList &, Supplies);
 
 // Get from list
-Supplies * GetSuppliesFromListByCode(SuppliesList, const char *);
+Supplies * GetItemInSuppliesListByCode(SuppliesList, const char *);
 
-// Delete node from list
-int DeleteSuppliesFromListByCode(SuppliesList &, const char *);
-void EmptySeppliesList(SuppliesList &);
+// Remove node from list
+error_tp RemoveItemInSuppliesListByCode(SuppliesList &, const char *);
+
+// test
+#include "supplies.c"
 
 #ifdef __cplusplus
 }
