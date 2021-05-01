@@ -43,7 +43,7 @@ typedef struct InvoiceDetailT {
 
 typedef struct InvoiceDetailListT {
   int count;
-  InvoiceDetail items[INVOICE_DETAIL_LIST_MAX_ITEMS];
+  InvoiceDetailT * items[INVOICE_DETAIL_LIST_MAX_ITEMS];
 } InvoiceDetailListT, InvoiceDetailList;
 
 /* Object methods */
@@ -66,7 +66,6 @@ error_tp InsertItemToBeginningOfInvoiceDetailList(InvoiceDetailList &, InvoiceDe
 error_tp InsertItemToEndOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 error_tp InsertItemToInvoiceDetailListByIndex(InvoiceDetailList &, InvoiceDetail, int);
 
-
 /* Get */
 InvoiceDetail GetFirstItemInInvoiceDetailList(InvoiceDetailList);
 InvoiceDetail GetLastItemInInvoiceDetailList(InvoiceDetailList);
@@ -78,7 +77,7 @@ error_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &);
 error_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
 error_tp RemoveItemInInvoice(InvoiceDetailList &, InvoiceDetail);
 
-#include "invoice_detail.cpp"
+#include "invoice_detail.c"
 
 #ifdef __cplusplus
 }
