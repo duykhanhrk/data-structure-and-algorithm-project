@@ -75,20 +75,20 @@ void DestroySuppliesNode(SuppliesNode &);
 SuppliesList NewSuppliesList();
 void DestroySuppliesList(SuppliesList &);
 
-// Yes or no
+// Logic
 bool IsSuppliesListEmpty(SuppliesList);
 bool IsSuppliesCodeValid(SuppliesList, char * code);
 
 // Count
 int SuppliesListCount(SuppliesList);
 
-// Add to list
+// Add
 error_tp AddItemToSuppliesList(SuppliesList &, Supplies);
 
-// Get from list
+// Get
 Supplies * GetItemInSuppliesListByCode(SuppliesList, const char *);
 
-// Remove node from list
+// Remove
 error_tp RemoveItemInSuppliesListByCode(SuppliesList &, const char *);
 
 // test

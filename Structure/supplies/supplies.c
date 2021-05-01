@@ -1,6 +1,6 @@
 #include "supplies.h"
 
-/* methods for Supplies */
+/* object methods */
 
 Supplies NewSupplies(
     const char * code = "\0",
@@ -22,14 +22,14 @@ void DestroySupplies(Supplies &supplies) {
   supplies = NULL;
 }
 
-/* methods for SuppliesNode */
+/* node methods */
 
 SuppliesNode NewSuppliesNode(Supplies supplies) {
   SuppliesNode supplies_node = (SuppliesNode) malloc(sizeof(SuppliesNodeT));
   strcpy(supplies_node->supplies.code, supplies->code);
   strcpy(supplies_node->supplies.name, supplies->name);
-  strcpy(supplies_node->supplies.unit, supplies->unit);
   supplies_node->supplies.quantity = supplies->quantity;
+  strcpy(supplies_node->supplies.unit, supplies->unit);
   supplies_node->left_node = NULL;
   supplies_node->right_node = NULL;
 
@@ -41,7 +41,7 @@ void DestroySuppliesNode(SuppliesNode &supplies_node) {
   supplies_node = NULL;
 }
 
-/* methods for SuppliesList */
+/* list methods */
 
 SuppliesList NewSuppliesList() {
   return NULL;
@@ -55,7 +55,7 @@ void DestroySeppliesList(SuppliesList &supplies_list) {
   supplies_list = NULL;
 }
 
-/* yes or no */
+/* Logic */
 
 bool IsSuppliesListEmpty(SuppliesList supplies_list) {
   return (supplies_list == NULL);
@@ -82,7 +82,7 @@ int SuppliesListCount(SuppliesList supplies_list) {
   return 0;
 }
 
-/* Add to list */
+/* Add */
 
 error_tp AddItemToSuppliesList(SuppliesList &supplies_list, Supplies supplies) {
   if (supplies_list == NULL) {
@@ -101,30 +101,29 @@ error_tp AddItemToSuppliesList(SuppliesList &supplies_list, Supplies supplies) {
 
 /* Get from list */
 
-Supplies GetSuppliesFromListByCode(SuppliesList supplies_list, const char * code) {
+Supplies GetSuppliesInListByCode(SuppliesList supplies_list, const char * code) {
   if (supplies_list == NULL)
     return NULL;
 
   if (strcmp(supplies_list->supplies.code, code) > 0)
-    return GetSuppliesFromListByCode(supplies_list->left_node, code);
+    return GetSuppliesInListByCode(supplies_list->left_node, code);
 
   if (strcmp(supplies_list->supplies.code, code) < 0)
-    return GetSuppliesFromListByCode(supplies_list->right_node, code);
+    return GetSuppliesInListByCode(supplies_list->right_node, code);
 
   return &(supplies_list->supplies);
 }
 
 /* Delete node from list */
-
-error_tp RemoveFromSuppliesListByCode(SuppliesList &supplies_list, const char * code) {
+error_tp RemoveItemInSuppliesListByCode(SuppliesList &supplies_list, const char * code) {
   if (supplies_list == NULL)
     return SUPPLIES_NOT_FOUND;
 
   if (strcmp(supplies_list->supplies.code, code) > 0)
-    return RemoveFromSuppliesListByCode(supplies_list->left_node, code);
+    return RemoveItemInSuppliesListByCode(supplies_list->left_node, code);
 
   if (strcmp(supplies_list->supplies.code, code) < 0)
-    return RemoveFromSuppliesListByCode(supplies_list->right_node, code);
+    return RemoveItemInSuppliesListByCode(supplies_list->right_node, code);
 
   SuppliesList _supplies_list = supplies_list;
   if (_supplies_list->right_node == NULL) supplies_list = _supplies_list->left_node;
