@@ -27,6 +27,7 @@ Include:
   List methods:
     - New and Destroy methods
     - Logic methods
+    - Speciality methods
     - Insert methods
     - Get methods
     - Delete methods
@@ -38,8 +39,8 @@ Object methods
 
 New and Destroy methods
 -----------------------------------------------------------------------------------------
-NewSupplies     | Create a new Supplies
-DestroySupplies | Destroy a Supplies
+NewSupplies                              | Create a new Supplies
+DestroySupplies                          | Destroy a Supplies
 
 -----------------------------------------------------------------------------------------
 List methods
@@ -48,8 +49,13 @@ List methods
 -----------------------------------------------------------------------------------------
 New and Destroy methods
 -----------------------------------------------------------------------------------------
-NewSuppliesList                     | Create a new SuppliesList
-DestroySuppliesList                 | Destroy a SuppliesList
+NewSuppliesList                          | Create a new SuppliesList
+DestroySuppliesList                      | Destroy a SuppliesList
+
+-----------------------------------------------------------------------------------------
+Speciality methods
+-----------------------------------------------------------------------------------------
+SuppliesListCount                        | Count items in SuppliesList
 
 -----------------------------------------------------------------------------------------
 Logic methods
@@ -60,18 +66,17 @@ IsSuppliesCodeValid                      | Is Supplies code valid?
 -----------------------------------------------------------------------------------------
 Insert methods
 -----------------------------------------------------------------------------------------
-AddItemToSuppliesList               | Add a item to InvoiceDetailList
+AddItemToSuppliesList                    | Add a item to SuppliesList
 
 -----------------------------------------------------------------------------------------
 Get methods
 -----------------------------------------------------------------------------------------
-GetItemInSuppliesListByCode            | Get InvoiceDetail in InvoiceDetailList by index
+GetItemInSuppliesListByCode | Get item in SuppliesList by code
 
 -----------------------------------------------------------------------------------------
 Remove methods
 -----------------------------------------------------------------------------------------
-RemoveItemInInvoice                      | Remove item in InvoiceDetailList
-RemoveItemInInvoiceDetailListByCode      | Remove item in InvoiceDetailList by index
+RemoveItemInInvoiceDetailListByCode      | Remove item in SuppliesList by code
 
 -----------------------------------------------------------------------
 Example
@@ -82,8 +87,8 @@ SuppliesList supplies_list = NewSuppliesList();
 // Create new a Supplies
 Supplies supplies = NewSupplies("abc", 0, 0.0f, 0.0f);
 
-// Add InvoiceDetail to InvoiceDetailList
+// Add Supplies to SuppliesList
 AddItemToInvoiceDetailList(supplies_list, supplies);
 
-// Remove InvoiceDetail in InvoiceDetailList
-RemoveItemInInvoice(supplies_list, supplies);
+// Remove Supplies in SuppliesList
+RemoveItemInSuppliesList(supplies_list, supplies);

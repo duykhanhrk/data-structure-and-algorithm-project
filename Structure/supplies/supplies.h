@@ -6,42 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../support/message/message.h"
+
 /* Limits */
 
 #define SUPPLIES_CODE_MAX_LEN 10
 #define SUPPLIES_NAME_MAX_LEN 50
 #define SUPPLIES_UNIT_MAX_LEN 5
-
-/* Default values */
-
-#define SUPPLIES_CODE_DEFAULT_VALUE "\0"
-#define SUPPLIES_NAME_DEFAULT_VALUE "\0"
-#define SUPPLIES_UNIT_DEFAULT_VALUE "\0"
-#define SUPPLIES_QUANTITY_DEFAULT_VALUE 0
-
-/* Errors */
-
-#ifndef error_tp
-#define error_tp int
-#endif
-
-#ifndef NO_ERRORS
-#define NO_ERRORS 0
-#endif
-
-#ifndef OK
-#define OK 0
-#endif
-
-#define SUPPLIES_NO_ERRORS 50
-#define SUPPLIES_LIST_IS_EMPTY 51
-#define SUPPLIES_NOT_FOUND 53
-#define SUPPLIES_VALIDATE_NO_ERRORS 550
-#define SUPPLIES_INVALID_CODE 551
-#define SUPPLIES_INVALID_NAME 552
-#define SUPPLIES_INVALID_UNIT 553
-#define SUPPLIES_INVALID_QUANTITY 554
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +28,7 @@ typedef struct SuppliesT {
 } SuppliesT, * Supplies;
 
 typedef struct SuppliesNodeT {
-  SuppliesT supplies;
+  SuppliesT * supplies;
   SuppliesNodeT * left_node;
   SuppliesNodeT * right_node;
 } SuppliesNodeT, * SuppliesNode, * SuppliesList;
@@ -75,24 +46,24 @@ void DestroySuppliesNode(SuppliesNode &);
 SuppliesList NewSuppliesList();
 void DestroySuppliesList(SuppliesList &);
 
-// Yes or no
+// Logic
 bool IsSuppliesListEmpty(SuppliesList);
 bool IsSuppliesCodeValid(SuppliesList, char * code);
 
 // Count
 int SuppliesListCount(SuppliesList);
 
-// Add to list
-error_tp AddItemToSuppliesList(SuppliesList &, Supplies);
+// Add
+message_tp AddItemToSuppliesList(SuppliesList &, Supplies);
 
-// Get from list
-Supplies * GetItemInSuppliesListByCode(SuppliesList, const char *);
+// Get
+Supplies GetItemInSuppliesListByCode(SuppliesList, const char *);
 
-// Remove node from list
-error_tp RemoveItemInSuppliesListByCode(SuppliesList &, const char *);
+// Remove
+message_tp RemoveItemInSuppliesListByCode(SuppliesList &, const char *);
 
 // test
-#include "supplies.c"
+#include "supplies.cpp"
 
 #ifdef __cplusplus
 }

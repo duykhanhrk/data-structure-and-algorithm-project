@@ -1,0 +1,14 @@
+// ERROR CODE
+ERROR 1
+ERROR 2
+
+// WARRNING CODE
+VARRNING 1
+VARRNING 2
+
+// SUCCESS CODE
+SUCCESS 1
+SUCCESS 2
+
+MESSAGE_TYPE (SUCCESS | WARRNING | ERROR) -> ('S', 'W', 'E')
+ShowMessage(message_type, message_code)

@@ -1,0 +1,37 @@
+doc
+  structure
+    invoice_detail.txt
+    invoice.txt
+    supplies.txt
+  directory_structure.txt
+  error.txt
+  program.txt
+  validate.txt
+funtion
+library
+storage
+structure
+  invoice_detail
+    invoice_detail.h
+    invoice_detail.cpp
+  invoice
+    invoice.h
+    invoice_detail.cpp
+  supplies
+    supplies.h
+    supplies.cpp
+  staff
+    staff.h
+    staff.cpp
+program
+  storage
+    program_storage.h
+    program_storage.cpp
+  function
+    program_function.h
+    program_function.cpp
+  message
+    program_message.h
+    program_message.cpp
+program.cpp
+README.md
