@@ -1,0 +1,95 @@
+INVOICE
+-------
+
+-----------------------------------------------------
+Struct
+-----------------------------------------------------
+
+Invoice
+--------------------------------------
+  number          | string            | max len 20
+  created_at      | time              |
+  type            | char              | N, X
+  invoice_details | InvoiceDetailList |
+
+InvoiceList or InvoiceList
+-----------------------------------------------------
+  invoice         | Invoice           |
+  next_node       | InvoiceList       |
+
+-----------------------------------------------------
+Method
+-----------------------------------------------------
+Include:
+  Object methods:
+    - New and Destroy methods
+  List methods:
+    - New and Destroy methods
+    - Speciality methods
+    - Logic methods
+    - Insert methods
+    - Get methods
+    - Delete methods
+-----------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+Object methods
+-----------------------------------------------------------------------------------------
+
+New and Destroy methods
+-----------------------------------------------------------------------------------------
+NewInvoice                         | Create a new Invoice
+DestroyInvoice                     | Destroy a Invoice
+
+-----------------------------------------------------------------------------------------
+List methods
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+New and Destroy methods
+-----------------------------------------------------------------------------------------
+NewInvoiceList                     | Create a new InvoiceList
+DestroyInvoiceList                 | Destroy a InvoiceList
+
+-----------------------------------------------------------------------------------------
+Logic methods
+-----------------------------------------------------------------------------------------
+IsInvoiceEmpty                     | Is InvoiceList empty?
+
+-----------------------------------------------------------------------------------------
+Insert methods
+-----------------------------------------------------------------------------------------
+AddItemToInvoiceList               | Add a item to InvoiceList
+InsertItemToBeginningOfInvoiceList | Insert a item to beginning of InvoiceList
+InsertItemToEndOfInvoiceList       | Insert a item to end of InvoiceList
+InsertItemToInvoiceListByIndex     | Insert a item to InvoiceList by index
+
+-----------------------------------------------------------------------------------------
+Get methods
+-----------------------------------------------------------------------------------------
+GetFirstItemInInvoiceList          | Get first item in InvoiceList
+GetLastItemInInvoiceList           | Get last item in InvoiceList
+GetItemInInvoiceListByIndex        | Get item in InvoiceList by index
+
+-----------------------------------------------------------------------------------------
+Remove methods
+-----------------------------------------------------------------------------------------
+RemoveItemInInvoice                | Remove item in InvoiceList
+RemoveFirstItemInInvoiceList       | Remove first item in InvoiceList
+RemoveLastItemInInvoiceList        | Remove last item in InvoiceList
+RemoveItemInInvoiceListByIndex     | Remove item in InvoiceList by index
+
+-----------------------------------------------------------------------
+Example
+-----------------------------------------------------------------------
+// Create new a InvoiceList
+InvoiceDetailList invoice_list = NewInvoiceDetailList();
+
+// Create new a Invoice
+Invoice invoice = NewInvoice("abc", 0, 0.0f, 0.0f);
+
+// Add Invoice to InvoiceList
+AddItemToInvoiceList(invoice_list, invoice);
+
+// Remove Invoice in InvoiceList
+RemoveItemInInvoice(invoice_list, invoice);

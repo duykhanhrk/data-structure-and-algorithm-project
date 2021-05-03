@@ -1,0 +1,98 @@
+STAFF
+-----
+
+-----------------------------------------------------
+Struct
+-----------------------------------------------------
+
+Staff
+--------------------------------------
+  code       | string | max len: 10
+  last_name  | string | max len: 64
+  first_name | string | max len: 32
+  sex        | char   | 'F', 'M'
+
+StaffList
+-----------------------------------------------------
+  count         | int             |
+  items         | Staff * | max size: 500
+
+-----------------------------------------------------
+Method
+-----------------------------------------------------
+Include:
+  Object methods:
+    - New and Destroy methods
+  List methods:
+    - New and Destroy methods
+    - Logic methods
+    - Insert methods
+    - Get methods
+    - Delete methods
+-----------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+Object methods
+-----------------------------------------------------------------------------------------
+
+New and Destroy methods
+-----------------------------------------------------------------------------------------
+NewStaff                         | Create a new Staff
+DestroyStaff                     | Destroy a Staff
+
+-----------------------------------------------------------------------------------------
+List methods
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+New and Destroy methods
+-----------------------------------------------------------------------------------------
+NewStaffList                     | Create a new StaffList
+DestroyStaffList                 | Destroy a StaffList
+
+-----------------------------------------------------------------------------------------
+Logic methods
+-----------------------------------------------------------------------------------------
+IsStaffListEmpty                 | Is StaffList empty?
+IsStaffListFull                  | Is StaffList full?
+IsStaffCodeAvailable             | Is StaffList available?
+
+-----------------------------------------------------------------------------------------
+Insert methods
+-----------------------------------------------------------------------------------------
+AddItemToStaffList               | Add a item to StaffList
+InsertItemToBeginningOfStaffList | Insert a item to beginning of StaffList
+InsertItemToEndOfStaffList       | Insert a item to end of StaffList
+InsertItemToStaffListByIndex     | Insert a item to StaffList by index
+
+-----------------------------------------------------------------------------------------
+Get methods
+-----------------------------------------------------------------------------------------
+GetFirstItemInInvoiceDetailList  | Get first InvoiceDetail in InvoiceDetailList
+GetLastItemInInvoiceDetailList   | Get last InvoiceDetail in InvoiceDetailList
+GetInvoiceDetailInListByIndex    | Get InvoiceDetail in InvoiceDetailList by index
+GetInvoiceDetailInListByCode     | Get InvoiceDetail in InvoiceDetailList by code
+
+-----------------------------------------------------------------------------------------
+Remove methods
+-----------------------------------------------------------------------------------------
+RemoveItemInStaffList            | Remove item in StaffList
+RemoveFirstItemInStaffList       | Remove first item in StaffList
+RemoveLastItemInStaffList        | Remove last item in StaffList
+RemoveItemInStaffListByIndex     | Remove item in StaffList by index
+RemoveItemInStaffListByCode      | Remove item in StaffList by code
+
+-----------------------------------------------------------------------
+Example
+-----------------------------------------------------------------------
+// Create new a StaffList
+StaffList staff_list = NewStaffList();
+
+// Create new a InvoiceDetail
+Staff staff = NewStaff("abc", 0, 0.0f, 0.0f);
+
+// Add Staff to StaffList
+AddItemToStaffList(staff_list, staff);
+
+// Remove Staff in StaffList
+RemoveItemInInvoice(staff_list, staff);

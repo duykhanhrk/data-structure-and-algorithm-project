@@ -48,12 +48,12 @@ bool IsInvoiceDetailListFull(InvoiceDetailList invoice_detail_list) {
 }
 
 // Insert
-error_tp AddItemToInvoiceDetailList(
+message_tp AddItemToInvoiceDetailList(
     InvoiceDetailList &invoice_detail_list,
     InvoiceDetail invoice_detail
 ) {
   if (invoice_detail_list.count == INVOICE_DETAIL_LIST_MAX_ITEMS)
-    return INVOICE_DETAIL_LIST_IS_FULL;
+    return MESSAGE_LIST_IS_FULL;
 
   invoice_detail_list.items[invoice_detail_list.count] = NewInvoiceDetail(
       invoice_detail->supplies_code,
@@ -67,12 +67,12 @@ error_tp AddItemToInvoiceDetailList(
   return OK;
 }
 
-error_tp InsertItemToBeginningOfInvoiceDetailList(
+message_tp InsertItemToBeginningOfInvoiceDetailList(
     InvoiceDetailList &invoice_detail_list,
     InvoiceDetail invoice_detail
 ) {
   if (invoice_detail_list.count == INVOICE_DETAIL_LIST_MAX_ITEMS)
-    return INVOICE_DETAIL_LIST_IS_FULL;
+    return MESSAGE_LIST_IS_FULL;
 
   for (int interact = invoice_detail_list.count; interact > 0; interact --)
     invoice_detail_list.items[interact] = invoice_detail_list.items[interact - 1];
@@ -89,12 +89,12 @@ error_tp InsertItemToBeginningOfInvoiceDetailList(
   return OK;
 }
 
-error_tp InsertItemToEndOfInvoiceDetailList(
+message_tp InsertItemToEndOfInvoiceDetailList(
     InvoiceDetailList &invoice_detail_list,
     InvoiceDetail invoice_detail
 ) {
   if (invoice_detail_list.count == INVOICE_DETAIL_LIST_MAX_ITEMS)
-    return INVOICE_DETAIL_LIST_IS_FULL;
+    return MESSAGE_LIST_IS_FULL;
 
   invoice_detail_list.items[invoice_detail_list.count] = NewInvoiceDetail(
       invoice_detail->supplies_code,
@@ -108,13 +108,13 @@ error_tp InsertItemToEndOfInvoiceDetailList(
   return OK;
 }
 
-error_tp InsertItemToInvoiceDetailListByIndex(
+message_tp InsertItemToInvoiceDetailListByIndex(
     InvoiceDetailList &invoice_detail_list,
     InvoiceDetail invoice_detail,
     int index
 ) {
   if (invoice_detail_list.count == INVOICE_DETAIL_LIST_MAX_ITEMS)
-    return INVOICE_DETAIL_LIST_IS_FULL;
+    return MESSAGE_LIST_IS_FULL;
 
   for (int interact = invoice_detail_list.count; interact > index; interact --)
     invoice_detail_list.items[interact] = invoice_detail_list.items[interact - 1];
@@ -153,8 +153,8 @@ InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList invoice_detail_lis
 
 // Delete
 
-error_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
-  if (invoice_detail_list.count == 0) return INVOICE_DETAIL_NOT_FOUND;
+message_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
+  if (invoice_detail_list.count == 0) return MESSAGE_OBJECT_NOT_FOUND;
 
   DestroyInvoiceDetail(invoice_detail_list.items[0]);
 
@@ -166,17 +166,17 @@ error_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_li
   return OK;
 }
 
-error_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
-  if (invoice_detail_list.count == 0) return INVOICE_DETAIL_NOT_FOUND;
+message_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
+  if (invoice_detail_list.count == 0) return MESSAGE_OBJECT_NOT_FOUND;
 
   DestroyInvoiceDetail(invoice_detail_list.items[invoice_detail_list.count - 1]);
 
   return OK;
 }
 
-error_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detail_list, int index) {
+message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detail_list, int index) {
   if (invoice_detail_list.count == 0 || index < 0 || index > invoice_detail_list.count - 1)
-    return INVOICE_DETAIL_NOT_FOUND;
+    return MESSAGE_OBJECT_NOT_FOUND;
 
   DestroyInvoiceDetail(invoice_detail_list.items[index]);
 
@@ -188,10 +188,10 @@ error_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detail_
   return OK;
 }
 
-error_tp RemoveItemInInvoice(InvoiceDetailList & invoice_detail_list, InvoiceDetail invoice_detail) {
+message_tp RemoveItemInInvoice(InvoiceDetailList & invoice_detail_list, InvoiceDetail invoice_detail) {
   for (int interact = 0; interact < invoice_detail_list.count; interact ++)
     if (invoice_detail_list.items[interact] == invoice_detail)
       return RemoveItemInInvoiceDetailListByIndex(invoice_detail_list, interact);
 
-  return INVOICE_DETAIL_NOT_FOUND;
+  return MESSAGE_OBJECT_NOT_FOUND;
 }

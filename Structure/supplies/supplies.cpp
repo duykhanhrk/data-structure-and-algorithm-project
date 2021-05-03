@@ -1,7 +1,6 @@
 #include "supplies.h"
 
 /* object methods */
-
 Supplies NewSupplies(
     const char * code = "\0",
     const char * name = "\0",
@@ -26,10 +25,7 @@ void DestroySupplies(Supplies &supplies) {
 
 SuppliesNode NewSuppliesNode(Supplies supplies) {
   SuppliesNode supplies_node = (SuppliesNode) malloc(sizeof(SuppliesNodeT));
-  strcpy(supplies_node->supplies.code, supplies->code);
-  strcpy(supplies_node->supplies.name, supplies->name);
-  supplies_node->supplies.quantity = supplies->quantity;
-  strcpy(supplies_node->supplies.unit, supplies->unit);
+  supplies_node->supplies = supplies;
   supplies_node->left_node = NULL;
   supplies_node->right_node = NULL;
 
@@ -64,10 +60,10 @@ bool IsSuppliesListEmpty(SuppliesList supplies_list) {
 bool IsSuppliesCodeValid(SuppliesList supplies_list, char * code) {
   if (supplies_list == NULL) return true;
 
-  if (strcmp(code, supplies_list->supplies.code) < 0)
+  if (strcmp(code, supplies_list->supplies->code) < 0)
     return IsSuppliesCodeValid(supplies_list->left_node, code);
 
-  if (strcmp(code, supplies_list->supplies.code) > 0)
+  if (strcmp(code, supplies_list->supplies->code) > 0)
     return IsSuppliesCodeValid(supplies_list->right_node, code);
 
   return false;
@@ -84,19 +80,20 @@ int SuppliesListCount(SuppliesList supplies_list) {
 
 /* Add */
 
-error_tp AddItemToSuppliesList(SuppliesList &supplies_list, Supplies supplies) {
+message_tp AddItemToSuppliesList(SuppliesList &supplies_list, Supplies supplies) {
   if (supplies_list == NULL) {
     supplies_list = NewSuppliesNode(supplies);
     return OK;
   }
 
-  if (strcmp(supplies->code, supplies_list->supplies.code) < 0)
+  if (strcmp(supplies->code, supplies_list->supplies->code) < 0)
     return AddItemToSuppliesList(supplies_list->left_node, supplies);
 
-  if (strcmp(supplies->code, supplies_list->supplies.code) > 0)
+  if (strcmp(supplies->code, supplies_list->supplies->code) > 0)
     return AddItemToSuppliesList(supplies_list->right_node, supplies);
 
-  return SUPPLIES_INVALID_CODE;
+  // Code is not available
+  return BAD;
 }
 
 /* Get from list */
@@ -105,24 +102,24 @@ Supplies GetSuppliesInListByCode(SuppliesList supplies_list, const char * code) 
   if (supplies_list == NULL)
     return NULL;
 
-  if (strcmp(supplies_list->supplies.code, code) > 0)
+  if (strcmp(supplies_list->supplies->code, code) > 0)
     return GetSuppliesInListByCode(supplies_list->left_node, code);
 
-  if (strcmp(supplies_list->supplies.code, code) < 0)
+  if (strcmp(supplies_list->supplies->code, code) < 0)
     return GetSuppliesInListByCode(supplies_list->right_node, code);
 
-  return &(supplies_list->supplies);
+  return supplies_list->supplies;
 }
 
 /* Delete node from list */
-error_tp RemoveItemInSuppliesListByCode(SuppliesList &supplies_list, const char * code) {
+message_tp RemoveItemInSuppliesListByCode(SuppliesList &supplies_list, const char * code) {
   if (supplies_list == NULL)
-    return SUPPLIES_NOT_FOUND;
+    return MESSAGE_OBJECT_NOT_FOUND;
 
-  if (strcmp(supplies_list->supplies.code, code) > 0)
+  if (strcmp(supplies_list->supplies->code, code) > 0)
     return RemoveItemInSuppliesListByCode(supplies_list->left_node, code);
 
-  if (strcmp(supplies_list->supplies.code, code) < 0)
+  if (strcmp(supplies_list->supplies->code, code) < 0)
     return RemoveItemInSuppliesListByCode(supplies_list->right_node, code);
 
   SuppliesList _supplies_list = supplies_list;

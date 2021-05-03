@@ -1,0 +1,9 @@
+supplies:
+  -> Code available? | supplies_list (In)
+invoice_detail
+  -> Supplies exists? | supplies_list (Out)
+inovice
+  -> Number available? | invoice_list (In)
+  -> Supplies available? | invoice_list.invoice_detail_list (In)
+staff
+  -> Code available? | staff_list (In)
