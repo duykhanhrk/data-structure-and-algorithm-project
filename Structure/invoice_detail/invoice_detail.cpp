@@ -188,7 +188,7 @@ message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detai
   return OK;
 }
 
-message_tp RemoveItemInInvoice(InvoiceDetailList & invoice_detail_list, InvoiceDetail invoice_detail) {
+message_tp RemoveItemInInvoiceList(InvoiceDetailList & invoice_detail_list, InvoiceDetail invoice_detail) {
   for (int interact = 0; interact < invoice_detail_list.count; interact ++)
     if (invoice_detail_list.items[interact] == invoice_detail)
       return RemoveItemInInvoiceDetailListByIndex(invoice_detail_list, interact);

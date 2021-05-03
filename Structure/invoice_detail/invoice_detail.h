@@ -58,7 +58,7 @@ InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList, int);
 message_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &);
 message_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &);
 message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
-message_tp RemoveItemInInvoice(InvoiceDetailList &, InvoiceDetail);
+message_tp RemoveItemInInvoiceList(InvoiceDetailList &, InvoiceDetail);
 
 #include "invoice_detail.cpp"
 
