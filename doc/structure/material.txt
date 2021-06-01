@@ -1,0 +1,65 @@
+MATERIAL
+--------
+
+--------------------------------------------------------------------------------
+Struct
+--------------------------------------------------------------------------------
+
+Suppiles
+--------------------------------------
+  code          | string | max len: 10
+  name          | string | max len: 64
+  unit          | string | max len: 10
+  quantity      | string |
+
+SuppilesNode or SuppilesList
+--------------------------------------
+  material      | Material
+  left_node     | MaterialNode *
+  right_node    | MaterialNode *
+
+--------------------------------------------------------------------------------
+Object methods
+--------------------------------------------------------------------------------
+NewMaterial                              | Create a new Material
+DestroyMaterial                          | Destroy a Material
+RevokeMaterial                           |
+ReplaceMaterial                          |
+TranferMaterial                          |
+CopyMaterial                             |
+DuplicateMaterial                        |
+
+--------------------------------------------------------------------------------
+Node methods
+--------------------------------------------------------------------------------
+NewMaterialNode                          |
+DestroyMaterialNode                      |
+
+--------------------------------------------------------------------------------
+List methods
+--------------------------------------------------------------------------------
+NewMaterialList                          | Create a new MaterialList
+DestroyMaterialList                      | Destroy a MaterialList
+MaterialListCount                        | Count items in MaterialList
+IsInvoiceDetailListEmpty                 | Is InvoiceDetailList empty?
+IsMaterialCodeValid                      | Is Material code valid?
+AddItemToMaterialList                    | Add a item to MaterialList
+GetItemInMaterialListByCode              | Get item in MaterialList by code
+TakeItemsInMaterialListByCode            | Take items in MaterialList by code
+DeleteItemInInvoiceDetailList            | Delete item in MaterialList
+DeleteItemInInvoiceDetailListByCode      | Delete item in MaterialList by code
+
+--------------------------------------------------------------------------------
+Examples
+--------------------------------------------------------------------------------
+// Create new a MaterialList
+MaterialList material_list = NewMaterialList();
+
+// Create new a Material
+Material material = NewMaterial("abc", 0, 0.0f, 0.0f);
+
+// Add Material to MaterialList
+AddItemToInvoiceDetailList(material_list, material);
+
+// Remove Material in MaterialList
+RemoveItemInMaterialList(material_list, material);

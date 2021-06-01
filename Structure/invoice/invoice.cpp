@@ -1,28 +1,69 @@
 #include "invoice.h"
 
-/* object methods */
+/* -----------------------------------------------------------------------------
+Object
+----------------------------------------------------------------------------- */
 
 Invoice NewInvoice(
-    const char * number = "\0",
-    time_t created_at = 0,
-    char type = 'N'
+    const char * number = INVOICE_NUMBER_DEFAULT_VALUE,
+    time_t created_at = INVOICE_CREATED_AT_DEFAULT_VALUE,
+    char type = INVOICE_TYPE_DEFAULT_VALUE,
+    InvoiceDetailList invoice_details = INVOICE_INVOICE_DETAILS_DEFAULT_VALUE
 ) {
   Invoice invoice = (Invoice) malloc(sizeof(InvoiceT));
 
   strcpy(invoice->number, number);
   invoice->created_at = created_at;
   invoice->type = type;
-  invoice->invoice_details = NewInvoiceDetailList();
+  invoice->invoice_details = invoice_details;
 
   return invoice;
 }
 
-void DesroyInvoice(Invoice &invoice) {
+void DestroyInvoice(Invoice &invoice) {
+  DestroyInvoiceDetailList(invoice->invoice_details);
   free(invoice);
   invoice = NULL;
 }
 
-/* node methods */
+void RevokeInvoice(Invoice &invoice) {
+  free(invoice);
+  invoice = NULL;
+}
+
+void ReplaceInvoice(Invoice &invoice, Invoice _invoice) {
+  RevokeInvoice(_invoice);
+  invoice = _invoice;
+}
+
+void TranferInvoice(Invoice invoice, Invoice _invoice) {
+  strcpy(invoice->number, _invoice->number);
+  invoice->created_at = _invoice->created_at;
+  invoice->type = _invoice->type;
+  invoice->invoice_details = _invoice->invoice_details;
+
+  RevokeInvoice(_invoice);
+}
+
+void CopyInvoice(Invoice invoice, Invoice _invoice) {
+  strcpy(invoice->number, _invoice->number);
+  invoice->created_at = _invoice->created_at;
+  invoice->type = _invoice->type;
+  invoice->invoice_details = _invoice->invoice_details;
+}
+
+Invoice DuplicateInvoice(Invoice invoice) {
+  return NewInvoice(
+    invoice->number,
+    invoice->created_at,
+    invoice->type,
+    invoice->invoice_details
+  );
+}
+
+/* -----------------------------------------------------------------------------
+Node
+----------------------------------------------------------------------------- */
 
 InvoiceNode NewInvoiceNode(Invoice invoice) {
   InvoiceNode invoice_node = (InvoiceNode) malloc(sizeof(InvoiceNodeT));
@@ -33,11 +74,14 @@ InvoiceNode NewInvoiceNode(Invoice invoice) {
 }
 
 void DestroyInvoiceNode(InvoiceNode &invoice_node) {
+  DestroyInvoice(invoice_node->invoice);
   free(invoice_node);
   invoice_node = NULL;
 }
 
-/* list methods */
+/* -----------------------------------------------------------------------------
+List
+----------------------------------------------------------------------------- */
 
 InvoiceList NewInvoiceList() {
   return NULL;
@@ -156,7 +200,7 @@ Invoice GetLastItemInInvoiceList(InvoiceList invoice_list) {
   return interact->invoice;
 }
 
-Invoice GetInvoiceInListByNumber(InvoiceList invoice_list, const char * number) {
+Invoice GetItemInInvoiceListByNumber(InvoiceList invoice_list, const char * number) {
   InvoiceNode interact = invoice_list;
   while (interact != NULL && strcmp(interact->invoice->number, number) != 0)
     interact = interact->next_node;
@@ -166,7 +210,7 @@ Invoice GetInvoiceInListByNumber(InvoiceList invoice_list, const char * number) 
   return interact->invoice;
 }
 
-Invoice GetInvoiceInListByIndex(InvoiceList invoice_list, int index) {
+Invoice GetItemInInvoiceListByIndex(InvoiceList invoice_list, int index) {
   InvoiceNode interact = invoice_list;
   while (interact != NULL && index --)
     interact = interact->next_node;
@@ -260,4 +304,20 @@ message_tp RemoveItemInInvoiceList(InvoiceList &invoice_list, Invoice invoice) {
   }
 
   return OK;
+}
+
+/* Show */
+
+void ShowInvoice(Invoice invoice, const char * format = INVOICE_SHOW_FORMAT_DEFAULT) {
+  printf(
+      format,
+      invoice->number,
+      invoice->created_at,
+      invoice->type
+  );
+}
+
+void ShowInvoiceList(InvoiceList invoice_list, const char * format = INVOICE_LIST_SHOW_FORMAT_DEFAULT) {
+  for (InvoiceNode interact = invoice_list; interact != NULL; interact = interact->next_node)
+    ShowInvoice(interact->invoice, format);
 }
