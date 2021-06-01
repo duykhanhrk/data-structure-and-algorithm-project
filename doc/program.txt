@@ -1,7 +1,44 @@
 PROGRAM
 _______
 
-Program
-  program_data
-  program_feature
-  program_message
+Revoke
+Destroy
+
+Take
+Get
+
+Remove
+Delete
+
+Copy
+Duplicate
+
+// Material
+// Index
+  LinearList materials = NewLinearList(MaxSize);
+  TakeMaterialsInArchive(materials, MaxSize, 1);
+  RevokeLinearList(materials);
+
+// Create
+  Material material = NewMaterial();
+  SaveMaterialToArchive(material);
+
+// Update material
+  Material _material = DuplicateMaterial(material);
+  UpdateMaterialInArchive(material, _material);
+  DestroyMaterial(_material);
+
+// Delete material
+  DeleteMaterialInArchive(material)
+
+// Staff
+// Index
+  LinearList staffs = NewLinearList(MaxSize);
+  TakeStaffInArchive(staffs, MaxSize, 1);
+  RevokeLinearList(staffs);
+// Update staff
+  ...
+// Delete
+  ...
+// Invoice
+  // Create

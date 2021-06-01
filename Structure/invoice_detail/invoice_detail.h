@@ -6,19 +6,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../support/message/message.h"
-#include "../supplies/supplies.h"
+#include "../../support/message/message.h"
+#include "../material/material.h"
 
 /* Limits */
 
 #define INVOICE_DETAIL_LIST_MAX_ITEMS 20
 
+#define INVOICE_DETAIL_MATERIAL_CODE_DEFAULT_VALUE "\0"
+#define INVOICE_DETAIL_AMOUNT_DEFAULT_VALUE 0
+#define INVOICE_DETAIL_PRICE_DEFAULT_VALUE 0.0f
+#define INVOICE_DETAIL_VAT_DEFAULT_VALUE 0.0f
+
+#define INVOICE_DETAIL_SHOW_FORMAT_DEFAULT "%-12s %-12d %-12f %-12f"
+#define INVOICE_DETAIL_LIST_SHOW_FORMAT_DEFAULT "%-12s %-12d %-12f %-12f\n"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/* -----------------------------------------------------------------------------
+Struct
+----------------------------------------------------------------------------- */
+
 typedef struct InvoiceDetailT {
-  char supplies_code[SUPPLIES_CODE_MAX_LEN];
+  char material_code[MATERIAL_CODE_MAX_LEN];
   int amount;
   float price;
   float vat;
@@ -26,39 +38,44 @@ typedef struct InvoiceDetailT {
 
 typedef struct InvoiceDetailListT {
   int count;
-  InvoiceDetailT * items[INVOICE_DETAIL_LIST_MAX_ITEMS];
-} InvoiceDetailListT, InvoiceDetailList;
+  InvoiceDetailT * invoice_details[INVOICE_DETAIL_LIST_MAX_ITEMS];
+} InvoiceDetailListT, * InvoiceDetailList;
 
-/* Object methods */
+/* -----------------------------------------------------------------------------
+Object
+----------------------------------------------------------------------------- */
 InvoiceDetail NewInvoiceDetail(const char *, int, float, float);
-void DestroyInvoiceDetail(InvoiceDetail &invoice_detail);
+void DestroyInvoiceDetail(InvoiceDetail &);
+void RevokeInvoiceDetail(InvoiceDetail &);
+void ReplaceInvoiceDetail(InvoiceDetail &, InvoiceDetail);
+void TranferInvoiceDetail(InvoiceDetail, InvoiceDetail);
+void CopyInvoiceDetail(InvoiceDetail, InvoiceDetail);
+InvoiceDetail DuplicateInvoiceDetail(InvoiceDetail);
 
-/* List methods */
-
-// New and Destroy
+/* -----------------------------------------------------------------------------
+List
+----------------------------------------------------------------------------- */
 InvoiceDetailList NewInvoiceDetailList();
 void DestroyInvoiceDetailList(InvoiceDetailList &);
-
-// Logic
 bool IsInvoiceDetailListEmpty(InvoiceDetailList);
 bool IsInvoiceDetailListFull(InvoiceDetailList);
-
-// Insert
 message_tp AddItemToInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 message_tp InsertItemToBeginningOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 message_tp InsertItemToEndOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 message_tp InsertItemToInvoiceDetailListByIndex(InvoiceDetailList &, InvoiceDetail, int);
-
-/* Get */
 InvoiceDetail GetFirstItemInInvoiceDetailList(InvoiceDetailList);
 InvoiceDetail GetLastItemInInvoiceDetailList(InvoiceDetailList);
 InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList, int);
-
-/* Delete */
 message_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &);
 message_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &);
-message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
 message_tp RemoveItemInInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
+message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
+
+/* -----------------------------------------------------------------------------
+Test
+----------------------------------------------------------------------------- */
+void ShowInvoiceDetail(InvoiceDetail, const char *);
+void ShowInvoiceDetailList(InvoiceDetailList, const char *);
 
 #include "invoice_detail.cpp"
 

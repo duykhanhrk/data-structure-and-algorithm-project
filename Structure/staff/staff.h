@@ -6,17 +6,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../support/message/message.h"
+#include "../../support/message/message.h"
 #include "../invoice/invoice.h"
-
-/* Limits */
 
 #define STAFF_CODE_MAX_LEN 10
 #define STAFF_FIRST_NAME_MAX_LEN 32
 #define STAFF_LAST_NAME_MAX_LEN 64
 #define STAFF_LIST_MAX_ITEMS 500
+
 #define STAFF_SEX_FEMALE 'F'
 #define STAFF_SEX_MALE 'M'
+
+#define STAFF_CODE_DEFAULT_VALUE "\0"
+#define STAFF_FIRST_NAME_DEFUALT_VALUE "\0"
+#define STAFF_LAST_NAME_DEFAULT_VALUE "\0"
+#define STAFF_SEX_DEFAULT_VALUE STAFF_SEX_FEMALE
+#define STAFF_INVOICES_DEFAULT_VALUE NewInvoiceList()
+
+#define STAFF_SHOW_FORMAT_DEFAULT "%-12s %-24s %-24s %c"
+#define STAFF_LIST_SHOW_FORMAT_DEFAULT "%-12s %-24s %-24s %c\n"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +35,7 @@ typedef struct StaffT {
   char first_name[STAFF_LAST_NAME_MAX_LEN];
   char last_name[STAFF_FIRST_NAME_MAX_LEN];
   char sex;
+  InvoiceList invoices;
 } StaffT, * Staff;
 
 typedef struct StaffListT {
@@ -35,7 +44,8 @@ typedef struct StaffListT {
 } StaffListT, * StaffList;
 
 /* Object methods */
-Staff NewStaff(const char *, const char *, const char *, char);
+
+Staff NewStaff(const char *, const char *, const char *, char, InvoiceList);
 void DestroyStaff(Staff &staff);
 
 /* List methods */
@@ -43,6 +53,7 @@ void DestroyStaff(Staff &staff);
 // New and Destroy
 StaffList NewStaffList();
 void DestroyStaffList(StaffList &);
+Staff CopyStaff(Staff);
 
 // Logic
 bool IsStaffListEmpty(StaffList);
@@ -55,18 +66,25 @@ message_tp InsertItemToBeginningOfStaffList(StaffList &, Staff);
 message_tp InsertItemToEndOfStaffList(StaffList &, Staff);
 message_tp InsertItemToStaffListByIndex(StaffList &, Staff, int);
 
-/* Get */
+// Update
+message_tp UpdateItemInStaffList(StaffList, Staff);
+
+// Get
 Staff GetFirstItemInStaffList(StaffList);
 Staff GetLastItemInStaffList(StaffList);
 Staff GetStaffInListByIndex(StaffList, int);
 Staff GetStaffInListByCode(StaffList, const char *);
 
-/* Delete */
+// Delete
 message_tp RemoveFirstItemInStaffList(StaffList &);
 message_tp RemoveLastItemInStaffList(StaffList &);
 message_tp RemoveItemInStaffListByIndex(StaffList &, int);
 message_tp RemoveItemInStaffListByCode(StaffList &, const char *);
 message_tp RemoveItemInStaffList(StaffList &, Staff);
+
+// Show
+void ShowStaff(Staff, const char *);
+void ShowStaffList(StaffList, const char *);
 
 #include "staff.cpp"
 

@@ -7,11 +7,11 @@ Struct
 
 Staff
 --------------------------------------
-  code       | string | max len: 10
-  last_name  | string | max len: 64
-  first_name | string | max len: 32
-  sex        | char   | 'F', 'M'
-
+  code       | string     | max len: 10
+  last_name  | string     | max len: 64
+  first_name | string     | max len: 32
+  sex        | char       | 'F', 'M'
+  invoices   | InvoieList |
 StaffList
 -----------------------------------------------------
   count         | int             |

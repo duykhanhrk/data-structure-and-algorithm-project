@@ -1,0 +1,43 @@
+PROGRAM DATA
+------------
+
+ProgramData
+--------------------------------------
+  material_list | MaterialList
+  staff_list    | StaffList
+
+-----------------------------------------------------------------------------------------
+Material Methods
+-----------------------------------------------------------------------------------------
+AddMaterialToProgramData
+GetMaterialFromProgramData
+GetMaterialsFromProgramData
+UpdateMaterialInProgramData
+DeleteMaterialFromProgramData
+
+-----------------------------------------------------------------------------------------
+Staff Methods
+-----------------------------------------------------------------------------------------
+AddStaffToProgramData
+GetStaffFromProgramData
+GetStaffsFromProgramData
+UpdateStaffInProgramData
+DeleteStaffFromProgramData
+
+-----------------------------------------------------------------------------------------
+Invoice Methods
+-----------------------------------------------------------------------------------------
+AddInvoiceToProgramData
+GetInvoiceInProgramData
+UpdateInvoiceDetailInProgramData
+GetInvoicesInProgramData
+UpdateInvoiceInProgramData
+DeleteInvoiceInProgramData
+
+-----------------------------------------------------------------------------------------
+Invoice Detail Methods
+-----------------------------------------------------------------------------------------
+AddInvoiceDetailToProgramData
+GetInvoiceDetailInProgramData
+GetInvoiceDetailsInProgramData
+DeleteInvoiceDetailInProgramData

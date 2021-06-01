@@ -7,7 +7,7 @@ Struct
 
 InvoiceDetail
 --------------------------------------
-  supplies_code | string | max len: 10
+  material_code | string | max len: 10
   amount        | int    |
   price         | float  |
   vat           | float  |

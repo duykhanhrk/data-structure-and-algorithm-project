@@ -2,7 +2,7 @@ doc
   structure
     invoice_detail.txt
     invoice.txt
-    supplies.txt
+    material.txt
   directory_structure.txt
   error.txt
   program.txt
@@ -17,9 +17,9 @@ structure
   invoice
     invoice.h
     invoice_detail.cpp
-  supplies
-    supplies.h
-    supplies.cpp
+  material
+    material.h
+    material.cpp
   staff
     staff.h
     staff.cpp
