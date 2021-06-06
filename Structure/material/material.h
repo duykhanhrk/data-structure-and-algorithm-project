@@ -47,6 +47,7 @@ Object
 ----------------------------------------------------------------------------- */
 Material NewMaterial(const char *, const char *, const char *, int);
 void DestroyMaterial(Material &);
+void RevokeMaterial(Material &material);
 
 void ReplaceMaterial(Material &, Material);
 void TranferMaterial(Material, Material &);

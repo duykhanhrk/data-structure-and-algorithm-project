@@ -23,7 +23,7 @@
 #define STAFF_SEX_DEFAULT_VALUE STAFF_SEX_FEMALE
 #define STAFF_INVOICES_DEFAULT_VALUE NewInvoiceList()
 
-#define STAFF_SHOW_FORMAT_DEFAULT "%-12s %-24s %-24s %c"
+#define STAFF_SHOW_FORMAT_DEFAULT "%-12s %-24s %-24s %c\n"
 #define STAFF_LIST_SHOW_FORMAT_DEFAULT "%-12s %-24s %-24s %c\n"
 
 #ifdef __cplusplus
@@ -46,19 +46,25 @@ typedef struct StaffListT {
 /* Object methods */
 
 Staff NewStaff(const char *, const char *, const char *, char, InvoiceList);
-void DestroyStaff(Staff &staff);
+void DestroyStaff(Staff &);
+void RevokeStaff(Staff &);
+
+void ReplaceStaff(Staff &, Staff);
+void TranferStaff(Staff, Staff &);
+void CopyStaff(Staff, Staff);
+Staff DuplicateStaff(Staff);
 
 /* List methods */
 
 // New and Destroy
 StaffList NewStaffList();
 void DestroyStaffList(StaffList &);
-Staff CopyStaff(Staff);
 
 // Logic
 bool IsStaffListEmpty(StaffList);
 bool IsStaffListListFull(StaffList);
-bool IsStaffCodeAvailable(StaffList, const char *);
+bool IsCodeInStaffList(StaffList, const char *);
+bool IsInStaffList(StaffList, Staff);
 
 // Insert
 message_tp AddItemToStaffList(StaffList &, Staff);
@@ -76,11 +82,11 @@ Staff GetStaffInListByIndex(StaffList, int);
 Staff GetStaffInListByCode(StaffList, const char *);
 
 // Delete
-message_tp RemoveFirstItemInStaffList(StaffList &);
-message_tp RemoveLastItemInStaffList(StaffList &);
-message_tp RemoveItemInStaffListByIndex(StaffList &, int);
-message_tp RemoveItemInStaffListByCode(StaffList &, const char *);
-message_tp RemoveItemInStaffList(StaffList &, Staff);
+message_tp DeleteFirstItemInStaffList(StaffList &);
+message_tp DeleteLastItemInStaffList(StaffList &);
+message_tp DeleteItemInStaffListByIndex(StaffList &, int);
+message_tp DeleteItemInStaffListByCode(StaffList &, const char *);
+message_tp DeleteItemInStaffList(StaffList &, Staff);
 
 // Show
 void ShowStaff(Staff, const char *);
