@@ -15,11 +15,23 @@ extern Archive archive;
 extern "C" {
 #endif
 
+/* Logic */
+bool IsStaffValid(Staff);
+
+/* Standard */
 message_tp SaveStaffToArchive(Staff);
-Staff GetStaffInArchive(const char *);
-message_tp GetStaffsInArchive(Staff *, int, int);
-message_tp UpdateStaffInArchive(Staff);
-message_tp DeleteStaffInArchive(const char *);
+message_tp UpdateStaffInArchive(Staff, Staff);
+message_tp DeleteStaffInArchive(Staff);
+
+/* Extend */
+Staff GetStaffInArchiveByCode(const char * code);
+message_tp UpdateStaffInArchiveByCode(const char * code, Staff staff);
+message_tp DeleteStaffInArchiveByCode(const char * code);
+
+/* Not safe */
+message_tp UpdateStaffInArchiveNS(Staff, Staff);
+
+/* Debug */
 void ShowStaffListInArchive();
 
 #include "staff.cpp"

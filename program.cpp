@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Debug
+/* Debug */
 #include <iostream>
 #define show(x) std::cout << x << std::endl;
 
+#include "structure/structure.h"
 #include "archivist/archivist.h"
 
 extern Archive archive;
@@ -14,32 +15,37 @@ extern Archive archive;
 int main() {
   InitArchive();
 
-  Material material;
+  Staff staff;
 
-  material = NewMaterial("abc", "abc", "abc", 9);
-  if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc!");
+  // Create new
+  staff = NewStaff("code", "first_name", "last_name", STAFF_SEX_FEMALE);
+  if (SaveStaffToArchive(staff) != OK) show("Khong luu duoc");
 
-  material = NewMaterial("def", "abc", "abc", 9);
-  if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc!");
+  staff = NewStaff("code 1", "first_name", "last_name", STAFF_SEX_FEMALE);
+  if (SaveStaffToArchive(staff) != OK) show("Khong luu duoc");
 
-  material = NewMaterial("ghi", "abc", "abc", 9);
-  if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc!");
+  ShowStaffListInArchive();
 
-  material = NewMaterial("jkm", "abc", "abc", 9);
-  if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc!");
-
-  ShowMaterialListInArchive();
+  // line
   show("---------------------------------------------------------------------");
 
-  Material _material = DuplicateMaterial(material);
-  _material->quantity = 10;
+  // Update staff
+  staff = GetStaffInArchiveByCode("code");
+  Staff _staff = DuplicateStaff(staff);
+  strcpy(_staff->first_name, "Hello world");
+  if (UpdateStaffInArchive(staff, _staff) != OK) show("Khong cap nhat duoc");
+  ShowStaffListInArchive();
 
-  if (UpdateMaterialInArchive(material, _material) != OK) show(":(");
+  // line
+  show("---------------------------------------------------------------------");
 
-  ShowMaterialListInArchive();
+  // Delete staff
+  staff = GetStaffInArchiveByCode("code");
+  if (DeleteStaffInArchive(staff) != OK) show("Khong xoa duoc");
+
+  ShowStaffListInArchive();
 
   DestroyArchive();
-
   system("PAUSE");
   return 0;
 }

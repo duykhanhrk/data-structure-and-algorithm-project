@@ -19,11 +19,12 @@ void InitArchive() {
 }
 
 void DestroyArchive() {
-  DestroyMaterialList  (archive->material_list);
+  DestroyMaterialList(archive->material_list);
   DestroyStaffList(archive->staff_list);
   free(archive);
 }
 
 #include "material/material.h"
+#include "staff/staff.h"
 
 #endif
