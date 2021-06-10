@@ -8,6 +8,8 @@
 #include <iostream>
 #define show(x) std::cout << x << std::endl;
 
+/* Makers */
+#include "support/supporter.h"
 #include "structure/structure.h"
 #include "archivist/archivist.h"
 
@@ -60,6 +62,6 @@ int main() {
   ShowStaffListInArchive();
 
   DestroyArchive();
-  system("PAUSE");
+  getchar();
   return 0;
 }

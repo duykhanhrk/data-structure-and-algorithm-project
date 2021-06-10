@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /* Logic */
-message_tp IsInvoiceValid(Invoice);
+message_tp IsInvoiceValid(Invoice, bool);
 
 /* Standard */
 message_tp SaveInvoiceToArchive(Staff, Invoice);
