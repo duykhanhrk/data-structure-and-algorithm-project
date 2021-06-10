@@ -253,6 +253,11 @@ message_tp DeleteItemInStaffList(StaffList &staff_list, Staff staff) {
 
 /* Test */
 
+void StaffListEach(StaffList staff_list, void (* perform) (Staff)) {
+  for (int interact = 0; interact < staff_list->count; interact ++)
+    perform(staff_list->staffs[interact]);
+}
+
 void ShowStaff(Staff staff, const char * format = STAFF_SHOW_FORMAT_DEFAULT) {
   printf(
       format,
