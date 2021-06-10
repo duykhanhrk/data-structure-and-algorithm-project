@@ -37,5 +37,6 @@ DEL %EXDIR%%PROGRAM_FILE_NAME%.exe
 REM Clear screen.
 CLS
 
+REM Exit.
 :ENDEX
 exit /b 0

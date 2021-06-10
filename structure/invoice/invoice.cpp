@@ -104,9 +104,17 @@ bool IsInvoiceListEmpty(InvoiceList invoice_list) {
   return (invoice_list == NULL);
 }
 
-bool IsInvoiceNumberAvailable(InvoiceList invoice_list, const char * number) {
+bool IsNumberInInvoiceList(InvoiceList invoice_list, const char * number) {
   InvoiceNode interact = invoice_list;
   while (interact != NULL && strcmp(interact->invoice->number, number) != 0)
+    interact = interact->next_node;
+
+  return (interact != NULL);
+}
+
+bool IsInInvoiceList(InvoiceList invoice_list, Invoice invoice) {
+  InvoiceNode interact = invoice_list;
+  while (interact != NULL && interact->invoice == invoice)
     interact = interact->next_node;
 
   return (interact == NULL);
@@ -221,7 +229,7 @@ Invoice GetItemInInvoiceListByIndex(InvoiceList invoice_list, int index) {
 }
 
 /* Delete */
-message_tp RemoveFirstItemInInvoiceList(InvoiceList &invoice_list) {
+message_tp DeleteFirstItemInInvoiceList(InvoiceList &invoice_list) {
   if (invoice_list == NULL) return BAD;
 
   InvoiceNode _invoice_node = invoice_list->next_node;
@@ -231,7 +239,7 @@ message_tp RemoveFirstItemInInvoiceList(InvoiceList &invoice_list) {
   return OK;
 }
 
-message_tp RemoveLastItemInInvoiceList(InvoiceList &invoice_list) {
+message_tp DeleteLastItemInInvoiceList(InvoiceList &invoice_list) {
   if (invoice_list == NULL) return BAD;
 
   InvoiceNode _invoice_node = invoice_list->next_node;
@@ -241,7 +249,7 @@ message_tp RemoveLastItemInInvoiceList(InvoiceList &invoice_list) {
   return OK;
 }
 
-message_tp RemoveItemInInvoiceListByCode(InvoiceList &invoice_list, const char * number) {
+message_tp DeleteItemInInvoiceListByCode(InvoiceList &invoice_list, const char * number) {
   if (invoice_list == NULL) return BAD;
 
   InvoiceNode interact = invoice_list;
@@ -264,7 +272,7 @@ message_tp RemoveItemInInvoiceListByCode(InvoiceList &invoice_list, const char *
   return OK;
 }
 
-message_tp RemoveItemInInvoiceListByIndex(InvoiceList &invoice_list, int index) {
+message_tp DeleteItemInInvoiceListByIndex(InvoiceList &invoice_list, int index) {
   InvoiceNode interact = invoice_list;
   InvoiceNode _interact = NULL;
   while (interact != NULL && index --) {
@@ -285,7 +293,7 @@ message_tp RemoveItemInInvoiceListByIndex(InvoiceList &invoice_list, int index) 
   return OK;
 }
 
-message_tp RemoveItemInInvoiceList(InvoiceList &invoice_list, Invoice invoice) {
+message_tp DeleteItemInInvoiceList(InvoiceList &invoice_list, Invoice invoice) {
   InvoiceNode interact = invoice_list;
   InvoiceNode _interact = NULL;
   while (interact != NULL && interact->invoice == invoice) {

@@ -88,7 +88,8 @@ message_tp DeleteItemInStaffListByIndex(StaffList &, int);
 message_tp DeleteItemInStaffListByCode(StaffList &, const char *);
 message_tp DeleteItemInStaffList(StaffList &, Staff);
 
-// Show
+// Test
+void StaffListEach(StaffList, void (* perform) (Staff));
 void ShowStaff(Staff, const char *);
 void ShowStaffList(StaffList, const char *);
 

@@ -1,32 +1,12 @@
-ERORR
------
-
-0: No errors             | 0: No errors
-1: Commom errors         | 1: Empty or full list or NULL
-2:                       | 2: No save
-3:                       | 3: Not found or exists
-4: System errors         | 4:
-5: Material errors       | 5: Validates
-6: Staff errors          | 6:
-7: Invoice errors        | 7: Out of range
-8: Invoice Detail erros  | 8:
-9:                       | 9: NULL
-
-Example:
-// Common
-0: NO_ERRORS || OK
-131: OBJECT_NOT_FOUND
-132: OBJECT_ALREADY_EXISTS
-15: OBJ_INVALID
-17: OUT_OF_RANGE
-111: LIST_IS_EMPTY
-112: LIST_IS_FULL
-
-// Objects
-511: MATERIAL_LIST_IS_EMPTY
-512: MATERIAL_LIST_IS_FULL
-53: MATERIAL_NOT_FOUND
-55: MATERIAL_INVALID
-551: MATERIAL_INVALID_CODE
-552: MATERIAL_INVALID_NAME
-57: MATERIAL_LIST_OUT_OF_RANGE
+MESSAGE
+-------
+0: OK             | 0:                            | 0: Void
+1:                | 1: Empty | Full | Out | NULL  | 1:
+2: Void           | 2: No save                    | 2:
+3:                | 3: Not found | exists         | 3:
+4:                | 4:                            | 4:
+5: Material       | 5: Validates                  | 5:
+6: Staff          | 6:                            | 6:
+7: Invoice        | 7:                            | 7:
+8: Invoice Detail | 8:                            | 8:
+9:                | 9:                            | 9:

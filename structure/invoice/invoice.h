@@ -22,7 +22,7 @@
 #define INVOICE_TYPE_DEFAULT_VALUE INVOICE_TYPE_IMPORT
 #define INVOICE_INVOICE_DETAILS_DEFAULT_VALUE NewInvoiceDetailList()
 
-#define INVOICE_SHOW_FORMAT_DEFAULT "%-12s %-24lld %-5c"
+#define INVOICE_SHOW_FORMAT_DEFAULT "%-12s %-24lld %-5c\n"
 #define INVOICE_LIST_SHOW_FORMAT_DEFAULT "%-12s %-24lld %-5c\n"
 
 #ifdef __cplusplus
@@ -50,6 +50,8 @@ Object
 ----------------------------------------------------------------------------- */
 Invoice NewInvoice(const char *, time_t, char, InvoiceDetailList);
 void DestroyInvoice(Invoice &);
+void RevokeInvoice(Invoice &);
+
 void ReplaceInvoice(Invoice &, Invoice);
 void TranferInvoice(Invoice, Invoice);
 void CopyInvoice(Invoice, Invoice);
@@ -67,7 +69,8 @@ List
 InvoiceList NewInvoiceList();
 void DestroyInvoiceList(InvoiceList &);
 bool IsInvoiceListEmpty(InvoiceList);
-bool IsInvoiceNumberAvailable(InvoiceList, const char *);
+bool IsNumberInInvoiceList(InvoiceList, const char *);
+bool IsInInvoiceList(InvoiceList, Invoice);
 int InvoiceListCount(InvoiceList);
 message_tp AddItemToInvoiceList(InvoiceList &, Invoice);
 message_tp InsertItemToBeginningOfInvoiceList(InvoiceList &, Invoice);
@@ -78,11 +81,11 @@ Invoice GetLastItemInInvoiceList(InvoiceList);
 Invoice GetItemInInvoiceListByNumber(InvoiceList, const char *);
 Invoice GetItemInInvoiceListByIndex(InvoiceList, int);
 
-message_tp RemoveFirstItemInInvoiceList(InvoiceList &);
-message_tp RemoveLastItemInInvoiceList(InvoiceList &);
-message_tp RemoveItemInInvoiceListByCode(InvoiceList &, const char *);
-message_tp RemoveItemInInvoiceList(InvoiceList &, Invoice);
-message_tp RemoveItemInInvoiceListByIndex(InvoiceList &, int);
+message_tp DeleteFirstItemInInvoiceList(InvoiceList &);
+message_tp DeleteLastItemInInvoiceList(InvoiceList &);
+message_tp DeleteItemInInvoiceListByCode(InvoiceList &, const char *);
+message_tp DeleteItemInInvoiceList(InvoiceList &, Invoice);
+message_tp DeleteItemInInvoiceListByIndex(InvoiceList &, int);
 
 /* -----------------------------------------------------------------------------
 List

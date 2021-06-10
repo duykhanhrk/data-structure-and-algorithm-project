@@ -1,0 +1,38 @@
+#!/bin/bash
+
+EXDIR="$(dirname $(readlink -f $0))"	# The directory containing this file.
+PROGRAM_FILE_NAME="program"           # Constant definition.
+
+# Clear screen.
+clear
+
+# Check for existence of program.cpp
+if ! [ -f "$EXDIR/$PROGRAM_FILE_NAME.cpp" ]; then
+	echo "$EXDIR/$PROGRAM_FILE_NAME.cpp: No such directory."
+	exit 1
+fi
+
+# Compile source file.
+echo "-> g++ $EXDIR/$PROGRAM_FILE_NAME.cpp -o $EXDIR/$PROGRAM_FILE_NAME"
+g++ "$EXDIR/$PROGRAM_FILE_NAME.cpp" -o "$EXDIR/$PROGRAM_FILE_NAME"
+
+# Check for existence of program.cpp
+if ! [ -f "$EXDIR/$PROGRAM_FILE_NAME" ]; then
+	echo "$EXDIR/$PROGRAM_FILE_NAME: No such directory."
+	exit 1
+fi
+
+# Clear screen.
+clear
+
+# Run executable file.
+"$EXDIR/$PROGRAM_FILE_NAME"
+
+# Remove executable file.
+rm "$EXDIR/$PROGRAM_FILE_NAME"
+
+# Clear screen.
+clear
+
+# Exit.
+exit 0
