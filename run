@@ -16,7 +16,7 @@ fi
 echo "-> g++ $EXDIR/$PROGRAM_FILE_NAME.cpp -o $EXDIR/$PROGRAM_FILE_NAME"
 g++ "$EXDIR/$PROGRAM_FILE_NAME.cpp" -o "$EXDIR/$PROGRAM_FILE_NAME"
 
-# Check for existence of program.cpp
+# Check for existence of program
 if ! [ -f "$EXDIR/$PROGRAM_FILE_NAME" ]; then
 	echo "$EXDIR/$PROGRAM_FILE_NAME: No such directory."
 	exit 1

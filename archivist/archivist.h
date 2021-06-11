@@ -8,6 +8,7 @@
 typedef struct ArchiveT {
   MaterialList material_list;
   StaffList staff_list;
+  FILE * file;
 } ArchiveT, * Archive;
 
 Archive archive;
@@ -27,5 +28,6 @@ void DestroyArchive() {
 #include "material/material.h"
 #include "staff/staff.h"
 #include "invoice/invoice.h"
+#include "saver.h"
 
 #endif

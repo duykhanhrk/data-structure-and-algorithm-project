@@ -237,6 +237,13 @@ message_tp DeleteItemInMaterialListByCode(MaterialList &material_list, const cha
 Test
 ----------------------------------------------------------------------------- */
 
+void MaterialListEach(MaterialList material_list, void (* _do) (Material)) {
+  if (material_list == NULL) return;
+  MaterialListEach(material_list->left_node, _do);
+  MaterialListEach(material_list->right_node, _do);
+  _do(material_list->material);
+}
+
 void ShowMaterial(Material material, const char * format = MATERIAL_SHOW_FORMAT_DEFAULT) {
   printf(
       format,
