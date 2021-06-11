@@ -82,6 +82,7 @@ message_tp DeleteItemInMaterialListByCode(MaterialList &, const char *);
 /* -----------------------------------------------------------------------------
 Test
 ----------------------------------------------------------------------------- */
+void MaterialListEach(MaterialList, void (* _do) (Material));
 void ShowMaterialList(MaterialList, const char *);
 void ShowMaterial(Material, const char *);
 

@@ -18,48 +18,28 @@ extern Archive archive;
 int main() {
   InitArchive();
 
-  // Create new Invoice
-  Staff staff;
-  Invoice invoice;
+//   Material material;
 
-  staff = NewStaff("code", "first_name", "last_name", STAFF_SEX_FEMALE);
-  if (SaveStaffToArchive(staff) != OK) show("Khong luu duoc");
+//   material = NewMaterial("code", "name", "unit", 20);
+//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
 
-  invoice = NewInvoice("number", time(NULL), INVOICE_TYPE_IMPORT);
-  if (SaveInvoiceToArchive(staff, invoice) != OK) show("Khong luu duoc");
+//   material = NewMaterial("code 1", "name 1", "unit", 40);
+//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
 
-  invoice = NewInvoice("number 1", time(NULL), INVOICE_TYPE_IMPORT);
-  if (SaveInvoiceToArchive(staff, invoice) != OK) show("Khong luu duoc");
+//   material = NewMaterial("code 2", "name 2", "unit", 60);
+//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
 
-  staff = NewStaff("code 1", "first_name", "last_name", STAFF_SEX_FEMALE);
-  if (SaveStaffToArchive(staff) != OK) show("Khong luu duoc");
+//   material = NewMaterial("code 3", "name 3", "unit", 80);
+//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
 
-  invoice = NewInvoice("number 2", time(NULL), INVOICE_TYPE_IMPORT);
-  if (SaveInvoiceToArchive(staff, invoice) != OK) show("Khong luu duoc");
+//   material = NewMaterial("code 4", "name 4", "unit", 100);
+//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
 
-  invoice = NewInvoice("number 3", time(NULL), INVOICE_TYPE_IMPORT);
-  if (SaveInvoiceToArchive(staff, invoice) != OK) show("Khong luu duoc");
+//   ShowMaterialListInArchive();
+//   SaveMaterialsFromArchiveToStorage();
 
-  ShowInvoiceListInArchive();
-
-  // line
-  show("---------------------------------------------------------------------");
-
-  // Update
-  Invoice _invoice = DuplicateInvoice(invoice);
-  _invoice->type = INVOICE_TYPE_EXPORT;
-  message_tp t = UpdateInvoiceInArchive(staff, invoice, _invoice);
-  if (t != OK) show("Khong cap nhat duoc");
-  show(t);
-
-  ShowInvoiceListInArchive();
-  // line
-  show("---------------------------------------------------------------------");
-
-  // Delete
-
-
-  ShowStaffListInArchive();
+  LoadMaterialsFromStorageToArchive();
+  ShowMaterialListInArchive();
 
   DestroyArchive();
   getchar();

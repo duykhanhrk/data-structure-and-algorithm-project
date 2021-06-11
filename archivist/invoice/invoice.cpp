@@ -25,24 +25,25 @@ message_tp IsInvoiceNumberValid(Invoice invoice) {
   return OK;
 }
 
-message_tp IsInvoiceValid(Invoice invoice, bool unique = true) {
+message_tp IsInvoiceValid(Invoice invoice, bool strict = true) {
   if (invoice == NULL) return M_NULL;
 
-  if (unique == true && IsInvoiceNumberValid(invoice) != OK)
+  if (strict == true && IsInvoiceNumberValid(invoice) != OK)
     return M_INVOICE_NUMBER_INVALID;
 
   if (invoice->created_at > TimeNow())
+    return M_INVOICE_CREATED_AT_INVALID;
 
   if (invoice->type != INVOICE_TYPE_IMPORT && invoice->type != INVOICE_TYPE_EXPORT)
     return M_INVOICE_TYPE_INVALID;
+
+  if (invoice->invoice_details == NULL || invoice->invoice_details->count == 0)
+    return M_INVOICE_INVOICE_DETAILS_INVALID;
 
   return OK;
 }
 
 /* Standard */
-
-// Stable
-// Request: number: unique
 message_tp SaveInvoiceToArchive(Staff staff, Invoice invoice) {
   ivp_invoice_validation;
   ivp_staff_must_be_in_archive;
