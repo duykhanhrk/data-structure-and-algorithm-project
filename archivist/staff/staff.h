@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /* Logic */
-bool IsStaffValid(Staff);
+message_tp IsStaffValid(Staff, bool);
 
 /* Standard */
 message_tp SaveStaffToArchive(Staff);

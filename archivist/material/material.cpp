@@ -1,59 +1,91 @@
 /* material */
 
+/* rapid - mtp */
+
+#define mtp_material_validation_with_strict message_tp mess = IsMaterialValid(material); \
+                                            if (mess != OK) return mess
+
+#define mtp_material_validation_without_strict message_tp mess = IsMaterialValid(material, false); \
+                                               if (mess != OK) return mess
+
 /* logic */
 
-bool IsMaterialValid(Material material) {
-  if (material == NULL) return false;
+message_tp IsMaterialValid(Material material, bool strict = true) {
+  if (IsNull(material)) return M_NULL;
 
-  if (material->code == NULL || material->code == "" || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
-    return false;
+  if (strict == true)
+  if (IsNull(material->code) || IsBlankString(material->code) || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
+    return M_MATERIAL_CODE_INVALID;
 
-  if (material->name == NULL || material->name == "" || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
-    return false;
+  if (IsNull(material->name) || IsBlankString(material->name) || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
+    return M_MATERIAL_NAME_INVALID;
 
-  if (material->unit == NULL || material->unit == "" || strlen(material->unit) > MATERIAL_UNIT_MAX_LEN)
-    return false;
+  if (IsNull(material->unit) || IsBlankString(material->unit) || strlen(material->unit) > MATERIAL_UNIT_MAX_LEN)
+    return M_MATERIAL_UNIT_INVALID;
 
-  if (material->quantity < 0)
-    return false;
+  if (IsNegative(material->quantity))
+    return M_MATERIAL_QUANTITY_INVALID;
 
-  return true;
+  return OK;
 }
 
 /* Standard */
 
 message_tp SaveMaterialToArchive(Material material) {
-  if (!IsMaterialValid(material)) return M_INVALID;
+  mtp_material_validation_with_strict;
 
   return AddItemToMaterialList(archive->material_list, material);
 }
 
-message_tp UpdateMaterialInArchive(Material material, Material _material) {
-  if (!IsMaterialValid(_material)) return M_INVALID;
-  if (!IsInMaterialList(archive->material_list, material)) return M_NOT_FOUND;
-  TranferMaterial(material, _material);
+message_tp UpdateMaterialInArchive(Material _material, Material material) {
+  // validation without strict
+  mtp_material_validation_without_strict;
+
+  // material must be in list
+  if (!IsInMaterialList(archive->material_list, _material)) return M_NOT_FOUND;
+
+  // material must be same code with _material
+  strcpy(material->code, _material->code);
+
+  // tranfer data
+  TranferMaterial(_material, material);
 
   return OK;
 }
 
-message_tp DeleteMaterialInArchive(Material material) {
-  if (material == NULL) return M_NOT_FOUND;
-  return DeleteItemInMaterialList(archive->material_list, material);
+message_tp DeleteMaterialInArchive(Material _material) {
+  if (_material == NULL) return M_NULL;
+
+  return DeleteItemInMaterialList(archive->material_list, _material);
 }
 
 /* Extend */
+
+bool IsMaterialAvailableByCode(const char * code, int amount) {
+  Material material = GetItemInMaterialListByCode(archive->material_list, code);
+  if (IsNull(material)) return false;
+  if (amount <= 0 || amount > material->quantity) return false;
+
+  return true;
+}
 
 Material GetMaterialInArchiveByCode(const char * code) {
   return GetItemInMaterialListByCode(archive->material_list, code);
 }
 
 message_tp UpdateMaterialInArchiveByCode(const char * code, Material material) {
-  if (!IsMaterialValid(material)) return M_INVALID;
+  // validation without strict
+  mtp_material_validation_without_strict;
 
+  // get material by code
   Material _material = GetItemInMaterialListByCode(archive->material_list, code);
   if (_material == NULL) return M_NOT_FOUND;
 
-  ReplaceMaterial(_material, material);
+  // _material must be same code with material
+  strcpy(material->code, _material->code);
+
+  // tranfer data
+  TranferMaterial(_material, material);
 
   return OK;
 }
@@ -64,9 +96,15 @@ message_tp DeleteMaterialInArchiveByCode(const char * code) {
 
 /* Not safe */
 
-message_tp UpdateMaterialInArchiveNS(Material material, Material _material) {
-  if (!IsMaterialValid(_material)) return M_INVALID;
-  ReplaceMaterial(material, _material);
+message_tp UpdateMaterialInArchiveNS(Material _material, Material material) {
+  // validation without strict
+  mtp_material_validation_without_strict;
+
+  // _material must be same code with material
+  strcpy(material->code, _material->code);
+
+  // tranfer data
+  TranferMaterial(_material, material);
 
   return OK;
 }

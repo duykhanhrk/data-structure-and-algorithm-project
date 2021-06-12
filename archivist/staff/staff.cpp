@@ -1,44 +1,60 @@
 /* Staff */
 
+/* rapid - stp */
+#define stp_staff_validation_with_strict message_tp mess = IsStaffValid(staff); \
+                                         if (mess != OK) return mess;
+
+#define stp_staff_validation_without_strict message_tp mess = IsStaffValid(staff, false); \
+                                            if (mess != OK) return mess;
+
 /* logic */
 
-bool IsStaffValid(Staff staff) {
-  if (staff == NULL) return false;
+message_tp IsStaffValid(Staff staff, bool strict = true) {
+  if (IsNull(staff)) return M_NULL;
 
-  if (staff->code == NULL || staff->code == "" || strlen(staff->code) > STAFF_CODE_MAX_LEN)
-    return false;
+  if (strict == true)
+  if (IsNull(staff->code) || IsBlankString(staff->code) || strlen(staff->code) > STAFF_CODE_MAX_LEN)
+    return M_STAFF_CODE_INVALID;
 
-  if (staff->first_name == NULL || staff->first_name == "" || strlen(staff->first_name) > STAFF_FIRST_NAME_MAX_LEN)
-    return false;
+  if (IsNull(staff->first_name) || IsBlankString(staff->first_name) || strlen(staff->first_name) > STAFF_FIRST_NAME_MAX_LEN)
+    return M_STAFF_FIRST_NAME_INVALID;
 
-  if (staff->last_name == NULL || staff->last_name == "" || strlen(staff->last_name) > STAFF_LAST_NAME_MAX_LEN)
-    return false;
+  if (IsNull(staff->last_name) || IsBlankString(staff->last_name) || strlen(staff->last_name) > STAFF_LAST_NAME_MAX_LEN)
+    return M_STAFF_LAST_NAME_INVALID;
 
-  if (staff->sex != STAFF_SEX_FEMALE && staff->sex != STAFF_SEX_MALE)
-    return false;
+  if (staff->sex != FEMALE_STAFF && staff->sex != MALE_STAFF)
+    return M_STAFF_SEX_INVALID;
 
-  return true;
+  return OK;
 }
 
 /* Standard */
 
 message_tp SaveStaffToArchive(Staff staff) {
-  if (!IsStaffValid(staff)) return M_INVALID;
+  stp_staff_validation_with_strict;
 
   return AddItemToStaffList(archive->staff_list, staff);
 }
 
-message_tp UpdateStaffInArchive(Staff staff, Staff _staff) {
-  if (!IsStaffValid(_staff)) return M_INVALID;
-  if (!IsInStaffList(archive->staff_list, staff)) return M_NOT_FOUND;
-  TranferStaff(staff, _staff);
+message_tp UpdateStaffInArchive(Staff _staff, Staff staff) {
+  // validation
+  stp_staff_validation_without_strict;
+
+  // staff must be in archive
+  if (!IsInStaffList(archive->staff_list, _staff)) return M_NOT_FOUND;
+
+  // staff code must be same _staff
+  strcpy(staff->code, _staff->code);
+
+  // tranfer data
+  TranferStaff(_staff, staff);
 
   return OK;
 }
 
-message_tp DeleteStaffInArchive(Staff staff) {
-  if (staff == NULL) return M_NOT_FOUND;
-  return DeleteItemInStaffList(archive->staff_list, staff);
+message_tp DeleteStaffInArchive(Staff _staff) {
+  if (_staff == NULL) return M_NULL;
+  return DeleteItemInStaffList(archive->staff_list, _staff);
 }
 
 /* Extend */
@@ -48,12 +64,18 @@ Staff GetStaffInArchiveByCode(const char * code) {
 }
 
 message_tp UpdateStaffInArchiveByCode(const char * code, Staff staff) {
-  if (!IsStaffValid(staff)) return M_INVALID;
+  // validation
+  stp_staff_validation_without_strict;
 
+  // get staff in archive
   Staff _staff = GetItemInStaffListByCode(archive->staff_list, code);
   if (_staff == NULL) return M_NOT_FOUND;
 
-  ReplaceStaff(_staff, staff);
+  // staff code must be same _staff
+  strcpy(staff->code, _staff->code);
+
+  // tranfer data
+  TranferStaff(_staff, staff);
 
   return OK;
 }
@@ -64,9 +86,15 @@ message_tp DeleteStaffInArchiveByCode(const char * code) {
 
 /* Not safe */
 
-message_tp UpdateStaffInArchiveNS(Staff staff, Staff _staff) {
-  if (!IsStaffValid(_staff)) return M_INVALID;
-  ReplaceStaff(staff, _staff);
+message_tp UpdateStaffInArchiveNS(Staff _staff, Staff staff) {
+  // validation
+  stp_staff_validation_without_strict;
+
+  // staff code must be same _staff
+  strcpy(staff->code, _staff->code);
+
+  // tranfer data
+  TranferStaff(_staff, staff);
 
   return OK;
 }

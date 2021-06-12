@@ -5,5 +5,6 @@
 
 #include "date_time/date_time.h"
 #include "message/message.h"
+#include "utility/utility.h"
 
 #endif

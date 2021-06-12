@@ -8,6 +8,7 @@
 
 #include "../../support/message/message.h"
 #include "../../structure/invoice/invoice.h"
+#include "../invoice_detail/invoice_detail.h"
 
 extern Archive archive;
 
@@ -25,13 +26,17 @@ message_tp DeleteInvoiceInArchive(Staff, Invoice);
 
 /* Extend */
 Invoice GetInvoiceInArchiveByCode(Staff, const char * code);
-message_tp UpdateInvoiceInArchiveByCode(Staff, const char * code, Invoice material);
+message_tp UpdateInvoiceInArchiveByCode(Staff, const char * code, Invoice);
 message_tp DeleteInvoiceInArchiveByCode(Staff, const char * code);
 
 /* Not safe */
 message_tp UpdateInvoiceInArchiveNS(Invoice, Invoice);
 
+/* Lazy */
+Invoice GetInvoiceInArchiveByNumberLZ(const char *);
+
 /* Debug */
+void ShowInvoiceInArchive(const char *);
 void ShowInvoiceListInArchiveByStaff(Staff);
 void ShowInvoiceListInArchive();
 

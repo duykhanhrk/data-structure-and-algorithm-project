@@ -1,7 +1,7 @@
 /* message */
 
-#ifndef __SUPPORT_DATETIME__
-#define __SUPPORT_DATETIME__
+#ifndef __SUPPORT_DATE_TIME__
+#define __SUPPORT_DATE_TIME__
 
 #include <time.h>
 
