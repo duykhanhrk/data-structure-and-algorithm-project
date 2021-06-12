@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /* Logic */
-bool IsMaterialValid(Material);
+message_tp IsMaterialValid(Material, bool);
 
 /* Standard */
 message_tp SaveMaterialToArchive(Material);
@@ -24,6 +24,7 @@ message_tp UpdateMaterialInArchive(Material, Material);
 message_tp DeleteMaterialInArchive(Material);
 
 /* Extend */
+bool IsMaterialAvailableByCode(const char * code, int amount);
 Material GetMaterialInArchiveByCode(const char * code);
 message_tp UpdateMaterialInArchiveByCode(const char * code, Material material);
 message_tp DeleteMaterialInArchiveByCode(const char * code);

@@ -1,9 +1,5 @@
 /* Program */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-
 /* Debug */
 #include <iostream>
 #define show(x) std::cout << x << std::endl;
@@ -15,31 +11,75 @@
 
 extern Archive archive;
 
+void SeedMaterial() {
+  Material material;
+  char code[10] = " \0";
+  char name[64] = "  name\0";
+  char unit[10] = "  unit\0";
+
+  for (char chr = 'a'; chr <= 'z'; chr ++) {
+    code[0] = chr;
+    name[0] = chr;
+    unit[0] = chr;
+
+    material = NewMaterial(code, name, unit, ((int) chr) - 97);
+    SaveMaterialToArchive(material);
+  }
+}
+
+void SeedStaff() {
+  Staff staff;
+  char code[10] = " \0";
+  char first_name[64] = "  first name\0";
+  char last_name[64] = "  last name\0";
+  char sex = FEMALE_STAFF;
+
+  for (char chr = 'a'; chr <= 'z'; chr ++) {
+    code[0] = chr;
+    first_name[0] = chr;
+    last_name[0] = chr;
+
+    staff = NewStaff(code, first_name, last_name, sex);
+    SaveStaffToArchive(staff);
+  }
+}
+
 int main() {
   InitArchive();
+  SeedMaterial();
+  SeedStaff();
 
-//   Material material;
+  Staff staff = GetStaffInArchiveByCode("a");
+  Invoice invoice = NewInvoice("123456789", TimeNow(), IMPORT_INVOICE);
+  InvoiceDetail invoice_detail;
+  message_tp mess;
 
-//   material = NewMaterial("code", "name", "unit", 20);
-//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
+  invoice_detail = NewInvoiceDetail("z", 10, 200, 0.5);
+  mess = AddItemToInvoiceDetailList(invoice->invoice_details, invoice_detail);
+  if (mess != OK) {
+    show("Khong luu duoc");
+    DestroyInvoiceDetail(invoice_detail);
+  }
+  invoice_detail = NewInvoiceDetail("z", 1, 200, 0.5);
+  mess = AddItemToInvoiceDetailList(invoice->invoice_details, invoice_detail);
+  if (mess != OK) {
+    show("Khong luu duoc");
+    DestroyInvoiceDetail(invoice_detail);
+  }
+  invoice_detail = NewInvoiceDetail("b", 1, 200, 0.5);
+  mess = AddItemToInvoiceDetailList(invoice->invoice_details, invoice_detail);
+  if (mess != OK) {
+    show("Khong luu duoc");
+    DestroyInvoiceDetail(invoice_detail);
+  }
 
-//   material = NewMaterial("code 1", "name 1", "unit", 40);
-//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
+  mess = SaveInvoiceToArchive(staff, invoice);
+  if (mess != OK) {
+    show("Khong luu duoc");
+    DestroyInvoice(invoice);
+  }
 
-//   material = NewMaterial("code 2", "name 2", "unit", 60);
-//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
-
-//   material = NewMaterial("code 3", "name 3", "unit", 80);
-//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
-
-//   material = NewMaterial("code 4", "name 4", "unit", 100);
-//   if (SaveMaterialToArchive(material) != OK) show("Khong luu duoc");
-
-//   ShowMaterialListInArchive();
-//   SaveMaterialsFromArchiveToStorage();
-
-  LoadMaterialsFromStorageToArchive();
-  ShowMaterialListInArchive();
+  ShowInvoiceInArchive("123456789");
 
   DestroyArchive();
   getchar();

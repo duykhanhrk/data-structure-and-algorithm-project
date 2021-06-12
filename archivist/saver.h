@@ -7,8 +7,8 @@
 
 extern Archive archive;
 
-#define MATERIALS_FILE_PATH "materials.dat"
-#define STAFFS_FILE_PATH "../storage/staffs.dat"
+#define MATERIALS_FILE_PATH "storage/materials.dat"
+#define STAFFS_FILE_PATH "storage/staffs.dat"
 
 #ifdef __cplusplus
 extern "C" {

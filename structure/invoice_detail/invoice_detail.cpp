@@ -71,8 +71,7 @@ InvoiceDetailList NewInvoiceDetailList() {
 }
 
 void DestroyInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
-  while (invoice_detail_list->count) {
-    invoice_detail_list->count --;
+  while (invoice_detail_list->count --) {
     DestroyInvoiceDetail(invoice_detail_list->invoice_details[invoice_detail_list->count]);
   }
 
@@ -95,15 +94,12 @@ message_tp AddItemToInvoiceDetailList(
   if (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS)
     return MESSAGE_LIST_IS_FULL;
 
-  invoice_detail_list->invoice_details[invoice_detail_list->count] = NewInvoiceDetail(
-      invoice_detail->material_code,
-      invoice_detail->amount,
-      invoice_detail->price,
-      invoice_detail->vat
-  );
+  for (int interact = 0; interact < invoice_detail_list->count; interact ++)
+    if (strcmp(invoice_detail->material_code, invoice_detail_list->invoice_details[interact]->material_code) == 0)
+      return M_EXISTS;
 
+  invoice_detail_list->invoice_details[invoice_detail_list->count] = invoice_detail;
   invoice_detail_list->count ++;
-
   return OK;
 }
 
