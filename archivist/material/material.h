@@ -15,19 +15,17 @@ extern Archive archive;
 extern "C" {
 #endif
 
+/* Validation */
+message_tp MaterialValidation(Material, bool);
+
 /* Logic */
-message_tp IsMaterialValid(Material, bool);
+bool IsMaterialAvailable(const char * code, int amount);
 
 /* Standard */
+Material GetMaterialInArchive(const char * code);
 message_tp SaveMaterialToArchive(Material);
-message_tp UpdateMaterialInArchive(Material, Material);
-message_tp DeleteMaterialInArchive(Material);
-
-/* Extend */
-bool IsMaterialAvailableByCode(const char * code, int amount);
-Material GetMaterialInArchiveByCode(const char * code);
-message_tp UpdateMaterialInArchiveByCode(const char * code, Material material);
-message_tp DeleteMaterialInArchiveByCode(const char * code);
+message_tp UpdateMaterialInArchive(const char * code, Material material);
+message_tp DeleteMaterialInArchive(const char * code);
 
 /* Not safe */
 message_tp UpdateMaterialInArchiveNS(Material, Material);

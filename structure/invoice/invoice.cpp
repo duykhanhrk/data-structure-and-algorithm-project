@@ -8,20 +8,20 @@ Invoice NewInvoice(
     const char * number = INVOICE_NUMBER_DEFAULT_VALUE,
     time_t created_at = INVOICE_CREATED_AT_DEFAULT_VALUE,
     char type = INVOICE_TYPE_DEFAULT_VALUE,
-    InvoiceDetailList invoice_details = INVOICE_INVOICE_DETAILS_DEFAULT_VALUE
+    InvoiceDetailList invoice_detail_list = INVOICE_INVOICE_DETAILS_DEFAULT_VALUE
 ) {
   Invoice invoice = (Invoice) malloc(sizeof(InvoiceT));
 
   strcpy(invoice->number, number);
   invoice->created_at = created_at;
   invoice->type = type;
-  invoice->invoice_details = invoice_details;
+  invoice->invoice_detail_list = invoice_detail_list;
 
   return invoice;
 }
 
 void DestroyInvoice(Invoice &invoice) {
-  DestroyInvoiceDetailList(invoice->invoice_details);
+  DestroyInvoiceDetailList(invoice->invoice_detail_list);
   free(invoice);
   invoice = NULL;
 }
@@ -40,7 +40,7 @@ void TranferInvoice(Invoice invoice, Invoice _invoice) {
   strcpy(invoice->number, _invoice->number);
   invoice->created_at = _invoice->created_at;
   invoice->type = _invoice->type;
-  invoice->invoice_details = _invoice->invoice_details;
+  invoice->invoice_detail_list = _invoice->invoice_detail_list;
 
   RevokeInvoice(_invoice);
 }
@@ -49,7 +49,7 @@ void CopyInvoice(Invoice invoice, Invoice _invoice) {
   strcpy(invoice->number, _invoice->number);
   invoice->created_at = _invoice->created_at;
   invoice->type = _invoice->type;
-  invoice->invoice_details = _invoice->invoice_details;
+  invoice->invoice_detail_list = _invoice->invoice_detail_list;
 }
 
 Invoice DuplicateInvoice(Invoice invoice) {
@@ -57,7 +57,7 @@ Invoice DuplicateInvoice(Invoice invoice) {
     invoice->number,
     invoice->created_at,
     invoice->type,
-    invoice->invoice_details
+    invoice->invoice_detail_list
   );
 }
 
@@ -110,14 +110,6 @@ bool IsNumberInInvoiceList(InvoiceList invoice_list, const char * number) {
     interact = interact->next_node;
 
   return (interact != NULL);
-}
-
-bool IsInInvoiceList(InvoiceList invoice_list, Invoice invoice) {
-  InvoiceNode interact = invoice_list;
-  while (interact != NULL && interact->invoice == invoice)
-    interact = interact->next_node;
-
-  return (interact == NULL);
 }
 
 // count
@@ -249,7 +241,7 @@ message_tp DeleteLastItemInInvoiceList(InvoiceList &invoice_list) {
   return OK;
 }
 
-message_tp DeleteItemInInvoiceListByCode(InvoiceList &invoice_list, const char * number) {
+message_tp DeleteItemInInvoiceListByNumber(InvoiceList &invoice_list, const char * number) {
   if (invoice_list == NULL) return BAD;
 
   InvoiceNode interact = invoice_list;
@@ -259,7 +251,7 @@ message_tp DeleteItemInInvoiceListByCode(InvoiceList &invoice_list, const char *
     interact = interact->next_node;
   }
 
-  if (interact == NULL) return BAD;
+  if (interact == NULL) return BAD; // not found
 
   if (_interact == NULL) {
     invoice_list = interact->next_node;
@@ -276,27 +268,6 @@ message_tp DeleteItemInInvoiceListByIndex(InvoiceList &invoice_list, int index) 
   InvoiceNode interact = invoice_list;
   InvoiceNode _interact = NULL;
   while (interact != NULL && index --) {
-    _interact == interact;
-    interact = interact->next_node;
-  }
-
-  if (interact == NULL) return BAD;
-
-  if (_interact == NULL) {
-    invoice_list = interact->next_node;
-    DestroyInvoiceNode(_interact);
-  } else {
-    _interact = interact->next_node;
-    DestroyInvoiceNode(interact);
-  }
-
-  return OK;
-}
-
-message_tp DeleteItemInInvoiceList(InvoiceList &invoice_list, Invoice invoice) {
-  InvoiceNode interact = invoice_list;
-  InvoiceNode _interact = NULL;
-  while (interact != NULL && interact->invoice == invoice) {
     _interact == interact;
     interact = interact->next_node;
   }

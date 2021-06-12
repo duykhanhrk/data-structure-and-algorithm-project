@@ -1,4 +1,4 @@
-message_tp IsInvoiceDetailValid(InvoiceDetail invoice_detail, bool strict = true) {
+message_tp InvoiceDetailValidation(InvoiceDetail invoice_detail, bool strict = true) {
   if (IsNull(invoice_detail)) return M_NULL;
 
   if (!IsCodeInMaterialList(archive->material_list, invoice_detail->material_code))
@@ -8,7 +8,7 @@ message_tp IsInvoiceDetailValid(InvoiceDetail invoice_detail, bool strict = true
     return M_INVOICE_DETAIL_AMOUNT_INVALID;
 
   if (strict == true)
-  if (!IsMaterialAvailableByCode(invoice_detail->material_code, invoice_detail->amount))
+  if (!IsMaterialAvailable(invoice_detail->material_code, invoice_detail->amount))
     return M_INVOICE_DETAIL_AMOUNT_INVALID;
 
   if (IsNegative(invoice_detail->price))

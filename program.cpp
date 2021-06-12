@@ -46,40 +46,6 @@ void SeedStaff() {
 
 int main() {
   InitArchive();
-  SeedMaterial();
-  SeedStaff();
-
-  Staff staff = GetStaffInArchiveByCode("a");
-  Invoice invoice = NewInvoice("123456789", TimeNow(), IMPORT_INVOICE);
-  InvoiceDetail invoice_detail;
-  message_tp mess;
-
-  invoice_detail = NewInvoiceDetail("z", 10, 200, 0.5);
-  mess = AddItemToInvoiceDetailList(invoice->invoice_details, invoice_detail);
-  if (mess != OK) {
-    show("Khong luu duoc");
-    DestroyInvoiceDetail(invoice_detail);
-  }
-  invoice_detail = NewInvoiceDetail("z", 1, 200, 0.5);
-  mess = AddItemToInvoiceDetailList(invoice->invoice_details, invoice_detail);
-  if (mess != OK) {
-    show("Khong luu duoc");
-    DestroyInvoiceDetail(invoice_detail);
-  }
-  invoice_detail = NewInvoiceDetail("b", 1, 200, 0.5);
-  mess = AddItemToInvoiceDetailList(invoice->invoice_details, invoice_detail);
-  if (mess != OK) {
-    show("Khong luu duoc");
-    DestroyInvoiceDetail(invoice_detail);
-  }
-
-  mess = SaveInvoiceToArchive(staff, invoice);
-  if (mess != OK) {
-    show("Khong luu duoc");
-    DestroyInvoice(invoice);
-  }
-
-  ShowInvoiceInArchive("123456789");
 
   DestroyArchive();
   getchar();

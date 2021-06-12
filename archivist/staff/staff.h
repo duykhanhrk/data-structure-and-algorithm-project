@@ -15,18 +15,14 @@ extern Archive archive;
 extern "C" {
 #endif
 
-/* Logic */
-message_tp IsStaffValid(Staff, bool);
+/* validation */
+message_tp StaffValidation(Staff, bool);
 
 /* Standard */
+Staff GetStaffInArchive(const char * code);
 message_tp SaveStaffToArchive(Staff);
-message_tp UpdateStaffInArchive(Staff, Staff);
-message_tp DeleteStaffInArchive(Staff);
-
-/* Extend */
-Staff GetStaffInArchiveByCode(const char * code);
-message_tp UpdateStaffInArchiveByCode(const char * code, Staff staff);
-message_tp DeleteStaffInArchiveByCode(const char * code);
+message_tp UpdateStaffInArchive(const char * code, Staff staff);
+message_tp DeleteStaffInArchive(const char * code);
 
 /* Not safe */
 message_tp UpdateStaffInArchiveNS(Staff, Staff);

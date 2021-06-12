@@ -2,15 +2,15 @@
 
 /* rapid - mtp */
 
-#define mtp_material_validation_with_strict message_tp mess = IsMaterialValid(material); \
+#define mtp_material_validation_with_strict message_tp mess = MaterialValidation(material); \
                                             if (mess != OK) return mess
 
-#define mtp_material_validation_without_strict message_tp mess = IsMaterialValid(material, false); \
+#define mtp_material_validation_without_strict message_tp mess = MaterialValidation(material, false); \
                                                if (mess != OK) return mess
 
-/* logic */
+/* validation */
 
-message_tp IsMaterialValid(Material material, bool strict = true) {
+message_tp MaterialValidation(Material material, bool strict = true) {
   if (IsNull(material)) return M_NULL;
 
   if (strict == true)
@@ -29,39 +29,9 @@ message_tp IsMaterialValid(Material material, bool strict = true) {
   return OK;
 }
 
-/* Standard */
+/* logic */
 
-message_tp SaveMaterialToArchive(Material material) {
-  mtp_material_validation_with_strict;
-
-  return AddItemToMaterialList(archive->material_list, material);
-}
-
-message_tp UpdateMaterialInArchive(Material _material, Material material) {
-  // validation without strict
-  mtp_material_validation_without_strict;
-
-  // material must be in list
-  if (!IsInMaterialList(archive->material_list, _material)) return M_NOT_FOUND;
-
-  // material must be same code with _material
-  strcpy(material->code, _material->code);
-
-  // tranfer data
-  TranferMaterial(_material, material);
-
-  return OK;
-}
-
-message_tp DeleteMaterialInArchive(Material _material) {
-  if (_material == NULL) return M_NULL;
-
-  return DeleteItemInMaterialList(archive->material_list, _material);
-}
-
-/* Extend */
-
-bool IsMaterialAvailableByCode(const char * code, int amount) {
+bool IsMaterialAvailable(const char * code, int amount) {
   Material material = GetItemInMaterialListByCode(archive->material_list, code);
   if (IsNull(material)) return false;
   if (amount <= 0 || amount > material->quantity) return false;
@@ -69,11 +39,19 @@ bool IsMaterialAvailableByCode(const char * code, int amount) {
   return true;
 }
 
-Material GetMaterialInArchiveByCode(const char * code) {
+/* Standard */
+
+Material GetMaterialInArchive(const char * code) {
   return GetItemInMaterialListByCode(archive->material_list, code);
 }
 
-message_tp UpdateMaterialInArchiveByCode(const char * code, Material material) {
+message_tp SaveMaterialToArchive(Material material) {
+  mtp_material_validation_with_strict;
+
+  return AddItemToMaterialList(archive->material_list, material);
+}
+
+message_tp UpdateMaterialInArchive(const char * code, Material material) {
   // validation without strict
   mtp_material_validation_without_strict;
 
@@ -90,7 +68,7 @@ message_tp UpdateMaterialInArchiveByCode(const char * code, Material material) {
   return OK;
 }
 
-message_tp DeleteMaterialInArchiveByCode(const char * code) {
+message_tp DeleteMaterialInArchive(const char * code) {
   return DeleteItemInMaterialListByCode(archive->material_list, code);
 }
 

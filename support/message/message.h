@@ -31,7 +31,7 @@
 #define M_NOT_FOUND 231
 #define M_EXISTS 232
 #define M_LIST_IS_EMPTY 211
-#define M_LIST_FULL_FULL 212
+#define M_LIST_IS_FULL 212
 #define M_NULL 214
 #define M_INVALID 250
 #define M_CONFLICT 233
