@@ -29,11 +29,6 @@ void RevokeMaterial(Material &material) {
   material = NULL;
 }
 
-void ReplaceMaterial(Material &material, Material _material) {
-  RevokeMaterial(material);
-  material = _material;
-}
-
 void TranferMaterial(Material material, Material &_material) {
   strcpy(material->code, _material->code);
   strcpy(material->name, _material->name);
@@ -100,27 +95,21 @@ bool IsMaterialListEmpty(MaterialList material_list) {
 }
 
 bool IsCodeInMaterialList(MaterialList material_list, const char * code) {
-  if (material_list == NULL) return false;
+  while (material_list != NULL) {
+    if (strcmp(code, material_list->material->code) < 0) {
+      material_list = material_list->left_node;
+      continue;
+    }
 
-  if (strcmp(code, material_list->material->code) < 0)
-    return IsCodeInMaterialList(material_list->left_node, code);
+    if (strcmp(code, material_list->material->code) > 0){
+      material_list = material_list->right_node;
+      continue;
+    }
 
-  if (strcmp(code, material_list->material->code) > 0)
-    return IsCodeInMaterialList(material_list->right_node, code);
+    return true;
+  }
 
-  return true;
-}
-
-bool IsInMaterialList(MaterialList material_list, Material material) {
-  if (material_list == NULL) return false;
-
-  if (strcmp(material_list->material->code, material->code) > 0)
-    return IsInMaterialList(material_list->left_node, material);
-
-  if (strcmp(material_list->material->code, material->code) < 0)
-    return IsInMaterialList(material_list->right_node, material);
-
-  return true;
+  return false;
 }
 
 /* count */
@@ -147,69 +136,34 @@ message_tp AddItemToMaterialList(MaterialList &material_list, Material material)
     return AddItemToMaterialList(material_list->right_node, material);
 
   // Code is not available
-  return BAD;
+  return M_CONFLICT;
 }
 
-/* Update */
-
-message_tp UpdateItemInMaterialList(MaterialList material_list, Material material) {
-  if (material_list == NULL)
-    return MESSAGE_OBJECT_NOT_FOUND;
-
-  if (strcmp(material_list->material->code, material->code) > 0)
-    return UpdateItemInMaterialList(material_list->left_node, material);
-
-  if (strcmp(material_list->material->code, material->code) < 0)
-    return UpdateItemInMaterialList(material_list->right_node, material);
-
-  DestroyMaterial(material_list->material);
-  material_list->material = material;
-
-  return OK;
-}
+/* Get */
 
 Material GetItemInMaterialListByCode(MaterialList material_list, const char * code) {
-  if (material_list == NULL)
-    return NULL;
+  while (material_list != NULL) {
+    if (strcmp(code, material_list->material->code) < 0) {
+      material_list = material_list->left_node;
+      continue;
+    }
 
-  if (strcmp(material_list->material->code, code) > 0)
-    return GetItemInMaterialListByCode(material_list->left_node, code);
+    if (strcmp(code, material_list->material->code) > 0){
+      material_list = material_list->right_node;
+      continue;
+    }
 
-  if (strcmp(material_list->material->code, code) < 0)
-    return GetItemInMaterialListByCode(material_list->right_node, code);
-
-  return material_list->material;
-}
-
-message_tp DeleteItemInMaterialList(MaterialList &material_list, Material material) {
-  if (material_list == NULL)
-    return MESSAGE_OBJECT_NOT_FOUND;
-
-  if (strcmp(material_list->material->code, material->code) > 0)
-    return DeleteItemInMaterialListByCode(material_list->left_node, material->code);
-
-  if (strcmp(material_list->material->code, material->code) < 0)
-    return DeleteItemInMaterialListByCode(material_list->right_node, material->code);
-
-  MaterialList _material_list = material_list;
-  if (_material_list->right_node == NULL) material_list = _material_list->left_node;
-  else if (_material_list->left_node == NULL) material_list = _material_list->right_node;
-  else {
-    MaterialList __material_list = _material_list->right_node;
-    for (; __material_list->left_node != NULL; __material_list = material_list->left_node);
-    material_list->material = __material_list->material;
-    _material_list = __material_list;
-    __material_list = _material_list->right_node;
+    return material_list->material;
   }
 
-  DestroyMaterialNode(_material_list);
-
-  return OK;
+  return NULL;
 }
+
+/* Delete */
 
 message_tp DeleteItemInMaterialListByCode(MaterialList &material_list, const char * code) {
   if (material_list == NULL)
-    return MESSAGE_OBJECT_NOT_FOUND;
+    return M_NOT_FOUND;
 
   if (strcmp(material_list->material->code, code) > 0)
     return DeleteItemInMaterialListByCode(material_list->left_node, code);

@@ -35,7 +35,7 @@ typedef struct StaffT {
   char first_name[STAFF_LAST_NAME_MAX_LEN];
   char last_name[STAFF_FIRST_NAME_MAX_LEN];
   char sex;
-  InvoiceList invoices;
+  InvoiceList invoice_list;
 } StaffT, * Staff;
 
 typedef struct StaffListT {
@@ -49,7 +49,6 @@ Staff NewStaff(const char *, const char *, const char *, char, InvoiceList);
 void DestroyStaff(Staff &);
 void RevokeStaff(Staff &);
 
-void ReplaceStaff(Staff &, Staff);
 void TranferStaff(Staff, Staff &);
 void CopyStaff(Staff, Staff);
 Staff DuplicateStaff(Staff);
@@ -64,16 +63,12 @@ void DestroyStaffList(StaffList &);
 bool IsStaffListEmpty(StaffList);
 bool IsStaffListListFull(StaffList);
 bool IsCodeInStaffList(StaffList, const char *);
-bool IsInStaffList(StaffList, Staff);
 
 // Insert
 message_tp AddItemToStaffList(StaffList &, Staff);
 message_tp InsertItemToBeginningOfStaffList(StaffList &, Staff);
 message_tp InsertItemToEndOfStaffList(StaffList &, Staff);
 message_tp InsertItemToStaffListByIndex(StaffList &, Staff, int);
-
-// Update
-message_tp UpdateItemInStaffList(StaffList, Staff);
 
 // Get
 Staff GetFirstItemInStaffList(StaffList);
@@ -86,7 +81,6 @@ message_tp DeleteFirstItemInStaffList(StaffList &);
 message_tp DeleteLastItemInStaffList(StaffList &);
 message_tp DeleteItemInStaffListByIndex(StaffList &, int);
 message_tp DeleteItemInStaffListByCode(StaffList &, const char *);
-message_tp DeleteItemInStaffList(StaffList &, Staff);
 
 // Test
 void StaffListEach(StaffList, void (* perform) (Staff));

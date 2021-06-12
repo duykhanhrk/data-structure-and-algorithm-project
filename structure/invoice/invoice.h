@@ -1,7 +1,7 @@
 /* Invoice detail */
 
-#ifndef __INVOICE
-#define __INVOICE
+#ifndef __STRUCTURE_INVOICE__
+#define __STRUCTURE_INVOICE__
 
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +37,7 @@ typedef struct InvoiceT {
   char number[INVOICE_NUMBER_MAX_LEN];
   time_t created_at;
   char type;
-  InvoiceDetailList invoice_details;
+  InvoiceDetailList invoice_detail_list;
 } InvoiceT, * Invoice;
 
 typedef struct InvoiceNodeT {
@@ -52,7 +52,6 @@ Invoice NewInvoice(const char *, time_t, char, InvoiceDetailList);
 void DestroyInvoice(Invoice &);
 void RevokeInvoice(Invoice &);
 
-void ReplaceInvoice(Invoice &, Invoice);
 void TranferInvoice(Invoice, Invoice);
 void CopyInvoice(Invoice, Invoice);
 Invoice DuplicateInvoice(Invoice);
@@ -68,14 +67,17 @@ List
 ----------------------------------------------------------------------------- */
 InvoiceList NewInvoiceList();
 void DestroyInvoiceList(InvoiceList &);
+
 bool IsInvoiceListEmpty(InvoiceList);
 bool IsNumberInInvoiceList(InvoiceList, const char *);
-bool IsInInvoiceList(InvoiceList, Invoice);
+
 int InvoiceListCount(InvoiceList);
+
 message_tp AddItemToInvoiceList(InvoiceList &, Invoice);
 message_tp InsertItemToBeginningOfInvoiceList(InvoiceList &, Invoice);
 message_tp InsertItemToEndOfInvoiceList(InvoiceList &, Invoice);
 message_tp InsertItemToInvoiceListByIndex(InvoiceList &, Invoice, int);
+
 Invoice GetFirstItemInInvoiceList(InvoiceList);
 Invoice GetLastItemInInvoiceList(InvoiceList);
 Invoice GetItemInInvoiceListByNumber(InvoiceList, const char *);
@@ -84,11 +86,10 @@ Invoice GetItemInInvoiceListByIndex(InvoiceList, int);
 message_tp DeleteFirstItemInInvoiceList(InvoiceList &);
 message_tp DeleteLastItemInInvoiceList(InvoiceList &);
 message_tp DeleteItemInInvoiceListByCode(InvoiceList &, const char *);
-message_tp DeleteItemInInvoiceList(InvoiceList &, Invoice);
 message_tp DeleteItemInInvoiceListByIndex(InvoiceList &, int);
 
 /* -----------------------------------------------------------------------------
-List
+Debug
 ----------------------------------------------------------------------------- */
 void ShowInvoice(Invoice, const char *);
 void ShowInvoiceList(InvoiceList, const char *);

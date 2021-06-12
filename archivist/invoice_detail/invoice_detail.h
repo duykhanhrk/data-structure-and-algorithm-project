@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /* Logic */
-message_tp IsInvoiceDetailValid(InvoiceDetail, bool);
+message_tp InvoiceDetailValidation(InvoiceDetail, bool);
 
 #include "invoice_detail.cpp"
 

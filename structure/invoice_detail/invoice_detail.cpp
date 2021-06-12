@@ -29,11 +29,6 @@ void RevokeInvoiceDetail(InvoiceDetail &invoice_detail) {
   invoice_detail = NULL;
 }
 
-void ReplaceInvoiceDetail(InvoiceDetail &invoice_detail, InvoiceDetail _invoice_detail) {
-  RevokeInvoiceDetail(_invoice_detail);
-  invoice_detail = _invoice_detail;
-}
-
 void TranferInvoiceDetail(InvoiceDetail invoice_detail, InvoiceDetail _invoice_detail) {
   strcpy(invoice_detail->material_code, invoice_detail->material_code);
   invoice_detail->amount = _invoice_detail->amount;
@@ -87,19 +82,27 @@ bool IsInvoiceDetailListFull(InvoiceDetailList invoice_detail_list) {
   return (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS);
 }
 
+bool IsMaterialCodeInDetailList(InvoiceDetailList invoice_detail_list, const char * material_code) {
+  for (int interact = 0; interact < invoice_detail_list->count; interact ++)
+    if (strcmp(material_code, invoice_detail_list->invoice_details[interact]->material_code) == 0)
+      return true;
+
+  return false;
+}
+
 message_tp AddItemToInvoiceDetailList(
     InvoiceDetailList &invoice_detail_list,
     InvoiceDetail invoice_detail
 ) {
   if (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS)
-    return MESSAGE_LIST_IS_FULL;
+    return M_LIST_IS_FULL;
 
-  for (int interact = 0; interact < invoice_detail_list->count; interact ++)
-    if (strcmp(invoice_detail->material_code, invoice_detail_list->invoice_details[interact]->material_code) == 0)
-      return M_EXISTS;
+  if (IsMaterialCodeInDetailList(invoice_detail_list, invoice_detail->material_code))
+    return M_CONFLICT;
 
   invoice_detail_list->invoice_details[invoice_detail_list->count] = invoice_detail;
   invoice_detail_list->count ++;
+
   return OK;
 }
 
@@ -108,7 +111,10 @@ message_tp InsertItemToBeginningOfInvoiceDetailList(
     InvoiceDetail invoice_detail
 ) {
   if (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS)
-    return MESSAGE_LIST_IS_FULL;
+    return M_LIST_IS_FULL;
+
+  if (IsMaterialCodeInDetailList(invoice_detail_list, invoice_detail->material_code))
+    return M_CONFLICT;
 
   for (int interact = invoice_detail_list->count; interact > 0; interact --)
     invoice_detail_list->invoice_details[interact] = invoice_detail_list->invoice_details[interact - 1];
@@ -132,6 +138,9 @@ message_tp InsertItemToEndOfInvoiceDetailList(
   if (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS)
     return MESSAGE_LIST_IS_FULL;
 
+  if (IsMaterialCodeInDetailList(invoice_detail_list, invoice_detail->material_code))
+    return M_CONFLICT;
+
   invoice_detail_list->invoice_details[invoice_detail_list->count] = NewInvoiceDetail(
       invoice_detail->material_code,
       invoice_detail->amount,
@@ -151,6 +160,9 @@ message_tp InsertItemToInvoiceDetailListByIndex(
 ) {
   if (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS)
     return MESSAGE_LIST_IS_FULL;
+
+  if (IsMaterialCodeInDetailList(invoice_detail_list, invoice_detail->material_code))
+    return M_CONFLICT;
 
   for (int interact = invoice_detail_list->count; interact > index; interact --)
     invoice_detail_list->invoice_details[interact] = invoice_detail_list->invoice_details[interact - 1];
@@ -189,7 +201,7 @@ InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList invoice_detail_lis
 
 // Delete
 
-message_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
+message_tp DeleteFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
   if (invoice_detail_list->count == 0) return MESSAGE_OBJECT_NOT_FOUND;
 
   DestroyInvoiceDetail(invoice_detail_list->invoice_details[0]);
@@ -202,7 +214,7 @@ message_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_
   return OK;
 }
 
-message_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
+message_tp DeleteLastItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {
   if (invoice_detail_list->count == 0) return MESSAGE_OBJECT_NOT_FOUND;
 
   DestroyInvoiceDetail(invoice_detail_list->invoice_details[invoice_detail_list->count - 1]);
@@ -210,9 +222,9 @@ message_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_l
   return OK;
 }
 
-message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detail_list, int index) {
+message_tp DeleteItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detail_list, int index) {
   if (invoice_detail_list->count == 0 || index < 0 || index > invoice_detail_list->count - 1)
-    return MESSAGE_OBJECT_NOT_FOUND;
+    return M_NOT_FOUND;
 
   DestroyInvoiceDetail(invoice_detail_list->invoice_details[index]);
 
@@ -222,14 +234,6 @@ message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detai
   invoice_detail_list->count --;
 
   return OK;
-}
-
-message_tp RemoveItemInInvoiceDetailList(InvoiceDetailList & invoice_detail_list, InvoiceDetail invoice_detail) {
-  for (int interact = 0; interact < invoice_detail_list->count; interact ++)
-    if (invoice_detail_list->invoice_details[interact] == invoice_detail)
-      return RemoveItemInInvoiceDetailListByIndex(invoice_detail_list, interact);
-
-  return MESSAGE_OBJECT_NOT_FOUND;
 }
 
 /* -----------------------------------------------------------------------------

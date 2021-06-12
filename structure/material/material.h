@@ -1,7 +1,7 @@
 /* Material */
 
-#ifndef __MATERIAL
-#define __MATERIAL
+#ifndef __STRUCTURE_MATERIAL__
+#define __STRUCTURE_MATERIAL__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,7 +49,6 @@ Material NewMaterial(const char *, const char *, const char *, int);
 void DestroyMaterial(Material &);
 void RevokeMaterial(Material &material);
 
-void ReplaceMaterial(Material &, Material);
 void TranferMaterial(Material, Material &);
 void CopyMaterial(Material, Material);
 Material DuplicateMaterial(Material);
@@ -68,15 +67,9 @@ void DestroyMaterialList(MaterialList &);
 
 bool IsMaterialListEmpty(MaterialList);
 bool IsCodeInMaterialList(MaterialList, const char * code);
-bool IsInMaterialList(MaterialList, Material);
-
 int MaterialListCount(MaterialList);
-
 message_tp AddItemToMaterialList(MaterialList &, Material);
-
 Material GetItemInMaterialListByCode(MaterialList, const char *);
-
-message_tp DeleteItemInMaterialList(MaterialList &, Material);
 message_tp DeleteItemInMaterialListByCode(MaterialList &, const char *);
 
 /* -----------------------------------------------------------------------------

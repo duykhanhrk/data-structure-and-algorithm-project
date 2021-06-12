@@ -1,7 +1,7 @@
 /* Invoice detail */
 
-#ifndef __INVOICE_DETAIL
-#define __INVOICE_DETAIL
+#ifndef __STRUCTURE_INVOICE_DETAIL__
+#define __STRUCTURE_INVOICE_DETAIL__
 
 #include <stdlib.h>
 #include <string.h>
@@ -47,7 +47,7 @@ Object
 InvoiceDetail NewInvoiceDetail(const char *, int, float, float);
 void DestroyInvoiceDetail(InvoiceDetail &);
 void RevokeInvoiceDetail(InvoiceDetail &);
-void ReplaceInvoiceDetail(InvoiceDetail &, InvoiceDetail);
+
 void TranferInvoiceDetail(InvoiceDetail, InvoiceDetail);
 void CopyInvoiceDetail(InvoiceDetail, InvoiceDetail);
 InvoiceDetail DuplicateInvoiceDetail(InvoiceDetail);
@@ -57,19 +57,23 @@ List
 ----------------------------------------------------------------------------- */
 InvoiceDetailList NewInvoiceDetailList();
 void DestroyInvoiceDetailList(InvoiceDetailList &);
+
 bool IsInvoiceDetailListEmpty(InvoiceDetailList);
 bool IsInvoiceDetailListFull(InvoiceDetailList);
+bool IsMaterialCodeInDetailList(InvoiceDetailList, const char *);
+
 message_tp AddItemToInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 message_tp InsertItemToBeginningOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 message_tp InsertItemToEndOfInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
 message_tp InsertItemToInvoiceDetailListByIndex(InvoiceDetailList &, InvoiceDetail, int);
+
 InvoiceDetail GetFirstItemInInvoiceDetailList(InvoiceDetailList);
 InvoiceDetail GetLastItemInInvoiceDetailList(InvoiceDetailList);
 InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList, int);
-message_tp RemoveFirstItemInInvoiceDetailList(InvoiceDetailList &);
-message_tp RemoveLastItemInInvoiceDetailList(InvoiceDetailList &);
-message_tp RemoveItemInInvoiceDetailList(InvoiceDetailList &, InvoiceDetail);
-message_tp RemoveItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
+
+message_tp DeleteFirstItemInInvoiceDetailList(InvoiceDetailList &);
+message_tp DeleteLastItemInInvoiceDetailList(InvoiceDetailList &);
+message_tp DeleteItemInInvoiceDetailListByIndex(InvoiceDetailList &, int);
 
 /* -----------------------------------------------------------------------------
 Test

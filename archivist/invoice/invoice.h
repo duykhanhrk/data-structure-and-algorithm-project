@@ -16,30 +16,24 @@ extern Archive archive;
 extern "C" {
 #endif
 
-/* Logic */
-message_tp IsInvoiceValid(Invoice, bool);
+/* Validation */
+message_tp InvoiceValid(Invoice, bool);
 
 /* Standard */
-message_tp SaveInvoiceToArchive(Staff, Invoice);
-message_tp UpdateInvoiceInArchive(Staff, Invoice, Invoice);
-message_tp DeleteInvoiceInArchive(Staff, Invoice);
-
-/* Extend */
-Invoice GetInvoiceInArchiveByCode(Staff, const char * code);
-message_tp UpdateInvoiceInArchiveByCode(Staff, const char * code, Invoice);
-message_tp DeleteInvoiceInArchiveByCode(Staff, const char * code);
+Invoice GetInvoiceInArchiveByCode(const char *, const char *);
+message_tp SaveInvoiceToArchive(const char *, Invoice);
+message_tp UpdateInvoiceInArchive(const char *, const char *, Invoice);
+message_tp DeleteInvoiceInArchive(const char *, const char *);
+Invoice GetInvoiceInArchiveByNumber(const char *);
+message_tp DeleteInvoiceInArchiveByNumber(const char *);
 
 /* Not safe */
 message_tp UpdateInvoiceInArchiveNS(Invoice, Invoice);
-
-/* Lazy */
-Invoice GetInvoiceInArchiveByNumberLZ(const char *);
 
 /* Debug */
 void ShowInvoiceInArchive(const char *);
 void ShowInvoiceListInArchiveByStaff(Staff);
 void ShowInvoiceListInArchive();
-
 
 #include "invoice.cpp"
 

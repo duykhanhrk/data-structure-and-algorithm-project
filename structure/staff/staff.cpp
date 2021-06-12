@@ -7,20 +7,20 @@ Staff NewStaff(
   const char * first_name = STAFF_FIRST_NAME_DEFUALT_VALUE,
   const char * last_name = STAFF_LAST_NAME_DEFAULT_VALUE,
   char sex = STAFF_SEX_DEFAULT_VALUE,
-  InvoiceList invoices = STAFF_INVOICES_DEFAULT_VALUE
+  InvoiceList invoice_list = STAFF_INVOICES_DEFAULT_VALUE
 ) {
   Staff staff = (Staff) malloc(sizeof(struct StaffT));
   strcpy(staff->code, code);
   strcpy(staff->first_name, first_name);
   strcpy(staff->last_name, last_name);
   staff->sex = sex;
-  staff->invoices = invoices;
+  staff->invoice_list = invoice_list;
 
   return staff;
 }
 
 void DestroyStaff(Staff &staff) {
-  DestroyInvoiceList(staff->invoices);
+  DestroyInvoiceList(staff->invoice_list);
   free(staff);
   staff = NULL;
 }
@@ -30,17 +30,12 @@ void RevokeStaff(Staff &staff) {
   staff = NULL;
 }
 
-void ReplaceStaff(Staff &staff, Staff _staff) {
-  RevokeStaff(staff);
-  staff = _staff;
-}
-
 void TranferStaff(Staff staff, Staff &_staff) {
   strcpy(staff->code, _staff->code);
   strcpy(staff->first_name, _staff->first_name);
   strcpy(staff->last_name, _staff->last_name);
   staff->sex = _staff->sex;
-  staff->invoices = _staff->invoices;
+  staff->invoice_list = _staff->invoice_list;
 
   RevokeStaff(_staff);
 }
@@ -50,7 +45,7 @@ void CopyStaff(Staff staff, Staff _staff) {
   strcpy(staff->first_name, _staff->first_name);
   strcpy(staff->last_name, _staff->last_name);
   staff->sex = _staff->sex;
-  staff->invoices = _staff->invoices;
+  staff->invoice_list = _staff->invoice_list;
 }
 
 Staff DuplicateStaff(Staff staff) {
@@ -59,7 +54,7 @@ Staff DuplicateStaff(Staff staff) {
     staff->first_name,
     staff->last_name,
     staff->sex,
-    staff->invoices
+    staff->invoice_list
   );
 }
 
@@ -94,31 +89,23 @@ bool IsCodeInStaffList(StaffList staff_list, const char * code) {
   return false;
 }
 
-bool IsInStaffList(StaffList staff_list, Staff staff) {
-  for (int interact = 0; interact < staff_list->count; interact ++)
-    if (staff_list->staffs[interact] == staff) return true;
-
-  return false;
-}
-
 // Insert
 message_tp AddItemToStaffList(StaffList &staff_list, Staff staff) {
   if (staff_list->count == STAFF_LIST_MAX_ITEMS)
-    return MESSAGE_LIST_IS_FULL;
+    return M_LIST_IS_FULL;
 
   if (IsCodeInStaffList(staff_list, staff->code))
-    return MESSAGE_CODE_IS_NOT_AVAILABLE;
+    return M_CONFLICT;
 
   staff_list->staffs[staff_list->count] = staff;
-
   staff_list->count ++;
 
-  return MESSAGE_OK;
+  return OK;
 }
 
 message_tp InsertItemToBeginningOfStaffList(StaffList &staff_list, Staff staff) {
   if (staff_list->count == STAFF_LIST_MAX_ITEMS)
-    return MESSAGE_LIST_IS_FULL;
+    return M_LIST_IS_FULL;
 
   for (int interact = staff_list->count; interact > 0; interact --)
     staff_list->staffs[interact] = staff_list->staffs[interact - 1];
@@ -127,23 +114,23 @@ message_tp InsertItemToBeginningOfStaffList(StaffList &staff_list, Staff staff) 
 
   staff_list->count ++;
 
-  return MESSAGE_OK;
+  return OK;
 }
 
 message_tp InsertItemToEndOfStaffList(StaffList &staff_list, Staff staff) {
   if (staff_list->count == STAFF_LIST_MAX_ITEMS)
-    return MESSAGE_LIST_IS_FULL;
+    return M_LIST_IS_FULL;
 
   staff_list->staffs[staff_list->count];
 
   staff_list->count ++;
 
-  return MESSAGE_OK;
+  return OK;
 }
 
 message_tp InsertItemToStaffListByIndex(StaffList &staff_list, Staff staff, int index) {
   if (staff_list->count == STAFF_LIST_MAX_ITEMS)
-    return MESSAGE_LIST_IS_FULL;
+    return M_LIST_IS_FULL;
 
   for (int interact = staff_list->count; interact > index; interact --)
     staff_list->staffs[interact] = staff_list->staffs[interact - 1];
@@ -152,22 +139,7 @@ message_tp InsertItemToStaffListByIndex(StaffList &staff_list, Staff staff, int 
 
   staff_list->count ++;
 
-  return MESSAGE_OK;
-}
-
-// Update
-
-message_tp UpdateItemInStaffList(StaffList staff_list, Staff staff) {
-  for (int interact = 0; interact < staff_list->count; interact ++)
-    if (strcmp(staff_list->staffs[interact]->code, staff->code) == 0) {
-      staff->invoices = staff_list->staffs[interact]->invoices;
-      staff_list->staffs[interact]->invoices = NewInvoiceList();
-      DestroyStaff(staff_list->staffs[interact]);
-      staff_list->staffs[interact] = staff;
-      return OK;
-    }
-
-  return BAD;
+  return OK;
 }
 
 // Get
@@ -201,7 +173,7 @@ Staff GetItemInStaffListByCode(StaffList staff_list, const char * code) {
 // Delete
 
 message_tp DeleteFirstItemInStaffList(StaffList &staff_list) {
-  if (staff_list->count == 0) return MESSAGE_OBJECT_NOT_FOUND;
+  if (staff_list->count == 0) return M_NOT_FOUND;
 
   DestroyStaff(staff_list->staffs[0]);
 
@@ -210,20 +182,20 @@ message_tp DeleteFirstItemInStaffList(StaffList &staff_list) {
 
   staff_list->count --;
 
-  return MESSAGE_OK;
+  return OK;
 }
 
 message_tp DeleteLastItemInStaffList(StaffList &staff_list) {
-  if (staff_list->count == 0) return MESSAGE_OBJECT_NOT_FOUND;
+  if (staff_list->count == 0) return M_NOT_FOUND;
 
   DestroyStaff(staff_list->staffs[staff_list->count - 1]);
 
-  return MESSAGE_OK;
+  return OK;
 }
 
 message_tp DeleteItemInStaffListByIndex(StaffList &staff_list, int index) {
   if (staff_list->count == 0 || index < 0 || index > staff_list->count - 1)
-    return MESSAGE_OBJECT_NOT_FOUND;
+    return M_NOT_FOUND;
 
   DestroyStaff(staff_list->staffs[index]);
 
@@ -232,7 +204,7 @@ message_tp DeleteItemInStaffListByIndex(StaffList &staff_list, int index) {
 
   staff_list->count --;
 
-  return MESSAGE_OK;
+  return OK;
 }
 
 message_tp DeleteItemInStaffListByCode(StaffList &staff_list, const char * code) {
@@ -240,15 +212,7 @@ message_tp DeleteItemInStaffListByCode(StaffList &staff_list, const char * code)
     if (strcmp(staff_list->staffs[interact]->code, code) == 0)
       return DeleteItemInStaffListByIndex(staff_list, interact);
 
-  return MESSAGE_OBJECT_NOT_FOUND;
-}
-
-message_tp DeleteItemInStaffList(StaffList &staff_list, Staff staff) {
-  for (int interact = 0; interact < staff_list->count; interact ++)
-    if (staff_list->staffs[interact] == staff)
-      return DeleteItemInStaffListByIndex(staff_list, interact);
-
-  return MESSAGE_OBJECT_NOT_FOUND;
+  return M_NOT_FOUND;
 }
 
 /* Test */
