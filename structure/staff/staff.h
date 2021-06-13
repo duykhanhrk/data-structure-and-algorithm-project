@@ -32,8 +32,8 @@ extern "C" {
 
 typedef struct StaffT {
   char code[STAFF_CODE_MAX_LEN];
-  char first_name[STAFF_LAST_NAME_MAX_LEN];
-  char last_name[STAFF_FIRST_NAME_MAX_LEN];
+  char first_name[STAFF_FIRST_NAME_MAX_LEN];
+  char last_name[STAFF_LAST_NAME_MAX_LEN];
   char sex;
   InvoiceList invoice_list;
 } StaffT, * Staff;
