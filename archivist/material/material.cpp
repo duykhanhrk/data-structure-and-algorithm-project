@@ -14,7 +14,7 @@ message_tp MaterialValidation(Material material, bool strict = true) {
   if (IsNull(material)) return M_NULL;
 
   if (strict == true)
-  if (IsNull(material->code) || IsBlankString(material->code) || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
+  if (IsNull(material->code) || !IsUNString(material->code) || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
     return M_MATERIAL_CODE_INVALID;
 
   if (IsNull(material->name) || IsBlankString(material->name) || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
@@ -48,7 +48,11 @@ Material GetMaterialInArchive(const char * code) {
 message_tp SaveMaterialToArchive(Material material) {
   mtp_material_validation_with_strict;
 
-  return AddItemToMaterialList(archive->material_list, material);
+  message_tp message = AddItemToMaterialList(archive->material_list, material);
+  if (message != OK) return message;
+
+  SaveMaterialListFromArchiveToStorage();
+  return OK;
 }
 
 message_tp UpdateMaterialInArchive(const char * code, Material material) {
@@ -65,11 +69,17 @@ message_tp UpdateMaterialInArchive(const char * code, Material material) {
   // tranfer data
   TranferMaterial(_material, material);
 
+  // Save to storage
+  SaveMaterialListFromArchiveToStorage();
   return OK;
 }
 
 message_tp DeleteMaterialInArchive(const char * code) {
-  return DeleteItemInMaterialListByCode(archive->material_list, code);
+  message_tp message = DeleteItemInMaterialListByCode(archive->material_list, code);
+  if (message != OK) return message;
+
+  SaveMaterialListFromArchiveToStorage();
+  return OK;
 }
 
 /* Not safe */
