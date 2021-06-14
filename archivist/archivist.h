@@ -28,8 +28,8 @@ message_tp SaveStaffListFromArchiveToStorage();
 message_tp LoadStaffListFromStorageToArchive();
 
 #include "material/material.h"
-#include "staff/staff.h"
 #include "invoice/invoice.h"
+#include "staff/staff.h"
 
 #include "archivist.cpp"
 #ifdef __cplusplus

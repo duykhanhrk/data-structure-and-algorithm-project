@@ -235,7 +235,7 @@ message_tp LoadMaterialListFromStorageToArchive() {
   Material material;
   while (material_count --) {
     material = ReadMaterialFromFile(file);
-    SaveMaterialToArchive(material);
+    AddItemToMaterialList(archive->material_list, material);
   }
 
   // Close file
@@ -263,9 +263,10 @@ message_tp LoadStaffListFromStorageToArchive() {
 
   // Read staff list
   Staff staff;
+  InvoiceNode invoice_node;
   while (staff_list_count --) {
     staff = ReadStaffFromFile(file);
-    SaveStaffToArchive(staff);
+    AddItemToStaffList(archive->staff_list, staff);
   }
 
   // Close file

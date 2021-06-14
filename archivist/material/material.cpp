@@ -17,7 +17,7 @@ message_tp MaterialValidation(Material material, bool strict = true) {
   if (IsNull(material->code) || !IsUNString(material->code) || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
     return M_MATERIAL_CODE_INVALID;
 
-  if (IsNull(material->name) || IsBlankString(material->name) || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
+  if (IsNull(material->name) || !IsASString(material->name) || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
     return M_MATERIAL_NAME_INVALID;
 
   if (IsNull(material->unit) || IsBlankString(material->unit) || strlen(material->unit) > MATERIAL_UNIT_MAX_LEN)
@@ -35,11 +35,18 @@ bool IsMaterialAvailable(const char * code, int amount) {
   Material material = GetItemInMaterialListByCode(archive->material_list, code);
   if (IsNull(material)) return false;
   if (amount <= 0 || amount > material->quantity) return false;
-
   return true;
 }
 
 /* Standard */
+
+message_tp UpdateMaterialQuantityInArchive(const char * code, int quantity) {
+  Material material = GetItemInMaterialListByCode(archive->material_list, code);
+  if (material == NULL) return M_NOT_FOUND;
+  if (material->quantity + quantity < 0) return M_MATERIAL_QUANTITY_INVALID;
+  material->quantity += quantity;
+  return OK;
+}
 
 Material GetMaterialInArchive(const char * code) {
   return GetItemInMaterialListByCode(archive->material_list, code);
