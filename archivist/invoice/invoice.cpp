@@ -11,25 +11,24 @@
 /* Logic */
 
 bool IsInvoiceNumberValid(Invoice invoice) {
-  if (IsNull(invoice->number) || IsBlankString(invoice->number) || strlen(invoice->number) > INVOICE_NUMBER_MAX_LEN)
+  if (IsNull(invoice->number) || !IsNumericString(invoice->number) || strlen(invoice->number) > INVOICE_NUMBER_MAX_LEN)
     return false;
-
   for (int interact = 0; interact < archive->staff_list->count; interact ++) {
     if (IsNumberInInvoiceList(archive->staff_list->staffs[interact]->invoice_list, invoice->number))
       return false;
   }
 
-  return OK;
+  return true;
 }
 
 /* Validation */
 
-message_tp InvoiceDetailListValidation(InvoiceDetailList invoice_detail_list) {
+message_tp InvoiceDetailListValidation(InvoiceDetailList invoice_detail_list, bool strict = true, char invoice_type = IMPORT_INVOICE) {
   if (IsNull(invoice_detail_list) || IsZero(invoice_detail_list->count))
     return M_INVOICE_INVOICE_DETAILS_INVALID;
 
   for (int interact = 0; interact < invoice_detail_list->count; interact ++) {
-    message_tp mess = InvoiceDetailValidation(invoice_detail_list->invoice_details[interact]);
+    message_tp mess = InvoiceDetailValidation(invoice_detail_list->invoice_details[interact], strict, invoice_type);
     if (mess != OK) return mess;
   }
 
@@ -40,7 +39,7 @@ message_tp InvoiceValidation(Invoice invoice, bool strict = true) {
   if (IsNull(invoice)) return M_NULL;
 
   if (strict == true)
-  if (IsInvoiceNumberValid(invoice) != OK)
+  if (!IsInvoiceNumberValid(invoice))
     return M_INVOICE_NUMBER_INVALID;
 
   if (invoice->created_at > TimeNow())
@@ -50,7 +49,7 @@ message_tp InvoiceValidation(Invoice invoice, bool strict = true) {
     return M_INVOICE_TYPE_INVALID;
 
   if (strict == true) {
-    message_tp mess = InvoiceDetailListValidation(invoice->invoice_detail_list);
+    message_tp mess = InvoiceDetailListValidation(invoice->invoice_detail_list, true, invoice->type);
     if (mess != OK) return mess;
   }
 
@@ -73,7 +72,34 @@ message_tp SaveInvoiceToArchive(const char * staff_code, Invoice invoice) {
   Staff staff = GetItemInStaffListByCode(archive->staff_list, staff_code);
   if (IsNull(staff)) return M_STAFF_NOT_FOUND;
 
-  return AddItemToInvoiceList(staff->invoice_list, invoice);
+  // Add invoice to list
+  message_tp message = AddItemToInvoiceList(staff->invoice_list, invoice);
+  if (message != OK) return message;
+
+  // Update material list
+  if (invoice->type == IMPORT_INVOICE) {
+    for (int interact = 0; interact < invoice->invoice_detail_list->count; interact ++) {
+      message = UpdateMaterialQuantityInArchive(
+        invoice->invoice_detail_list->invoice_details[interact]->material_code,
+        invoice->invoice_detail_list->invoice_details[interact]->amount
+      );
+      if (message != OK) return message;
+    }
+  } else if (invoice->type == EXPORT_INVOICE) {
+    for (int interact = 0; interact < invoice->invoice_detail_list->count; interact ++) {
+      message = UpdateMaterialQuantityInArchive(
+        invoice->invoice_detail_list->invoice_details[interact]->material_code,
+        - invoice->invoice_detail_list->invoice_details[interact]->amount
+      );
+      if (message != OK) return message;
+    }
+  }
+  else return M_PROGRAM_ERROR;
+
+  SaveMaterialListFromArchiveToStorage();
+  SaveStaffListFromArchiveToStorage();
+
+  return OK;
 }
 
 message_tp UpdateInvoiceInArchive(const char * staff_code, const char * number, Invoice invoice) {
@@ -96,6 +122,8 @@ message_tp UpdateInvoiceInArchive(const char * staff_code, const char * number, 
   // tranfer data
   TranferInvoice(_invoice, invoice);
 
+  SaveStaffListFromArchiveToStorage();
+
   return OK;
 }
 
@@ -104,7 +132,12 @@ message_tp DeleteInvoiceInArchive(const char * staff_code, const char * number) 
   Staff staff = GetItemInStaffListByCode(archive->staff_list, staff_code);
   if (IsNull(staff)) return M_STAFF_NOT_FOUND;
 
-  return DeleteItemInInvoiceListByNumber(staff->invoice_list, number);
+  message_tp message = DeleteItemInInvoiceListByNumber(staff->invoice_list, number);
+  if (message != OK) return message;
+
+  SaveStaffListFromArchiveToStorage();
+
+  return OK;
 }
 
 Invoice GetInvoiceInArchiveByNumber(const char * number) {

@@ -11,7 +11,7 @@
 1:                | 1: Empty | Full | Out | NULL     | 1:
 2: Void           | 2: No save                       | 2:
 3: File           | 3: Not found | exists | comflict | 3:
-4:                | 4:                               | 4:
+4: Program        | 4: Program error                 | 4:
 5: Material       | 5: Validates                     | 5:
 6: Staff          | 6:                               | 6:
 7: Invoice        | 7: Couldn't open | Not support   | 7:
@@ -35,6 +35,9 @@
 #define M_NULL 214
 #define M_INVALID 250
 #define M_CONFLICT 233
+
+// Program
+#define M_PROGRAM_ERROR 441
 
 // File
 #define M_COULD_NOT_OPEN_FILE 371

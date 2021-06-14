@@ -47,6 +47,22 @@ bool IsUNString(str_tp str) {
   return true;
 }
 
+bool IsNumericString(str_tp str) {
+  for (char * c = str; *c != '\0'; c ++)
+    if (!IsNumericCharacter(*c))
+      return false;
+
+  return true;
+}
+
+bool IsASString(str_tp str) {
+  for (char * c = str; *c != '\0'; c ++)
+    if (!IsAlphabeticCharacter(*c) && *c != ' ') {
+      return false;
+    }
+  return true;
+}
+
 #ifdef __cplusplus
 }
 #endif
