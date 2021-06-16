@@ -1,4 +1,4 @@
-/* Material */
+/* Utilities */
 
 #ifndef __SUPPORT_UTILITY__
 #define __SUPPORT_UTILITY__
@@ -7,6 +7,20 @@
 
 // Type
 #define str_tp char *
+#define position_tp int
+#define color_tp int
+#define size_tp int
+#define status_tp int
+#define keycode_tp int
+#define index_tp int
+#define visible_tp bool
+#define void_tp void *
+#define uh_tp unsigned short int
+#define ui_tp unsigned int
+#define ul_tp unsigned long long int
+#define h_tp short int
+#define i_tp int
+#define l_tp long long int
 
 // Pointer
 #define IsNull(x) x == NULL
@@ -25,6 +39,24 @@
 #define IsUpcaseCharacter(chr) ('A' <= chr && chr <= 'Z')
 #define IsDowncaseCharacter(chr) ('a' <= chr && chr <= 'z')
 #define IsNumericCharacter(chr) ('0' <= chr && chr <= '9')
+
+// Common
+#define IsNumericChar(c) (c >= 48 && c <= 57)
+#define IsLowercaseChar(c) (c >= 97 && c<= 122)
+#define IsUppercaseChar(c) (c >= 65 && c <= 90)
+#define IsAlphabeticChar(c) (IsLowercaseChar(c) || IsUppercaseChar(c))
+#define IsSpace(c) (c == 32)
+#define IsUnderscore(c) (c == 95)
+#define CharToInt(c) (c - 48)
+#define VoidTypeToUShort(obj) (*((uh_tp *) obj))
+#define VoidTypeToUInt(obj) (*((ui_tp *) obj))
+#define VoidTypeToULong(obj) (*((ul_tp *) obj))
+#define VoidTypeToShort(obj) (*((h_tp *) obj))
+#define VoidTypeToInt(obj) (*((i_tp *) obj))
+#define VoidTypeToLong(obj) (*((l_tp *) obj))
+#define VoidTypeToDateTime(obj) (*((time_t *) obj))
+#define NumViolatesMaxValue(num, c, max) ((max - num < max - max/10) || (max - num == max - max/10 && CharToInt(c) > max%10))
+#define NumViolatesMinValue(num, c, min) ((min - obj > min - min/10) || (min - obj == min - min/10 && 48 - c < min%10))
 
 #ifdef __cplusplus
 extern "C" {

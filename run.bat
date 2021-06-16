@@ -29,7 +29,7 @@ REM Clear screen.
 CLS
 
 REM Run executable file.
-%EXDIR%%PROGRAM_FILE_NAME%.exe
+start %EXDIR%%PROGRAM_FILE_NAME%.exe
 
 REM Remove executable file.
 DEL %EXDIR%%PROGRAM_FILE_NAME%.exe
