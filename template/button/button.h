@@ -22,11 +22,11 @@ extern "C" {
 
 typedef struct ButtonT {
   char * text;
-  position_tp position_x;
-  position_tp position_y;
   size_tp width;
   size_tp height;
   size_tp size;
+  position_tp position_x;
+  position_tp position_y;
   color_tp foreground;
   color_tp background;
   color_tp active_foreground;
@@ -34,7 +34,7 @@ typedef struct ButtonT {
   bool (* console)(char);
 } ButtonT, * Button;
 
-Button NewButton(const char *, position_tp, position_tp, size_tp, size_tp, size_tp, color_tp, color_tp, color_tp, color_tp, bool (*)(char));
+Button NewButton(const char *, size_tp, size_tp, size_tp, position_tp, position_tp, color_tp, color_tp, color_tp, color_tp, bool (*)(char));
 void DestroyButton(Button &);
 
 void RenderButton(Button, status_tp);

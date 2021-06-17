@@ -70,6 +70,7 @@ bool IsCodeInMaterialList(MaterialList, const char * code);
 int MaterialListCount(MaterialList);
 message_tp AddItemToMaterialList(MaterialList &, Material);
 Material GetItemInMaterialListByCode(MaterialList, const char *);
+void TakeItemsInMaterialList(MaterialList, LinearList, int &, int &);
 message_tp DeleteItemInMaterialListByCode(MaterialList &, const char *);
 
 /* -----------------------------------------------------------------------------

@@ -102,6 +102,8 @@ keycode_tp ActiveListView(ListView list_view) {
         list_view->active_item(list_view->item_context);
       }
     } while (!list_view->console(c));
+
+    list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
     return c;
   }
 

@@ -23,6 +23,7 @@ bool IsMaterialAvailable(const char * code, int amount);
 
 /* Standard */
 Material GetMaterialInArchive(const char * code);
+void TakeMaterialsInArchive(LinearList, int, int);
 message_tp SaveMaterialToArchive(Material);
 message_tp UpdateMaterialInArchive(const char * code, Material material);
 message_tp DeleteMaterialInArchive(const char * code);

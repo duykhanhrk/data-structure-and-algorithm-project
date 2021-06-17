@@ -2,11 +2,11 @@
 
 Button NewButton(
   const char * text = BUTTON_TEXT,
-  position_tp position_x = CURSOR_POSITION_X,
-  position_tp position_y = CURSOR_POSITION_Y,
   size_tp width = BUTTON_WIDTH,
   size_tp height = BUTTON_HEIGHT,
   size_tp size = BUTTON_SIZE,
+  position_tp position_x = CURSOR_POSITION_X,
+  position_tp position_y = CURSOR_POSITION_Y,
   color_tp foreground = BUTTON_FOREGROUND,
   color_tp background = BUTTON_BACKGROUND,
   color_tp active_foreground = BUTTON_ACTIVE_FOREGROUND,
@@ -82,5 +82,6 @@ keycode_tp ActiveButton(Button button) {
     c = Console();
   } while (!button->console(c));
 
+  RenderButton(button, NORMAL_BUTTON);
   return c;
 }

@@ -1,4 +1,4 @@
-/* material */
+#include "material.h"
 
 /* rapid - mtp */
 
@@ -50,6 +50,11 @@ message_tp UpdateMaterialQuantityInArchive(const char * code, int quantity) {
 
 Material GetMaterialInArchive(const char * code) {
   return GetItemInMaterialListByCode(archive->material_list, code);
+}
+
+void TakeMaterialsInArchive(LinearList linear_list, int offset, int limit) {
+  EmptyLinearList(linear_list);
+  TakeItemsInMaterialList(archive->material_list, linear_list, offset, limit);
 }
 
 message_tp SaveMaterialToArchive(Material material) {

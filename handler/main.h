@@ -14,18 +14,20 @@ void ActiveMainFrame(Frame frame) {
   ClearScreenWithBackground(PROGRAM_THEME_BACKGROUND_LV1);
 
   // Menu
-  LinearList linear_list = NewLinearList(5);
+  LinearList linear_list = NewLinearList(6);
   char item_1[] = "Giới thiệu";
   char item_2[] = "Vật tư";
   char item_3[] = "Nhân viên";
-  char item_4[] = "Đơn hàng";
-  char item_5[] = "Top vật tư";
+  char item_4[] = "Hóa đơn";
+  char item_5[] = "Thống kê";
+  char item_6[] = "Thoát";
 
   AddItemToLinearList(linear_list, item_1);
   AddItemToLinearList(linear_list, item_2);
   AddItemToLinearList(linear_list, item_3);
   AddItemToLinearList(linear_list, item_4);
   AddItemToLinearList(linear_list, item_5);
+  AddItemToLinearList(linear_list, item_6);
 
   ListViewItemContext list_view_item_context = NewListViewItemContext(
     MENU_WIDTH, 3, 0, 0,
@@ -68,17 +70,25 @@ void ActiveMainFrame(Frame frame) {
         frame->active_element = 0;
     } else if (frame->active_element == 2) {
       if (list_view->selected_item == 0) {
+        // Intruduce
+        frame->active_element = 1;
+      } else if (list_view->selected_item == 1) {
+        // Material
         material_frame->active_element = 1;
         ActiveMaterialFrame(material_frame);
         frame->active_element = 1;
-      } else if (list_view->selected_item == 1) {
-        frame->active_element = 0;
       } else if (list_view->selected_item == 2) {
+        // Staff
         frame->active_element = 1;
       } else if (list_view->selected_item == 3) {
+        // Invoice
         frame->active_element = 1;
       } else if (list_view->selected_item == 4) {
+        // Statistics
         frame->active_element = 1;
+      } else if (list_view->selected_item == 5) {
+        // Exit
+        frame->active_element = 0;
       }
     }
   }

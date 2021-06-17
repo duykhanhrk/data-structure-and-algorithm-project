@@ -159,6 +159,21 @@ Material GetItemInMaterialListByCode(MaterialList material_list, const char * co
   return NULL;
 }
 
+void TakeItemsInMaterialList(MaterialList material_list, LinearList linear_list, int &offset, int &limit) {
+  if (material_list == NULL || limit == 0) return;
+
+  GetItemsInMaterialList(material_list->left_node, linear_list, offset, limit);
+
+  if (offset > 0) {
+    offset --;
+  } else if (limit > 0) {
+    AddItemToLinearList(linear_list, material_list->material);
+    limit --;
+  }
+
+  GetItemsInMaterialList(material_list->right_node, linear_list, offset, limit);
+}
+
 /* Delete */
 
 message_tp DeleteItemInMaterialListByCode(MaterialList &material_list, const char * code) {

@@ -11,7 +11,7 @@
 #define color_tp int
 #define size_tp int
 #define status_tp int
-#define keycode_tp int
+#define keycode_tp char
 #define index_tp int
 #define visible_tp bool
 #define void_tp void *

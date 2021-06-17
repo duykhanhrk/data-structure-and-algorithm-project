@@ -85,3 +85,51 @@ keycode_tp ActiveListViewItemWithDataAsString(ListViewItemContext list_view_item
 
   return NULL_KEY;
 }
+
+void RenderListViewItemWithDataAsMaterial(
+  ListViewItemContext list_view_item_context,
+  status_tp status = NORMAL_LIST_VIEW_ITEM
+) {
+  color_tp foreground = list_view_item_context->foreground;
+  color_tp background = list_view_item_context->background;
+
+  if (status == ACTIVE_LIST_VIEW_ITEM) {
+    foreground = list_view_item_context->active_foreground;
+    background = list_view_item_context->active_background;
+  }
+
+  DrawRecShape(
+    list_view_item_context->width,
+    list_view_item_context->height,
+    ' ',
+    list_view_item_context->position_x,
+    list_view_item_context->position_y,
+    foreground,
+    background
+  );
+
+  Material material = (Material) (list_view_item_context->data);
+
+  position_tp position_x = list_view_item_context->position_x;
+
+  size_tp position_y = list_view_item_context->position_y + list_view_item_context->height / 2;
+  WriteStr(material->code, position_x + 2, position_y, foreground, background);
+  WriteStr(material->name, position_x + 14, position_y, foreground, background);
+  WriteStr(material->unit, position_x + 48, position_y, foreground, background);
+  WriteStr(material->unit, position_x + 52, position_y, foreground, background);
+}
+
+keycode_tp ActiveListViewItemWithDataAsMaterial(ListViewItemContext list_view_item_context) {
+  RenderListViewItemWithDataAsMaterial(list_view_item_context, ACTIVE_LIST_VIEW_ITEM);
+
+  if (list_view_item_context->console != NULL) {
+    char c;
+    do {
+      c = Console();
+    } while (!list_view_item_context->console(c));
+
+    return c;
+  }
+
+  return NULL_KEY;
+}

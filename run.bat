@@ -9,6 +9,12 @@ SET EXDIR=%~dp0
 REM Clear screen.
 CLS
 
+REM Check if executable file exists?
+IF EXIST %EXDIR%%PROGRAM_FILE_NAME%.exe (
+  REM Remove executable file.
+  DEL %EXDIR%%PROGRAM_FILE_NAME%.exe
+)
+
 REM Check if source file exists?
 IF NOT EXIST %EXDIR%%PROGRAM_FILE_NAME%.cpp (
   ECHO ERROR: ^'%PROGRAM_FILE_NAME%.cpp^' not found.
@@ -30,9 +36,6 @@ CLS
 
 REM Run executable file.
 start %EXDIR%%PROGRAM_FILE_NAME%.exe
-
-REM Remove executable file.
-DEL %EXDIR%%PROGRAM_FILE_NAME%.exe
 
 REM Clear screen.
 CLS

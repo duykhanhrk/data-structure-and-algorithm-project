@@ -8,6 +8,7 @@
 #include "date_time/date_time.h"
 #include "context/color.h"
 #include "context/cursor.h"
+#include "context/console.h"
 #include "display/display.h"
 #include "input/input.h"
 #include "linear_list/linear_list.h"
