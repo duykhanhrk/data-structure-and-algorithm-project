@@ -1,11 +1,10 @@
-/* archivist */
-
 #ifndef __ARCHIVIST__
 #define __ARCHIVIST__
 
 #define MATERIALS_FILE_PATH "storage/materials.dat"
 #define STAFFS_FILE_PATH "storage/staffs.dat"
 
+#include "../supporter/supporter.h"
 #include "../structure/structure.h"
 
 #ifdef __cplusplus

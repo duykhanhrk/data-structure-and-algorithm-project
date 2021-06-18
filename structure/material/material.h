@@ -1,24 +1,24 @@
-/* Material */
-
 #ifndef __STRUCTURE_MATERIAL__
 #define __STRUCTURE_MATERIAL__
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../supporter/message/message.h"
 
-#include "../../support/message/message.h"
-
+// Limit
 #define MATERIAL_CODE_MAX_LEN 10
 #define MATERIAL_NAME_MAX_LEN 50
 #define MATERIAL_UNIT_MAX_LEN 10
 
+// Default value
 #define MATERIAL_CODE_DEFAULT_VALUE "\0"
 #define MATERIAL_NAME_DEFAULT_VALUE "\0"
 #define MATERIAL_UNIT_DEFAULT_VALUE "\0"
 #define MATERIAL_QUANTITY_DEFAULT_VALUE 0
 
-#define MATERIAL_SHOW_FORMAT_DEFAULT "%-12s %-24s %-10s %d"
+// Format to show
+#define MATERIAL_SHOW_FORMAT_DEFAULT "%-12s %-24s %-10s %d\n"
 #define MATERIAL_LIST_SHOW_FORMAT_DEFAULT "%-12s %-24s %-10s %d\n"
 
 #ifdef __cplusplus

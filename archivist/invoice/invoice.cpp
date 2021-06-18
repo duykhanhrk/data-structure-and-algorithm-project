@@ -1,4 +1,4 @@
-/* Invoice & Invoice Detail */
+#include "invoice.h"
 
 /* Rapid - ivp */
 

@@ -1,4 +1,4 @@
-/* Staff */
+#include "staff.h"
 
 /* rapid - stp */
 #define stp_staff_validation_with_strict message_tp mess = StaffValidation(staff); \

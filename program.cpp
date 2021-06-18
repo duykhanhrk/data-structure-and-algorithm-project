@@ -5,51 +5,40 @@
 #define show(x) std::cout << x << std::endl;
 
 /* Makers */
-#include "support/supporter.h"
+#include "supporter/supporter.h"
 #include "structure/structure.h"
 #include "archivist/archivist.h"
-#include "template/template.h"
-#include "handler/handler.h"
-
-void SeedMaterial() {
-  Material material;
-  char code[10] = " \0";
-  char name[64] = "  name\0";
-  char unit[10] = "  unit\0";
-
-  for (char chr = 'A'; chr <= 'Z'; chr ++) {
-    code[0] = chr;
-    name[0] = chr;
-    unit[0] = chr;
-
-    material = NewMaterial(code, name, unit, ((int) chr) - 64);
-    SaveMaterialToArchive(material);
-  }
-}
+#include "templates/templates.h"
+#include "frames/frames.h"
 
 int main() {
+  // Config console
   CursorVisible(false);
   SetConsoleOutputCP(65001);
-  SetConsoleTitle("Quản lí vật tư");
+  SetConsoleTitle("Quan li vat tu");
   SetWindowSize(120, 30);
   SetScreenBufferSize(120, 30);
   DisableResizeWindow();
   DisableCtrButton(true, true, true);
   DisableSelection();
-  ShowScrollbar(false);
-
 
   // Init Archive
   InitArchive();
+
+  // Load data from storage
   LoadMaterialListFromStorageToArchive();
   LoadStaffListFromStorageToArchive();
 
-  // Main Frame
-  Frame main_frame = NewFrame(WINDOW_COLUMNS, WINDOW_ROWS, 0, 0, 1);
+  // Init main frame
+  Frame main_frame = NewFrame(WINDOW_COLUMNS, WINDOW_ROWS);
+
+  // Acrive main frame
   ActiveMainFrame(main_frame);
 
-  // Release
+  // Release memmory
   DestroyFrame(main_frame);
   DestroyArchive();
+
+  // Exit
   return 0;
 }

@@ -1,3 +1,5 @@
+#include "archivist.h"
+
 /* Init and Destroy */
 
 void InitArchive() {

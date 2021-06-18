@@ -1,12 +1,10 @@
-/* staff */
-
 #ifndef __STRUCTURE_STAFF__
 #define __STRUCTURE_STAFF__
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../support/message/message.h"
+#include "../../supporter/message/message.h"
 #include "../invoice/invoice.h"
 
 #define STAFF_CODE_MAX_LEN 10

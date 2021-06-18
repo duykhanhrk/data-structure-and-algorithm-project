@@ -162,7 +162,7 @@ Material GetItemInMaterialListByCode(MaterialList material_list, const char * co
 void TakeItemsInMaterialList(MaterialList material_list, LinearList linear_list, int &offset, int &limit) {
   if (material_list == NULL || limit == 0) return;
 
-  GetItemsInMaterialList(material_list->left_node, linear_list, offset, limit);
+  TakeItemsInMaterialList(material_list->left_node, linear_list, offset, limit);
 
   if (offset > 0) {
     offset --;
@@ -171,7 +171,7 @@ void TakeItemsInMaterialList(MaterialList material_list, LinearList linear_list,
     limit --;
   }
 
-  GetItemsInMaterialList(material_list->right_node, linear_list, offset, limit);
+  TakeItemsInMaterialList(material_list->right_node, linear_list, offset, limit);
 }
 
 /* Delete */

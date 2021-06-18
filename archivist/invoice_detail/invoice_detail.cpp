@@ -1,3 +1,5 @@
+#include "invoice_detail.h"
+
 message_tp InvoiceDetailValidation(InvoiceDetail invoice_detail, bool strict = true, char invoice_type = IMPORT_INVOICE) {
   if (IsNull(invoice_detail)) return M_NULL;
 

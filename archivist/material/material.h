@@ -1,12 +1,10 @@
-/* Material */
-
 #ifndef __ARCHIVIST_MATERIAL__
 #define __ARCHIVIST_MATERIAL__
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../support/message/message.h"
+#include "../../supporter/supporter.h"
 #include "../../structure/material/material.h"
 
 extern Archive archive;

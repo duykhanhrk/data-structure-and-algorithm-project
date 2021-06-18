@@ -1,12 +1,10 @@
-/* Invoice detail */
-
 #ifndef __STRUCTURE_INVOICE__
 #define __STRUCTURE_INVOICE__
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../support/message/message.h"
+#include "../../supporter/message/message.h"
 #include "../invoice_detail/invoice_detail.h"
 
 /* Limits */

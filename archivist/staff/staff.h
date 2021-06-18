@@ -1,12 +1,10 @@
-/* Staff */
-
 #ifndef __ARCHIVIST_STAFF__
 #define __ARCHIVIST_STAFF__
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../support/message/message.h"
+#include "../../supporter/supporter.h"
 #include "../../structure/staff/staff.h"
 
 extern Archive archive;
