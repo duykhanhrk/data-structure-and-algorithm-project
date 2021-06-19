@@ -1,5 +1,5 @@
-#ifndef __HANDLER_MATERIAL_ADD_FORM__
-#define __HANDLER_MATERIAL_ADD_FORM__
+#ifndef __FRAMES_MATERIAL_CREATION_FORM__
+#define __FRAMES_MATERIAL_CREATION_FORM__
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,25 +63,19 @@ void ActiveMaterialCreationFrame(Frame frame) {
   keycode_tp keycode;
   while (frame->active_element != 0) {
     if (frame->active_element == 1) {
-      CursorVisible(true);
       keycode = ActiveEditStr(edit_code);
-      CursorVisible(false);
       if (keycode == ENTER || keycode == KEY_DOWN)
         frame->active_element = 2;
       else if (keycode == KEY_UP)
         frame->active_element = 0;
     } else if (frame->active_element == 2) {
-      CursorVisible(true);
       keycode = ActiveEditStr(edit_name);
-      CursorVisible(false);
       if (keycode == ENTER || keycode == KEY_DOWN)
         frame->active_element = 3;
       else if (keycode == KEY_UP)
         frame->active_element = 1;
     } else if (frame->active_element == 3) {
-      CursorVisible(true);
       keycode = ActiveEditStr(edit_unit);
-      CursorVisible(false);
       if (keycode == ENTER || keycode == KEY_DOWN)
         frame->active_element = 1;
       else if (keycode == KEY_UP)

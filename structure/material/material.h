@@ -8,7 +8,7 @@
 
 // Limit
 #define MATERIAL_CODE_MAX_LEN 10
-#define MATERIAL_NAME_MAX_LEN 50
+#define MATERIAL_NAME_MAX_LEN 32
 #define MATERIAL_UNIT_MAX_LEN 10
 
 // Default value
@@ -30,9 +30,9 @@ Struct
 ----------------------------------------------------------------------------- */
 
 typedef struct MaterialT {
-  char code[MATERIAL_CODE_MAX_LEN];
-  char name[MATERIAL_NAME_MAX_LEN];
-  char unit[MATERIAL_UNIT_MAX_LEN];
+  char code[MATERIAL_CODE_MAX_LEN + 1];
+  char name[MATERIAL_NAME_MAX_LEN + 1];
+  char unit[MATERIAL_UNIT_MAX_LEN + 1];
   int quantity;
 } MaterialT, * Material;
 

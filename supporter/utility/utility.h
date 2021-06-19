@@ -72,6 +72,7 @@ bool IsBlankString(str_tp str) {
 }
 
 bool IsUNString(str_tp str) {
+  if (*str == '\0') return false;
   for (char * c = str; *c != '\0'; c ++)
     if (!IsUpcaseCharacter(*c) && !IsNumericCharacter(*c))
       return false;
@@ -80,6 +81,7 @@ bool IsUNString(str_tp str) {
 }
 
 bool IsNumericString(str_tp str) {
+  if (*str == '\0') return false;
   for (char * c = str; *c != '\0'; c ++)
     if (!IsNumericCharacter(*c))
       return false;
@@ -88,6 +90,7 @@ bool IsNumericString(str_tp str) {
 }
 
 bool IsASString(str_tp str) {
+  if (*str == '\0') return false;
   for (char * c = str; *c != '\0'; c ++)
     if (!IsAlphabeticCharacter(*c) && *c != ' ') {
       return false;

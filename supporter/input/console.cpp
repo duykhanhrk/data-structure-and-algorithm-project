@@ -15,3 +15,7 @@ bool ListViewEConsole(char c) {
 bool ListViewEBConsole(char c) {
   return (c == ENTER || c == BACKSPACE);
 }
+
+bool ListViewScrollEBConsole(char c) {
+  return (c == ENTER || c == BACKSPACE || c == KEY_RIGHT || c == KEY_LEFT);
+}

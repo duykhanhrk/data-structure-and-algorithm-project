@@ -68,8 +68,9 @@ void RenderListView(ListView list_view, status_tp status = NORMAL_LIST_VIEW) {
 }
 
 void LVPSelectItem(ListView list_view) {
-  if (list_view->selected_item < 0 || list_view->selected_item >= list_view->linear_list->count)
-    return;
+  if (list_view->selected_item < 0) list_view->selected_item = 0;
+  if (list_view->selected_item >= list_view->linear_list->count)
+    list_view->selected_item = list_view->linear_list->count - 1;
 
   list_view->item_context->position_x = list_view->position_x;
   list_view->item_context->position_y = list_view->position_y + list_view->selected_item * list_view->item_context->height;

@@ -49,7 +49,7 @@ void ActiveMaterialFrame(Frame frame) {
     list_view_item_context,
     RENDER_LIST_VIEW_ITEM_WITH_DATA_AS_MATERIAL,
     ACTIVE_LIST_VIEW_ITEM_WITH_DATA_AS_MATERIAL,
-    LIST_VIEW_EB_CONSOLE,
+    LIST_VIEW_SCROLL_EB_CONSOLE,
     0
   );
 

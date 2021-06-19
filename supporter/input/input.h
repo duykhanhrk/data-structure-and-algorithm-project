@@ -21,6 +21,7 @@ extern "C" {
 
 /* Console */
 char Console() {
+  fflush(stdin);
   unsigned char c = getch();
 
   if (c == 13) return ENTER;

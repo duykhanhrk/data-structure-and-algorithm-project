@@ -109,6 +109,7 @@ void RenderEditStr(EditStr edit_str, status_tp status = NORMAL_EDIT_STR) {
 keycode_tp ActiveEditStr(EditStr edit_str) {
   RenderEditStr(edit_str, ACTIVE_EDIT_STR);
 
+  CursorVisible(true);
   int len = strlen(edit_str->str);
   char c = '\0';
   while (true) {
@@ -117,7 +118,7 @@ keycode_tp ActiveEditStr(EditStr edit_str) {
     if (edit_str->console(c)) break;
 
     if (edit_str->char_set(c, edit_str->str) != '\0') {
-      if (len == edit_str->max_len) {
+      if (len >= edit_str->max_len) {
         if (edit_str->exceed_max_len != NULL)
           edit_str->exceed_max_len(c, edit_str);
         continue;
@@ -144,6 +145,10 @@ keycode_tp ActiveEditStr(EditStr edit_str) {
         edit_str->miss_char_set(c, edit_str);
     }
   }
+  CursorVisible(false);
+
+  // Safe
+  edit_str->str[edit_str->max_len] = '\0';
 
   RenderEditStr(edit_str, NORMAL_EDIT_STR);
 

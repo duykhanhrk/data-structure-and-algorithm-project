@@ -11,6 +11,22 @@
 #include "templates/templates.h"
 #include "frames/frames.h"
 
+void SeedMaterial() {
+  Material material;
+  char code[10] = " \0";
+  char name[64] = "  name\0";
+  char unit[10] = "  unit\0";
+
+  for (char chr = 'A'; chr <= 'Z'; chr ++) {
+    code[0] = chr;
+    name[0] = chr;
+    unit[0] = chr;
+
+    material = NewMaterial(code, name, unit, ((int) chr) - 64);
+    SaveMaterialToArchive(material);
+  }
+}
+
 int main() {
   // Config console
   CursorVisible(false);
