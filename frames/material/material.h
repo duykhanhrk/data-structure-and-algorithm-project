@@ -5,6 +5,7 @@
 
 #include "../../archivist/material/material.h"
 #include "creation_form.h"
+#include "updated_form.h"
 #include "material_list_view.h"
 
 #define MTP_MATERIAL_LIST_ITEMS 22
@@ -15,6 +16,12 @@
 
 #define MTP_ADD_BUTTON_WIDTH 48
 #define MTP_ADD_BUTTON_HEIGHT 3
+
+#define MTP_CREATION_FORM_WIDTH 50
+#define MTP_CREATION_FORM_HEIGHT 25
+
+#define MTP_UPDATED_FORM_WIDTH 50
+#define MTP_UPDATED_FORM_HEIGHT 25
 
 #ifdef __cplusplus
 extern "C" {

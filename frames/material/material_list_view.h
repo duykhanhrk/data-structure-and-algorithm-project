@@ -82,6 +82,9 @@ void MTPMaterialListViewTurnToPage(ListView list_view, int limit, int page, int 
 }
 
 keycode_tp ActiveMaterialListView(ListView list_view, int &page) {
+  if (MaterialListCount(archive->material_list) == 0)
+    return KEY_UP;
+
   list_view->position_y ++;
   list_view->height -= 2;
 

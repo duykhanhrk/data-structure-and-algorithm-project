@@ -45,6 +45,7 @@
 #define IsLowercaseChar(c) (c >= 97 && c<= 122)
 #define IsUppercaseChar(c) (c >= 65 && c <= 90)
 #define IsAlphabeticChar(c) (IsLowercaseChar(c) || IsUppercaseChar(c))
+#define IsSpecialChar(c) (('!' <= c && c <= '/') || (':' <= c && c <= '@') || ('[' <= c && c <= '`') || ('{' <= c && c <= '~'))
 #define IsSpace(c) (c == 32)
 #define IsUnderscore(c) (c == 95)
 #define CharToInt(c) (c - 48)
@@ -56,7 +57,7 @@
 #define VoidTypeToLong(obj) (*((l_tp *) obj))
 #define VoidTypeToDateTime(obj) (*((time_t *) obj))
 #define NumViolatesMaxValue(num, c, max) ((max - num < max - max/10) || (max - num == max - max/10 && CharToInt(c) > max%10))
-#define NumViolatesMinValue(num, c, min) ((min - obj > min - min/10) || (min - obj == min - min/10 && 48 - c < min%10))
+#define NumViolatesMinValue(num, c, min) ((min - num > min - min/10) || (min - num == min - min/10 && 48 - c < min%10))
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,34 +65,43 @@ extern "C" {
 
 /* String */
 
-bool IsBlankString(str_tp str) {
-  for (char * c = str; *c != '\0'; c ++)
+bool IsBlankString(const char * str) {
+  for (const char * c = str; *c != '\0'; c ++)
     if (*c != ' ') return false;
 
   return true;
 }
 
-bool IsUNString(str_tp str) {
+bool IsUNString(const char * str) {
   if (*str == '\0') return false;
-  for (char * c = str; *c != '\0'; c ++)
+  for (const char * c = str; *c != '\0'; c ++)
     if (!IsUpcaseCharacter(*c) && !IsNumericCharacter(*c))
       return false;
 
   return true;
 }
 
-bool IsNumericString(str_tp str) {
+bool IsUNUString(const char * str) {
   if (*str == '\0') return false;
-  for (char * c = str; *c != '\0'; c ++)
+  for (const char * c = str; *c != '\0'; c ++)
+    if (!IsUpcaseCharacter(*c) && !IsNumericCharacter(*c) && !IsUnderscore(*c))
+      return false;
+
+  return true;
+}
+
+bool IsNumericString(const char * str) {
+  if (*str == '\0') return false;
+  for (const char * c = str; *c != '\0'; c ++)
     if (!IsNumericCharacter(*c))
       return false;
 
   return true;
 }
 
-bool IsASString(str_tp str) {
+bool IsASString(const char * str) {
   if (*str == '\0') return false;
-  for (char * c = str; *c != '\0'; c ++)
+  for (const char * c = str; *c != '\0'; c ++)
     if (!IsAlphabeticCharacter(*c) && *c != ' ') {
       return false;
     }
@@ -100,6 +110,20 @@ bool IsASString(str_tp str) {
 
 char EndOfString(const char * str) {
   return str[strlen(str) - 1];
+}
+
+// String to Int
+int StringToInt(const char * str) {
+  bool sign = false;
+  if (*str == '-') sign = true;
+
+  int num = 0;
+  for (const char * c = str; *c != '\0'; c ++) {
+    if (!IsNumericChar(*c)) return 0;
+    num = num * 10 + CharToInt(*c);
+  }
+
+  return num;
 }
 
 // Char

@@ -26,7 +26,7 @@ char AlphabeticCharSet(char c, const char * str = "\0") {
 }
 
 char StandardCharSet(char c, const char * str = "\0") {
-  if (!IsAlphabeticChar(c) && !IsNumericChar(c) && !IsUnderscore(c) && !IsSpace(c))
+  if (!IsAlphabeticChar(c) && !IsNumericChar(c) && !IsSpace(c) && !IsSpecialChar(c))
     return '\0';
 
   if (IsEmptyString(str) && IsSpace(c)) return '\0';

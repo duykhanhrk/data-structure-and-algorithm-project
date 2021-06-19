@@ -82,6 +82,8 @@ void RenderListViewItemWithDataAsMaterial(
   ListViewItemContext list_view_item_context,
   status_tp status = NORMAL_LIST_VIEW_ITEM
 ) {
+  if (list_view_item_context->data == NULL) return;
+
   color_tp foreground = list_view_item_context->foreground;
   color_tp background = list_view_item_context->background;
 

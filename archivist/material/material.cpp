@@ -14,16 +14,16 @@ message_tp MaterialValidation(Material material, bool strict = true) {
   if (IsNull(material)) return M_NULL;
 
   if (strict == true)
-  if (IsNull(material->code) || !IsUNString(material->code) || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
+  if (IsNull(material->code) || !IsUNUString(material->code) || strlen(material->code) > MATERIAL_CODE_MAX_LEN)
     return M_MATERIAL_CODE_INVALID;
 
-  if (IsNull(material->name) || !IsASString(material->name) || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
+  if (IsNull(material->name) || IsBlankString(material->name) || strlen(material->name) > MATERIAL_NAME_MAX_LEN)
     return M_MATERIAL_NAME_INVALID;
 
   if (IsNull(material->unit) || IsBlankString(material->unit) || strlen(material->unit) > MATERIAL_UNIT_MAX_LEN)
     return M_MATERIAL_UNIT_INVALID;
 
-  if (IsNegative(material->quantity))
+  if (IsNegative(material->quantity) || material->quantity > MATERIAL_QUANTITY_MAX_VALUE)
     return M_MATERIAL_QUANTITY_INVALID;
 
   return OK;
@@ -79,7 +79,7 @@ message_tp UpdateMaterialInArchive(const char * code, Material material) {
   strcpy(material->code, _material->code);
 
   // tranfer data
-  TranferMaterial(_material, material);
+  CopyMaterial(_material, material);
 
   // Save to storage
   SaveMaterialListFromArchiveToStorage();
@@ -104,7 +104,7 @@ message_tp UpdateMaterialInArchiveNS(Material _material, Material material) {
   strcpy(material->code, _material->code);
 
   // tranfer data
-  TranferMaterial(_material, material);
+  CopyMaterial(_material, material);
 
   return OK;
 }

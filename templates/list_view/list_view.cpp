@@ -68,6 +68,7 @@ void RenderListView(ListView list_view, status_tp status = NORMAL_LIST_VIEW) {
 }
 
 void LVPSelectItem(ListView list_view) {
+  if (list_view->linear_list->count == 0) return;
   if (list_view->selected_item < 0) list_view->selected_item = 0;
   if (list_view->selected_item >= list_view->linear_list->count)
     list_view->selected_item = list_view->linear_list->count - 1;
@@ -76,6 +77,19 @@ void LVPSelectItem(ListView list_view) {
   list_view->item_context->position_y = list_view->position_y + list_view->selected_item * list_view->item_context->height;
   list_view->item_context->data = list_view->linear_list->data[list_view->selected_item];
   list_view->active_item(list_view->item_context);
+  list_view->item_context->data = NULL;
+}
+
+void LVPUnselectItem(ListView list_view) {
+  if (list_view->linear_list->count == 0) return;
+  if (list_view->selected_item < 0) return;
+  if (list_view->selected_item >= list_view->linear_list->count) return;
+
+  list_view->item_context->position_x = list_view->position_x;
+  list_view->item_context->position_y = list_view->position_y + list_view->selected_item * list_view->item_context->height;
+  list_view->item_context->data = list_view->linear_list->data[list_view->selected_item];
+  list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+  list_view->item_context->data = NULL;
 }
 
 keycode_tp ActiveListView(ListView list_view) {
@@ -86,13 +100,13 @@ keycode_tp ActiveListView(ListView list_view) {
   keycode_tp keycode = Console();
   while (!list_view->console(keycode)) {
     if (keycode == KEY_DOWN) {
-      list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+      LVPUnselectItem(list_view);
       if (list_view->selected_item == list_view->linear_list->count - 1)
         list_view->selected_item = -1;
       list_view->selected_item ++;
       LVPSelectItem(list_view);
     } else if (keycode == KEY_UP) {
-      list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+      LVPUnselectItem(list_view);
       if (list_view->selected_item == 0)
         list_view->selected_item = list_view->linear_list->count;
       list_view->selected_item --;
@@ -102,7 +116,7 @@ keycode_tp ActiveListView(ListView list_view) {
     keycode = Console();
   }
 
-  list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+  LVPUnselectItem(list_view);
   return keycode;
 }
 
@@ -116,13 +130,13 @@ keycode_tp ActiveListViewStraight(ListView list_view) {
     keycode = Console();
     if (list_view->console(keycode)) break;
     if (keycode == KEY_DOWN) {
-      list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+      LVPUnselectItem(list_view);
       if (list_view->selected_item == list_view->linear_list->count - 1)
         break;
       list_view->selected_item ++;
       LVPSelectItem(list_view);
     } else if (keycode == KEY_UP) {
-      list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+      LVPUnselectItem(list_view);
       if (list_view->selected_item == 0)
         break;
       list_view->selected_item --;
@@ -130,6 +144,6 @@ keycode_tp ActiveListViewStraight(ListView list_view) {
     }
   }
 
-  list_view->render_item(list_view->item_context, NORMAL_LIST_VIEW_ITEM);
+  LVPUnselectItem(list_view);
   return keycode;
 }

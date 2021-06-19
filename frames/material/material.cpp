@@ -59,7 +59,18 @@ void ActiveMaterialFrame(Frame frame) {
   RenderMaterialListView(list_view, page);
 
   // creation
-  Frame creation_frame = NewFrame(50, 17, frame->position_x + 25, frame->position_y + frame->height / 2 - 9, 1);
+  Frame creation_frame = NewFrame(
+    MTP_CREATION_FORM_WIDTH, MTP_CREATION_FORM_HEIGHT,
+    frame->position_x + (frame->width - MTP_CREATION_FORM_WIDTH) / 2,
+    frame->position_y + (frame->height - MTP_CREATION_FORM_HEIGHT) / 2
+  );
+
+  // updated
+  Frame updated_frame = NewFrame(
+    MTP_UPDATED_FORM_WIDTH, MTP_UPDATED_FORM_HEIGHT,
+    frame->position_x + (frame->width - MTP_UPDATED_FORM_WIDTH) / 2,
+    frame->position_y + (frame->height - MTP_UPDATED_FORM_HEIGHT) / 2
+  );
 
   // Active
   keycode_tp keycode;
@@ -85,6 +96,15 @@ void ActiveMaterialFrame(Frame frame) {
       // List
       keycode = ActiveMaterialListView(list_view, page);
       if (keycode == ENTER) {
+        if (list_view->linear_list->count == 0) return;
+        if (list_view->selected_item < 0) return;
+        if (list_view->selected_item >= list_view->linear_list->count) return;
+
+        updated_frame->active_element = 2;
+        MTPRecovery(frame);
+        ActiveMaterialUpdatedFrame(updated_frame, (Material) (list_view->linear_list->data[list_view->selected_item]));
+        RenderButton(add_button);
+        RenderMaterialListView(list_view, page);
         frame->active_element = 2;
       } else if (keycode == BACKSPACE) {
         frame->active_element = 1;

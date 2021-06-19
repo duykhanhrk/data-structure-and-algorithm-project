@@ -68,6 +68,7 @@ MaterialNode NewMaterialNode(Material material) {
 }
 
 void DestroyMaterialNode(MaterialNode &material_node) {
+  DestroyMaterial(material_node->material);
   free(material_node);
   material_node = NULL;
 }
@@ -176,6 +177,16 @@ void TakeItemsInMaterialList(MaterialList material_list, LinearList linear_list,
 
 /* Delete */
 
+void MTPRemoveCaseThird(MaterialNode &material_node, MaterialNode &_material_node) {
+  if (material_node->left_node != NULL)
+    MTPRemoveCaseThird(material_node->left_node, _material_node);
+  else {
+    CopyMaterial(_material_node->material, material_node->material);
+    _material_node = material_node;
+    material_node = _material_node->right_node;
+  }
+}
+
 message_tp DeleteItemInMaterialListByCode(MaterialList &material_list, const char * code) {
   if (material_list == NULL)
     return M_NOT_FOUND;
@@ -186,19 +197,15 @@ message_tp DeleteItemInMaterialListByCode(MaterialList &material_list, const cha
   if (strcmp(material_list->material->code, code) < 0)
     return DeleteItemInMaterialListByCode(material_list->right_node, code);
 
-  MaterialList _material_list = material_list;
-  if (_material_list->right_node == NULL) material_list = _material_list->left_node;
-  else if (_material_list->left_node == NULL) material_list = _material_list->right_node;
-  else {
-    MaterialList __material_list = _material_list->right_node;
-    for (; __material_list->left_node != NULL; __material_list = material_list->left_node);
-    material_list->material = __material_list->material;
-    _material_list = __material_list;
-    __material_list = _material_list->right_node;
-  }
+  MaterialNode _material_list = material_list;
+  if (_material_list->right_node == NULL)
+    material_list = _material_list->left_node;
+  else if (_material_list->left_node == NULL)
+    material_list = _material_list->right_node;
+  else
+    MTPRemoveCaseThird(_material_list->right_node, _material_list);
 
   DestroyMaterialNode(_material_list);
-
   return OK;
 }
 
@@ -215,11 +222,11 @@ void MaterialListEach(MaterialList material_list, void (* _do) (Material)) {
 
 void ShowMaterial(Material material, const char * format = MATERIAL_SHOW_FORMAT_DEFAULT) {
   printf(
-      format,
-      material->code,
-      material->name,
-      material->unit,
-      material->quantity
+    format,
+    material->code,
+    material->name,
+    material->unit,
+    material->quantity
   );
 }
 
