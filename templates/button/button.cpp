@@ -2,6 +2,7 @@
 
 Button NewButton(
   const char * text = BUTTON_TEXT,
+  align_tp text_align = BUTTON_TEXT_ALIGN,
   size_tp width = BUTTON_WIDTH,
   size_tp height = BUTTON_HEIGHT,
   size_tp size = BUTTON_SIZE,
@@ -17,6 +18,7 @@ Button NewButton(
 
   button->text = (char *) malloc(sizeof(char) * strlen(text) + 1);
   strcpy(button->text, text);
+  button->text_align = text_align;
   button->position_x = position_x,
   button->position_y = position_y,
   button->width = width;
@@ -35,6 +37,12 @@ void DestroyButton(Button &button) {
   free(button->text);
   free(button);
   button = NULL;
+}
+
+void SetButtonText(Button button, const char * text) {
+  free(button->text);
+  button->text = (char *) malloc(sizeof(char) * strlen(text) + 1);
+  strcpy(button->text, text);
 }
 
 void RenderButton(Button button, status_tp status = NORMAL_BUTTON) {
@@ -61,8 +69,11 @@ void RenderButton(Button button, status_tp status = NORMAL_BUTTON) {
     background
   );
 
-  size_tp position_x = button->position_x + (button->width - strlen(button->text)) / 2;
-  position_x = position_x >= 0 ? position_x : 0;
+  size_tp position_x = button->position_x + 2;
+  if (button->text_align == ALIGN_CENTER) {
+    position_x = button->position_x + (button->width - strlen(button->text)) / 2;
+    position_x = position_x >= 0 ? position_x : 0;
+  }
 
   size_tp position_y = button->position_y + button->height / 2;
   WriteStr(

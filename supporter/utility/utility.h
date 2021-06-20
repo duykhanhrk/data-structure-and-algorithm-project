@@ -11,6 +11,7 @@
 #define color_tp int
 #define size_tp int
 #define status_tp int
+#define align_tp char
 #define keycode_tp char
 #define index_tp int
 #define visible_tp bool
@@ -21,6 +22,11 @@
 #define h_tp short int
 #define i_tp int
 #define l_tp long long int
+
+// templates
+#define ALIGN_LEFT 'L'
+#define ALIGN_RIGHT 'R'
+#define ALIGN_CENTER 'C'
 
 // Pointer
 #define IsNull(x) x == NULL

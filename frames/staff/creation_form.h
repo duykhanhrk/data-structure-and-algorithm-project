@@ -1,72 +1,79 @@
-#ifndef __FRAMES_MATERIAL_UPDATED_FORM__
-#define __FRAMES_MATERIAL_UPDATED_FORM__
+#ifndef __FRAMES_STAFF_CREATION_FORM__
+#define __FRAMES_STAFF_CREATION_FORM__
+
+#define STP_INPUT_WIDTH 36
+#define STP_INPUT_HEIGHT 3
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void MUPRecovery(Frame frame) {
+void SCPRecovery(Frame frame) {
   DrawRecShape(
     frame->width, frame->height, ' ', frame->position_x, frame->position_y,
     CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND_LV1
   );
 }
 
-void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
+void ActiveStaffCreationFrame(Frame frame) {
   // Init form
   DrawRecShape(
     frame->width, frame->height, ' ', frame->position_x, frame->position_y,
     CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND
   );
 
-  WriteStr("Tên", frame->position_x + 2, frame->position_y + 2);
-  WriteStr("ĐVT", frame->position_x + 2, frame->position_y + 6);
-  WriteStr("Số lượng", frame->position_x + 2, frame->position_y + 10);
+  WriteStr("Mã", frame->position_x + 2, frame->position_y + 2);
+  WriteStr("Họ", frame->position_x + 2, frame->position_y + 6);
+  WriteStr("Tên", frame->position_x + 2, frame->position_y + 10);
+  WriteStr("Giới tính", frame->position_x + 2, frame->position_y + 14);
 
-  Material material = DuplicateMaterial(_material);
+  // Init staff
+  Staff staff = NewStaff();
 
-  EditStr edit_name = NewEditStr(
-    material->name,
-    32, 1,
-    36, 3,
+  // Init templates
+  EditStr edit_code = NewEditStr(
+    staff->code,
+    STAFF_CODE_MAX_LEN, 1,
+    STP_INPUT_WIDTH, STP_INPUT_HEIGHT,
     frame->position_x + 12, frame->position_y + 1,
     EDIT_STR_FOREGROUND, EDIT_STR_BACKGROUND,
     EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND,
-    STANDARD_CHAR_SET
+    CODE_FORMAT_CHAR_SET
   );
 
-  EditStr edit_unit = NewEditStr(
-    material->unit,
-    10, 1,
-    36, 3,
+  EditStr edit_last_name = NewEditStr(
+    staff->last_name,
+    STAFF_FIRST_NAME_MAX_LEN, 1,
+    STP_INPUT_WIDTH, STP_INPUT_HEIGHT,
     frame->position_x + 12, frame->position_y + 5,
     EDIT_STR_FOREGROUND, EDIT_STR_BACKGROUND,
     EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND,
-    STANDARD_CHAR_SET
+    HUMAN_NAME_FORMAT_CHAR_SET
   );
 
-  EditInt edit_quantity = NewEditInt(
-    &(material->quantity),
-    MATERIAL_QUANTITY_MAX_VALUE, 0,
-    36, 3,
+  EditStr edit_first_name = NewEditStr(
+    staff->first_name,
+    STAFF_LAST_NAME_MAX_LEN, 1,
+    STP_INPUT_WIDTH, STP_INPUT_HEIGHT,
     frame->position_x + 12, frame->position_y + 9,
-    EDIT_INT_FOREGROUND, EDIT_INT_BACKGROUND,
-    EDIT_INT_ACTIVE_FOREGROUND, EDIT_INT_ACTIVE_BACKGROUND
+    EDIT_STR_FOREGROUND, EDIT_STR_BACKGROUND,
+    EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND,
+    HUMAN_NAME_FORMAT_CHAR_SET
   );
 
-  Button save_button = NewButton(
-    " Lưu", ALIGN_CENTER,
-    (frame->width - 6) / 2, 3, 0,
-    frame->position_x + 2, frame->position_y + 13,
+  Button sex_button = NewButton(
+    "Nữ", ALIGN_LEFT,
+    STP_INPUT_WIDTH, STP_INPUT_HEIGHT, 0,
+    frame->position_x + 12, frame->position_y + 13,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
     STANDARD_CONSOLE
   );
 
-  Button delete_button = NewButton(
-    " Xóa", ALIGN_CENTER,
+  Button save_button = NewButton(
+    " Lưu", ALIGN_CENTER,
     (frame->width - 6) / 2, 3, 0,
-    frame->position_x + (frame->width - 6) / 2 + 4, frame->position_y + 13,
+    frame->position_x + 2, frame->position_y + 17,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
     STANDARD_CONSOLE
@@ -74,8 +81,8 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
 
   Button close_button = NewButton(
     " Thoát", ALIGN_CENTER,
-    frame->width - 4, 3, 0,
-    frame->position_x + 2, frame->position_y + 17,
+    (frame->width - 6) / 2, 3, 0,
+    frame->position_x + (frame->width - 6) / 2 + 4, frame->position_y + 17,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
     STANDARD_CONSOLE
@@ -89,36 +96,52 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
 
   // Render
 
-  RenderEditStr(edit_name);
-  RenderEditStr(edit_unit);
-  RenderEditInt(edit_quantity);
+  RenderEditStr(edit_code);
+  RenderEditStr(edit_last_name);
+  RenderEditStr(edit_first_name);
+  RenderButton(sex_button);
   RenderButton(save_button);
-  RenderButton(delete_button);
   RenderButton(close_button);
 
   // Active
   message_tp message;
   keycode_tp keycode;
   while (frame->active_element != 0) {
-    if (frame->active_element == 2) {
-      // Name
-      keycode = ActiveEditStr(edit_name);
+    if (frame->active_element == 1) {
+      // Code
+      keycode = ActiveEditStr(edit_code);
       if (keycode == ENTER) {
-        if (IsBlankString(edit_name->str))
+        if (IsBlankString(edit_code->str))
+          RenderNotify(notify, WARNING_NOTIFY, "Mã không được để trắng");
+        else frame->active_element = 2;
+      }
+      else if (keycode == KEY_DOWN)
+        frame->active_element = 2;
+      else if (keycode == KEY_LEFT)
+        frame->active_element = 5;
+      else if (keycode == KEY_RIGHT)
+        frame->active_element = 6;
+    } else if (frame->active_element == 2) {
+      // Name
+      keycode = ActiveEditStr(edit_last_name);
+      if (keycode == ENTER) {
+        if (IsBlankString(edit_last_name->str))
           RenderNotify(notify, WARNING_NOTIFY, "Tên không được để trắng");
         else frame->active_element = 3;
       }
       else if (keycode == KEY_DOWN)
         frame->active_element = 3;
+      else if (keycode == KEY_UP)
+        frame->active_element = 1;
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
       else if (keycode == KEY_RIGHT)
         frame->active_element = 6;
     } else if (frame->active_element == 3) {
       // Unit
-      keycode = ActiveEditStr(edit_unit);
+      keycode = ActiveEditStr(edit_first_name);
       if (keycode == ENTER) {
-        if (IsBlankString(edit_unit->str))
+        if (IsBlankString(edit_first_name->str))
           RenderNotify(notify, WARNING_NOTIFY, "ĐVT không được để trắng");
         else frame->active_element = 4;
       }
@@ -131,9 +154,17 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
       else if (keycode == KEY_RIGHT)
         frame->active_element = 6;
     } else if (frame->active_element == 4) {
-      // Quantity
-      keycode = ActiveEditInt(edit_quantity);
-      if (keycode == ENTER || keycode == KEY_DOWN)
+      // Sex
+      keycode = ActiveButton(sex_button);
+      if (keycode == ENTER) {
+        if (staff->sex == FEMALE_STAFF) {
+          staff->sex = MALE_STAFF;
+          SetButtonText(sex_button, "Nam");
+        } else if (staff->sex == MALE_STAFF) {
+          staff->sex = FEMALE_STAFF;
+          SetButtonText(sex_button, "Nữ");
+        }
+      } else if (keycode == KEY_DOWN)
         frame->active_element = 5;
       else if (keycode == KEY_UP)
         frame->active_element = 3;
@@ -145,23 +176,32 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
       // Save
       keycode = ActiveButton(save_button);
       if (keycode == ENTER) {
-        message = UpdateMaterialInArchive(_material->code, material);
+        message = SaveStaffToArchive(staff);
         if (message == OK) {
           RenderNotify(notify, SUCCESS_NOTIFY, "Lưu thành công");
+          staff = NewStaff();
+          edit_code->str = staff->code;
+          edit_last_name->str = staff->last_name;
+          edit_first_name->str = staff->first_name;
+          SetButtonText(sex_button, "Nữ");
+          RenderEditStr(edit_code);
+          RenderEditStr(edit_last_name);
+          RenderEditStr(edit_first_name);
+          RenderButton(sex_button);
         } else {
           if (message == M_CONFLICT) {
             RenderNotify(notify, ERROR_NOTIFY, "Mã đã được sử dụng");
             frame->active_element = 1;
           }
-          else if (message == M_MATERIAL_CODE_INVALID) {
+          else if (message == M_STAFF_CODE_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Mã không được để trắng");
             frame->active_element = 1;
           }
-          else if (message == M_MATERIAL_NAME_INVALID) {
+          else if (message == M_STAFF_LAST_NAME_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Tên không được để trắng");
             frame->active_element = 2;
           }
-          else if (message == M_MATERIAL_UNIT_INVALID) {
+          else if (message == M_STAFF_FIRST_NAME_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "ĐVT không được để trắng");
             frame->active_element = 3;
           }
@@ -174,49 +214,30 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
         frame->active_element = 6;
       else if (keycode == KEY_UP)
         frame->active_element = 4;
-      else if (keycode == KEY_DOWN)
-        frame->active_element = 7;
     } else if (frame->active_element == 6) {
-      // Delete
-      keycode = ActiveButton(delete_button);
+      // Close
+      keycode = ActiveButton(close_button);
       if (keycode == ENTER) {
-        message = DeleteMaterialInArchive(_material->code);
-        if (message != OK)
-          RenderNotify(notify, ERROR_NOTIFY, "Lỗi không xác định");
-        else frame->active_element = 0;
+        DestroyStaff(staff);
+        frame->active_element = 0;
       }
       else if (keycode == KEY_UP)
         frame->active_element = 4;
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
-      else if (keycode == KEY_DOWN)
-        frame->active_element = 7;
-    } else if (frame->active_element == 7) {
-      // Close
-      keycode = ActiveButton(close_button);
-      if (keycode == ENTER) {
-        DestroyMaterial(material);
-        frame->active_element = 0;
-      }
-      else if (keycode == KEY_UP)
-        frame->active_element = 5;
-      else if (keycode == KEY_LEFT)
-        frame->active_element = 5;
-      else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
     }
   }
 
   // Release
-  DestroyEditStr(edit_name);
-  DestroyEditStr(edit_unit);
-  DestroyEditInt(edit_quantity);
+  DestroyEditStr(edit_code);
+  DestroyEditStr(edit_last_name);
+  DestroyEditStr(edit_first_name);
+  DestroyButton(sex_button);
   DestroyButton(save_button);
-  DestroyButton(delete_button);
   DestroyButton(close_button);
   DestroyNotify(notify);
 
-  MUPRecovery(frame);
+  SCPRecovery(frame);
 }
 
 #ifdef __cplusplus

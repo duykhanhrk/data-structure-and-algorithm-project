@@ -89,6 +89,11 @@ bool IsCodeInStaffList(StaffList staff_list, const char * code) {
   return false;
 }
 
+// Count
+int StaffListCount(StaffList staff_list) {
+  return staff_list->count;
+}
+
 // Insert
 message_tp AddItemToStaffList(StaffList &staff_list, Staff staff) {
   if (staff_list->count == STAFF_LIST_MAX_ITEMS)
@@ -168,6 +173,12 @@ Staff GetItemInStaffListByCode(StaffList staff_list, const char * code) {
       return staff_list->staffs[interact];
 
   return NULL;
+}
+
+void TakeItemsInStaffList(StaffList staff_list, LinearList linear_list, int &offset, int &limit) {
+  if (offset >= staff_list->count) return;
+  for (int interact = offset; interact < staff_list->count && limit > 0; interact ++, limit --)
+    AddItemToLinearList(linear_list, staff_list->staffs[interact]);
 }
 
 // Delete

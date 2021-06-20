@@ -4,6 +4,9 @@
 #define MATERIALS_FILE_PATH "storage/materials.dat"
 #define STAFFS_FILE_PATH "storage/staffs.dat"
 
+#define MATERIAL_LIST_IN_ARCHIVE archive->material_list
+#define STAFF_LIST_IN_ARCHIVE archive->staff_list
+
 #include "../supporter/supporter.h"
 #include "../structure/structure.h"
 

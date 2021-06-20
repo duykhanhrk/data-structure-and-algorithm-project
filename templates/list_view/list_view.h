@@ -39,23 +39,6 @@ typedef struct ListViewT {
   keycode_tp (* active_item)(ListViewItemContext);
 } ListViewT, * ListView;
 
-ListView NewListView(
-  LinearList,
-  size_tp,
-  size_tp,
-  position_tp,
-  position_tp,
-  color_tp,
-  color_tp,
-  color_tp,
-  color_tp,
-  ListViewItemContext,
-  void (*)(ListViewItemContext, status_tp),
-  keycode_tp (*)(ListViewItemContext),
-  bool (*)(char),
-  index_tp
-);
-
 void DestroyListView(ListView &);
 
 void RenderListView(ListView, status_tp);

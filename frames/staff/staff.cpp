@@ -1,77 +1,79 @@
+#include "staff.h"
 
-#include "material.h"
-bool MTPAddButtonConsole(keycode_tp c) {
+bool STPAddButtonConsole(keycode_tp c) {
   return (c == KEY_LEFT || c == KEY_DOWN || c == ENTER || c == BACKSPACE);
 }
 
-void MTPRecovery(Frame frame) {
+void STPRecovery(Frame frame) {
   DrawRecShape(
-    MTP_MATERIAL_LIST_ITEM_WIDTH, 3, ' ',
+    STP_STAFF_LIST_ITEM_WIDTH, 3, ' ',
     frame->position_x + 2, frame->position_y + 1,
     CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND_LV1
   );
 
   DrawRecShape(
-    MTP_MATERIAL_LIST_ITEM_WIDTH, WINDOW_ROWS - 6, ' ',
+    STP_STAFF_LIST_ITEM_WIDTH, WINDOW_ROWS - 6, ' ',
     frame->position_x + 2, frame->position_y + 5,
     CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND_LV1
   );
 }
 
-void ActiveMaterialFrame(Frame frame) {
+void ActiveStaffFrame(Frame frame) {
   // Button
   Button add_button = NewButton(
-    " Thêm", ALIGN_CENTER,
-    MTP_ADD_BUTTON_WIDTH, MTP_ADD_BUTTON_HEIGHT, 0,
+    "Thêm", ALIGN_CENTER,
+    STP_ADD_BUTTON_WIDTH, STP_ADD_BUTTON_HEIGHT, 0,
     frame->position_x + 2, frame->position_y + 1,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
     PROGRAM_THEME_FOREGROUND, PROGRAM_BACKGROUND,
-    MTPAddButtonConsole
+    STPAddButtonConsole
   );
 
   // Material list view
   ListViewScroll list_view_scroll = NewListViewScroll(
-    MATERIAL_LIST_IN_ARCHIVE, // data
+    STAFF_LIST_IN_ARCHIVE, // data
     0, 4, // page, fields count
-    CountMaterialsInArchive, // items count
-    TakeMaterialsInArchive, // take items
-    MTP_MATERIAL_LIST_WIDTH, MTP_MATERIAL_LIST_HEIGHT,
+    CountStaffsInArchive, // items count
+    TakeStaffsInArchive, // take items
+    STP_STAFF_LIST_WIDTH, STP_STAFF_LIST_HEIGHT,
     frame->position_x + 2, frame->position_y + 5,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
-    MTP_MATERIAL_LIST_ITEM_WIDTH, MTP_MATERIAL_LIST_ITEM_HEIGHT,
+    STP_STAFF_LIST_ITEM_WIDTH, STP_STAFF_LIST_ITEM_HEIGHT,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
     PROGRAM_THEME_FOREGROUND, PROGRAM_BACKGROUND,
-    RENDER_LIST_VIEW_ITEM_WITH_DATA_AS_MATERIAL,
-    ACTIVE_LIST_VIEW_ITEM_WITH_DATA_AS_MATERIAL,
+    RENDER_LIST_VIEW_ITEM_WITH_DATA_AS_STAFF,
+    ACTIVE_LIST_VIEW_ITEM_WITH_DATA_AS_STAFF,
     LIST_VIEW_SCROLL_EB_CONSOLE,
     0
   );
 
   AddFieldForListViewScroll(list_view_scroll, "Mã", 10);
-  AddFieldForListViewScroll(list_view_scroll, "Tên", 56);
-  AddFieldForListViewScroll(list_view_scroll, "ĐVT", 10);
-  AddFieldForListViewScroll(list_view_scroll, "Số lượng", 10);
+  AddFieldForListViewScroll(list_view_scroll, "Tên", 32);
+  AddFieldForListViewScroll(list_view_scroll, "Họ", 32);
+  AddFieldForListViewScroll(list_view_scroll, "Giới tính", 12);
 
   // creation
-  Frame creation_frame = NewFrame(
-    MTP_CREATION_FORM_WIDTH, MTP_CREATION_FORM_HEIGHT,
-    frame->position_x + (frame->width - MTP_CREATION_FORM_WIDTH) / 2,
-    frame->position_y + (frame->height - MTP_CREATION_FORM_HEIGHT) / 2
+  Frame creation_form = NewFrame(
+    STP_CREATION_FORM_WIDTH, STP_CREATION_FORM_HEIGHT,
+    frame->position_x + (frame->width - STP_CREATION_FORM_WIDTH) / 2,
+    frame->position_y + (frame->height - STP_CREATION_FORM_HEIGHT) / 2
   );
 
   // updated
-  Frame updated_frame = NewFrame(
-    MTP_UPDATED_FORM_WIDTH, MTP_UPDATED_FORM_HEIGHT,
-    frame->position_x + (frame->width - MTP_UPDATED_FORM_WIDTH) / 2,
-    frame->position_y + (frame->height - MTP_UPDATED_FORM_HEIGHT) / 2
+  Frame updated_form = NewFrame(
+    STP_UPDATED_FORM_WIDTH, STP_UPDATED_FORM_HEIGHT,
+    frame->position_x + (frame->width - STP_UPDATED_FORM_WIDTH) / 2,
+    frame->position_y + (frame->height - STP_UPDATED_FORM_HEIGHT) / 2
   );
+
+  // Render
 
   RenderButton(add_button);
   RenderListViewScroll(list_view_scroll);
 
   // Active
-  Material material;
+  Staff staff;
   keycode_tp keycode;
   while (frame->active_element != 0) {
     if (frame->active_element == 1) {
@@ -82,9 +84,9 @@ void ActiveMaterialFrame(Frame frame) {
       } else if (keycode == KEY_DOWN)
         frame->active_element = 2;
       else if (keycode == ENTER) {
-        creation_frame->active_element = 1;
-        MTPRecovery(frame);
-        ActiveMaterialCreationFrame(creation_frame);
+        creation_form->active_element = 1;
+        STPRecovery(frame);
+        ActiveStaffCreationFrame(creation_form);
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 1;
@@ -95,22 +97,20 @@ void ActiveMaterialFrame(Frame frame) {
       // List
       keycode = ActiveListViewScroll(list_view_scroll);
       if (keycode == ENTER) {
-        updated_frame->active_element = 2;
-        MTPRecovery(frame);
-        material = (Material) GetItemInLinearListByIndex(
+        updated_form->active_element = 2;
+        STPRecovery(frame);
+        staff = (Staff) GetItemInLinearListByIndex(
           list_view_scroll->list_view->linear_list,
           list_view_scroll->list_view->selected_item
         );
-        if (material == NULL) continue;
-        ActiveMaterialUpdatedFrame(updated_frame, material);
+        if (staff == NULL) continue;
+        ActiveStaffUpdatedFrame(updated_form, staff);
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 2;
       } else if (keycode == BACKSPACE) {
         frame->active_element = 1;
       } else if (keycode == KEY_UP) {
-        frame->active_element = 1;
-      } else if (keycode == NULL_KEY) {
         frame->active_element = 1;
       }
     }
@@ -119,9 +119,9 @@ void ActiveMaterialFrame(Frame frame) {
   // Release
   DestroyButton(add_button);
   DestroyListViewScroll(list_view_scroll);
-  DestroyFrame(creation_frame);
-  DestroyFrame(updated_frame);
+  DestroyFrame(creation_form);
+  DestroyFrame(updated_form);
 
   // Recovery
-  MTPRecovery(frame);
+  STPRecovery(frame);
 }

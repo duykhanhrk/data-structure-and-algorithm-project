@@ -29,9 +29,17 @@ message_tp StaffValidation(Staff staff, bool strict = true) {
 }
 
 /* Standard */
+int CountStaffsInArchive() {
+  return StaffListCount(archive->staff_list);
+}
 
 Staff GetStaffInArchive(const char * code) {
   return GetItemInStaffListByCode(archive->staff_list, code);
+}
+
+void TakeStaffsInArchive(LinearList linear_list, int offset, int limit) {
+  EmptyLinearList(linear_list);
+  TakeItemsInStaffList(archive->staff_list, linear_list, offset, limit);
 }
 
 message_tp SaveStaffToArchive(Staff staff) {
@@ -62,7 +70,7 @@ message_tp UpdateStaffInArchive(const char * code, Staff staff) {
   staff->invoice_list = _staff->invoice_list;
 
   // tranfer data
-  TranferStaff(_staff, staff);
+  CopyStaff(_staff, staff);
 
   // Save staff to storage
   SaveStaffListFromArchiveToStorage();

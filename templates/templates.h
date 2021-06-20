@@ -17,6 +17,7 @@ extern "C" {
 #include "edit_int/edit_int.h"
 #include "list_view/list_view_item_context.h"
 #include "list_view/list_view.h"
+#include "list_view/list_view_scroll.h"
 
 #ifdef __cplusplus
 }

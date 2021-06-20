@@ -120,3 +120,52 @@ keycode_tp ActiveListViewItemWithDataAsMaterial(ListViewItemContext list_view_it
 
   return NULL_KEY;
 }
+
+// Staff
+// Material
+
+void RenderListViewItemWithDataAsStaff(
+  ListViewItemContext list_view_item_context,
+  status_tp status = NORMAL_LIST_VIEW_ITEM
+) {
+  if (list_view_item_context->data == NULL) return;
+
+  color_tp foreground = list_view_item_context->foreground;
+  color_tp background = list_view_item_context->background;
+
+  if (status == ACTIVE_LIST_VIEW_ITEM) {
+    foreground = list_view_item_context->active_foreground;
+    background = list_view_item_context->active_background;
+  }
+
+  DrawRecShape(
+    list_view_item_context->width, list_view_item_context->height,
+    ' ',
+    list_view_item_context->position_x, list_view_item_context->position_y,
+    foreground, background
+  );
+
+  Staff staff = (Staff) (list_view_item_context->data);
+  position_tp position_x = list_view_item_context->position_x;
+  position_tp position_y = list_view_item_context->position_y + list_view_item_context->height / 2;
+//   2 + 10 + 2 + 32 + 2 + 32 + 2 + 12 + 2
+  WriteStr(staff->code, position_x + 2, position_y, foreground, background);
+  WriteStr(staff->first_name, position_x + 14, position_y, foreground, background);
+  WriteStr(staff->last_name, position_x + 48, position_y, foreground, background);
+  if (staff->sex == FEMALE_STAFF)
+    WriteStr("Nữ", position_x + 82, position_y, foreground, background);
+  else if (staff->sex == MALE_STAFF)
+    WriteStr("Nam", position_x + 82, position_y, foreground, background);
+}
+
+keycode_tp ActiveListViewItemWithDataAsStaff(ListViewItemContext list_view_item_context) {
+  RenderListViewItemWithDataAsStaff(list_view_item_context, ACTIVE_LIST_VIEW_ITEM);
+
+  if (list_view_item_context->console == NULL) return NULL_KEY;
+
+  keycode_tp keycode = Console();
+  while (!list_view_item_context->console(keycode))
+    keycode = Console();
+
+  return NULL_KEY;
+}

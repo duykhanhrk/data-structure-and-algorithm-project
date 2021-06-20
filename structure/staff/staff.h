@@ -9,7 +9,7 @@
 
 #define STAFF_CODE_MAX_LEN 10
 #define STAFF_FIRST_NAME_MAX_LEN 32
-#define STAFF_LAST_NAME_MAX_LEN 64
+#define STAFF_LAST_NAME_MAX_LEN 32
 #define STAFF_LIST_MAX_ITEMS 500
 
 #define FEMALE_STAFF 'F'
@@ -29,9 +29,9 @@ extern "C" {
 #endif
 
 typedef struct StaffT {
-  char code[STAFF_CODE_MAX_LEN];
-  char first_name[STAFF_FIRST_NAME_MAX_LEN];
-  char last_name[STAFF_LAST_NAME_MAX_LEN];
+  char code[STAFF_CODE_MAX_LEN + 1];
+  char first_name[STAFF_FIRST_NAME_MAX_LEN + 1];
+  char last_name[STAFF_LAST_NAME_MAX_LEN + 1];
   char sex;
   InvoiceList invoice_list;
 } StaffT, * Staff;

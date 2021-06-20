@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "material/material.h"
+#include "staff/staff.h"
 #include "main/main.h"
 
 #ifdef __cplusplus

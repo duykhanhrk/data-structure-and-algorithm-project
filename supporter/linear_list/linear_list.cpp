@@ -19,6 +19,10 @@ void EmptyLinearList(LinearList &linear_list) {
   linear_list->count = 0;
 }
 
+int LinearListCount(LinearList &linear_list) {
+  return linear_list->count;
+}
+
 message_tp AddItemToLinearList(LinearList linear_list, void * item) {
   if (linear_list->count == linear_list->max_items) return M_LIST_IS_FULL;
   linear_list->data[linear_list->count] = item;

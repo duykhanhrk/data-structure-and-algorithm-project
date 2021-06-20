@@ -1,5 +1,5 @@
 ListView NewListView(
-  LinearList linear_list = NULL,
+  int max_items = 0,
   size_tp width = LIST_VIEW_HEIGHT,
   size_tp height = LIST_VIEW_WIDTH,
   position_tp position_x = CURSOR_POSITION_X,
@@ -8,7 +8,12 @@ ListView NewListView(
   color_tp background = LIST_VIEW_BACKGROUND,
   color_tp active_foreground = LIST_VIEW_ACTIVE_FOREGROUND,
   color_tp active_background = LIST_VIEW_ACTIVE_BACKGROUND,
-  ListViewItemContext item_context = LIST_VIEW_ITEM_CONTEXT,
+  size_tp item_width = LIST_VIEW_ITEM_HEIGHT,
+  size_tp item_height = LIST_VIEW_ITEM_WIDTH,
+  color_tp item_foreground = LIST_VIEW_ITEM_FOREGROUND,
+  color_tp item_background = LIST_VIEW_ITEM_BACKGROUND,
+  color_tp item_active_foreground = LIST_VIEW_ITEM_ACTIVE_FOREGROUND,
+  color_tp item_active_background = LIST_VIEW_ITEM_ACTIVE_BACKGROUND,
   void (* render_item)(ListViewItemContext, status_tp) = LIST_VIEW_RENDER_ITEM,
   keycode_tp (* active_item)(ListViewItemContext) = LIST_VIEW_ACTIVE_ITEM,
   bool (* console)(char) = LIST_VIEW_CONSOLE,
@@ -16,7 +21,7 @@ ListView NewListView(
 ) {
   ListView list_view = (ListView) malloc(sizeof(ListViewT));
 
-  list_view->linear_list = linear_list;
+  list_view->linear_list = NewLinearList(max_items);
   list_view->position_x = position_x;
   list_view->position_y = position_y;
   list_view->width = width;
@@ -25,7 +30,13 @@ ListView NewListView(
   list_view->background = background;
   list_view->active_background = active_background;
   list_view->active_foreground = active_foreground;
-  list_view->item_context = item_context;
+  list_view->item_context = NewListViewItemContext(
+    item_width, item_height,
+    0, 0,
+    item_foreground, item_background,
+    item_active_foreground, item_active_background,
+    NULL, NULL
+  );
   list_view->render_item = render_item;
   list_view->active_item = active_item;
   list_view->console = console;
@@ -35,8 +46,14 @@ ListView NewListView(
 }
 
 void DestroyListView(ListView &list_view) {
+  DestroyLinearList(list_view->linear_list);
+  DestroyListViewItemContext(list_view->item_context);
   free(list_view);
   list_view = NULL;
+}
+
+message_tp AddItemToListView(ListView list_view, void * data) {
+  return AddItemToLinearList(list_view->linear_list, data);
 }
 
 void RenderListView(ListView list_view, status_tp status = NORMAL_LIST_VIEW) {

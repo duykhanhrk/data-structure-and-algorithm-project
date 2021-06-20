@@ -68,7 +68,7 @@ void ActiveMaterialCreationFrame(Frame frame) {
   );
 
   Button save_button = NewButton(
-    " Lưu",
+    " Lưu", ALIGN_CENTER,
     (frame->width - 6) / 2, 3, 0,
     frame->position_x + 2, frame->position_y + 17,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
@@ -77,7 +77,7 @@ void ActiveMaterialCreationFrame(Frame frame) {
   );
 
   Button close_button = NewButton(
-    " Thoát",
+    " Thoát", ALIGN_CENTER,
     (frame->width - 6) / 2, 3, 0,
     frame->position_x + (frame->width - 6) / 2 + 4, frame->position_y + 17,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,

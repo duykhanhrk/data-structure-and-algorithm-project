@@ -6,7 +6,6 @@
 #include "../../archivist/material/material.h"
 #include "creation_form.h"
 #include "updated_form.h"
-#include "material_list_view.h"
 
 #define MTP_MATERIAL_LIST_ITEMS 22
 #define MTP_MATERIAL_LIST_WIDTH 96

@@ -8,6 +8,7 @@
 #define BUTTON_ACTIVE_BACKGROUND PROGRAM_THEME_BACKGROUND
 
 #define BUTTON_TEXT "Button\0"
+#define BUTTON_TEXT_ALIGN ALIGN_CENTER
 #define BUTTON_SIZE 1
 #define BUTTON_WIDTH 0
 #define BUTTON_HEIGHT 0
@@ -22,6 +23,7 @@ extern "C" {
 
 typedef struct ButtonT {
   char * text;
+  align_tp text_align;
   size_tp width;
   size_tp height;
   size_tp size;
@@ -34,7 +36,7 @@ typedef struct ButtonT {
   bool (* console)(char);
 } ButtonT, * Button;
 
-Button NewButton(const char *, size_tp, size_tp, size_tp, position_tp, position_tp, color_tp, color_tp, color_tp, color_tp, bool (*)(char));
+Button NewButton(const char *, align_tp, size_tp, size_tp, size_tp, position_tp, position_tp, color_tp, color_tp, color_tp, color_tp, bool (*)(char));
 void DestroyButton(Button &);
 
 void RenderButton(Button, status_tp);
