@@ -44,6 +44,22 @@ void SeedStaff() {
   }
 }
 
+void InvoiceSeed() {
+  Invoice invoice;
+  InvoiceDetail invoice_detail;
+  invoice = NewInvoice("0123456789", TimeNow(), IMPORT_INVOICE);
+  invoice_detail = NewInvoiceDetail("VATTU1", 10, 10, 0);
+  AddItemToInvoiceDetailList(invoice->invoice_detail_list, invoice_detail);
+//   SaveInvoiceDetailToArchive("A", invoice);
+  message_tp message = SaveInvoiceToArchive("A", invoice);
+  ShowInvoiceListInArchiveByStaff(GetStaffInArchive("A"));
+  double total_price = CalculateTotalPriceOfInvoice(invoice);
+  WriteDouble(total_price);
+  show(total_price);
+  show(message);
+  getch();
+}
+
 int main() {
   // Config console
   CursorVisible(false);
@@ -61,6 +77,8 @@ int main() {
   // Load data from storage
   LoadMaterialListFromStorageToArchive();
   LoadStaffListFromStorageToArchive();
+
+  InvoiceSeed();
 
   // Init main frame
   Frame main_frame = NewFrame(WINDOW_COLUMNS, WINDOW_ROWS);

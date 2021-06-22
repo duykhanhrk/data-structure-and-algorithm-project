@@ -58,11 +58,58 @@ message_tp InvoiceValidation(Invoice invoice, bool strict = true) {
 
 /* Standard */
 
+double CalculateTotalPriceOfInvoice(Invoice invoice) {
+  double total_price = 0.0;
+  InvoiceDetail invoice_detail;
+  for (int interact = 0; interact < invoice->invoice_detail_list->count; interact ++) {
+    invoice_detail = GetItemInInvoiceDetailListByIndex(invoice->invoice_detail_list, interact);
+    total_price += invoice_detail->amount * invoice_detail->price
+                   + (invoice_detail->amount * invoice_detail->price * invoice_detail->vat);
+  }
+
+  return total_price;
+}
+
 Invoice GetInvoiceInArchive(const char * staff_code, const char * number) {
   Staff staff = GetItemInStaffListByCode(archive->staff_list, staff_code);
   if (IsNull(staff)) return NULL;
 
   return GetItemInInvoiceListByNumber(staff->invoice_list, number);
+}
+
+int CountInvoicesInArchive() {
+  int count = 0;
+  InvoiceList invoice_list;
+
+  for (int interact = 0; interact < archive->staff_list->count; interact ++) {
+    invoice_list = archive->staff_list->staffs[interact]->invoice_list;
+    count += InvoiceListCount(invoice_list);
+  }
+
+  return count;
+}
+
+void TakeInvoicesInArchive(LinearList linear_list, int offset, int limit) {
+  for (int interact = 0; interact < linear_list->count; interact ++)
+    DestroyLinearList((LinearList) (linear_list->data[interact]));
+  EmptyLinearList(linear_list);
+
+  InvoiceNode invoice_node;
+  LinearList container;
+  for (int interact = 0; interact < archive->staff_list->count; interact ++) {
+    invoice_node = archive->staff_list->staffs[interact]->invoice_list;
+    while (invoice_node != NULL && limit > 0) {
+      if (offset > 0) offset --;
+      else {
+        container = NewLinearList(2);
+        AddItemToLinearList(container, invoice_node->invoice);
+        AddItemToLinearList(container, archive->staff_list->staffs[interact]);
+        AddItemToLinearList(linear_list, container);
+        limit --;
+      }
+      invoice_node = invoice_node->next_node;
+    }
+  }
 }
 
 message_tp SaveInvoiceToArchive(const char * staff_code, Invoice invoice) {

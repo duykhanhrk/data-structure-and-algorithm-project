@@ -9,10 +9,10 @@ LinearList NewLinearList(int max_items) {
   return linear_list;
 }
 
-void DestroyLinearList(LinearList &linear_list) {
+void DestroyLinearList(LinearList linear_list) {
   free(linear_list->data);
   free(linear_list);
-  linear_list = NULL;
+//   linear_list = NULL;
 }
 
 void EmptyLinearList(LinearList &linear_list) {
@@ -40,6 +40,18 @@ message_tp DeteleItemInLinearListByIndex(LinearList linear_list, int index) {
   linear_list->count --;
 
   return OK;
+}
+
+void * GetFirstItemInLinearList(LinearList linear_list) {
+  if (linear_list->count == 0) return NULL;
+
+  return linear_list->data[0];
+}
+
+void * GetLastItemInLinearList(LinearList linear_list) {
+  if (linear_list->count == 0) return NULL;
+
+  return linear_list->data[linear_list->count - 1];
 }
 
 void * GetItemInLinearListByIndex(LinearList linear_list, int index) {

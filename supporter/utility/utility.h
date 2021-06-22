@@ -28,6 +28,9 @@
 #define ALIGN_RIGHT 'R'
 #define ALIGN_CENTER 'C'
 
+#define NORMAL_TEMPLATE 1
+#define ACTIVE_TEMPLATE 2
+
 // Pointer
 #define IsNull(x) x == NULL
 
@@ -64,6 +67,7 @@
 #define VoidTypeToDateTime(obj) (*((time_t *) obj))
 #define NumViolatesMaxValue(num, c, max) ((max - num < max - max/10) || (max - num == max - max/10 && CharToInt(c) > max%10))
 #define NumViolatesMinValue(num, c, min) ((min - num > min - min/10) || (min - num == min - min/10 && 48 - c < min%10))
+#define IsLeapYear(year) (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
 
 #ifdef __cplusplus
 extern "C" {

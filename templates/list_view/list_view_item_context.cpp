@@ -122,7 +122,6 @@ keycode_tp ActiveListViewItemWithDataAsMaterial(ListViewItemContext list_view_it
 }
 
 // Staff
-// Material
 
 void RenderListViewItemWithDataAsStaff(
   ListViewItemContext list_view_item_context,
@@ -160,6 +159,66 @@ void RenderListViewItemWithDataAsStaff(
 
 keycode_tp ActiveListViewItemWithDataAsStaff(ListViewItemContext list_view_item_context) {
   RenderListViewItemWithDataAsStaff(list_view_item_context, ACTIVE_LIST_VIEW_ITEM);
+
+  if (list_view_item_context->console == NULL) return NULL_KEY;
+
+  keycode_tp keycode = Console();
+  while (!list_view_item_context->console(keycode))
+    keycode = Console();
+
+  return NULL_KEY;
+}
+
+// Invoice
+
+void RenderListViewItemWithDataAsInvoice(
+  ListViewItemContext list_view_item_context,
+  status_tp status = NORMAL_LIST_VIEW_ITEM
+) {
+  if (list_view_item_context->data == NULL) return;
+
+  color_tp foreground = list_view_item_context->foreground;
+  color_tp background = list_view_item_context->background;
+
+  if (status == ACTIVE_LIST_VIEW_ITEM) {
+    foreground = list_view_item_context->active_foreground;
+    background = list_view_item_context->active_background;
+  }
+
+  DrawRecShape(
+    list_view_item_context->width, list_view_item_context->height,
+    ' ',
+    list_view_item_context->position_x, list_view_item_context->position_y,
+    foreground, background
+  );
+
+  LinearList container = (LinearList) (list_view_item_context->data);
+  Invoice invoice = (Invoice) GetFirstItemInLinearList(container);
+  Staff staff = (Staff) GetLastItemInLinearList(container);
+
+  position_tp position_x = list_view_item_context->position_x;
+  position_tp position_y = list_view_item_context->position_y + list_view_item_context->height / 2;
+//   2 + 10 + 2 + 12 + 2 + 54 + 2 + 10 + 2
+  WriteStr(invoice->number, position_x + 2, position_y, foreground, background);
+  WriteDate(invoice->created_at, position_x + 14, position_y, foreground, background);
+  if (strlen(staff->last_name) + strlen(staff->first_name) + 1 <= 54) {
+    WriteStr(staff->last_name, position_x + 28, position_y, foreground, background);
+    WriteStr(" ", CURSOR_POSITION_X, position_y, foreground, background);
+    WriteStr(staff->first_name, CURSOR_POSITION_X, position_y, foreground, background);
+  } else {
+    WriteStr("N/A", position_x + 28, position_y, foreground, background);
+  }
+
+  double total_price = CalculateTotalPriceOfInvoice(invoice);
+  if (total_price <= 9999999999) {
+    WriteDouble(total_price, position_x + 84, position_y, foreground, background);
+  } else {
+    WriteStr("N/A", position_x + 28, position_y, foreground, background);
+  }
+}
+
+keycode_tp ActiveListViewItemWithDataAsInvoice(ListViewItemContext list_view_item_context) {
+  RenderListViewItemWithDataAsInvoice(list_view_item_context, ACTIVE_LIST_VIEW_ITEM);
 
   if (list_view_item_context->console == NULL) return NULL_KEY;
 

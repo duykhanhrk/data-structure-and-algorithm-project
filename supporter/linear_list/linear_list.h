@@ -12,7 +12,7 @@ typedef struct LinearListT {
 } LinearListT, * LinearList;
 
 LinearList NewLinearList(int);
-void DestroyLinearList(LinearList &);
+void DestroyLinearList(LinearList);
 
 message_tp AddItemToLinearList(LinearList, void *);
 message_tp DeteleItemInLinearListByIndex(LinearList, int);

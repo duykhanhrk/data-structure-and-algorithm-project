@@ -199,6 +199,14 @@ InvoiceDetail GetInvoiceDetailInListByIndex(InvoiceDetailList invoice_detail_lis
   return invoice_detail_list->invoice_details[index];
 }
 
+InvoiceDetail GetItemInInvoiceDetailListByIndex(InvoiceDetailList invoice_detail_list, int index) {
+  if (invoice_detail_list->count == 0 || index < 0 || index > invoice_detail_list->count - 1)
+    return NULL;
+
+  return invoice_detail_list->invoice_details[index];
+}
+
+
 // Delete
 
 message_tp DeleteFirstItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list) {

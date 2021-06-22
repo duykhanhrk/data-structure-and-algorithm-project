@@ -32,7 +32,7 @@ Struct
 ----------------------------------------------------------------------------- */
 
 typedef struct InvoiceT {
-  char number[INVOICE_NUMBER_MAX_LEN];
+  char number[INVOICE_NUMBER_MAX_LEN + 1];
   time_t created_at;
   char type;
   InvoiceDetailList invoice_detail_list;

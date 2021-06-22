@@ -63,6 +63,8 @@ void ActiveMainFrame(Frame frame) {
         frame->active_element = 1;
       } else if (list_view->selected_item == 2) {
         // Invoice
+        content_frame->active_element = 1;
+        ActiveInvoiceFrame(content_frame);
         frame->active_element = 1;
       } else if (list_view->selected_item == 3) {
         // Statistics

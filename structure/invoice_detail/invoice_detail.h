@@ -28,7 +28,7 @@ Struct
 ----------------------------------------------------------------------------- */
 
 typedef struct InvoiceDetailT {
-  char material_code[MATERIAL_CODE_MAX_LEN];
+  char material_code[MATERIAL_CODE_MAX_LEN + 1];
   int amount;
   float price;
   float vat;
