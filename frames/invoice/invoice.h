@@ -4,20 +4,20 @@
 /* Private key - IVP */
 
 #include "../../archivist/invoice/invoice.h"
-// #include "creation_form.h"
+#include "creation_form.h"
 // #include "updated_form.h"
 
 #define IVP_INVOICE_LIST_ITEMS 22
 #define IVP_INVOICE_LIST_WIDTH 96
-#define IVP_INVOICE_LIST_HEIGHT 24
+#define IVP_INVOICE_LIST_HEIGHT 20
 #define IVP_INVOICE_LIST_ITEM_WIDTH 96
 #define IVP_INVOICE_LIST_ITEM_HEIGHT 1
 
-#define IVP_ADD_BUTTON_WIDTH 48
-#define IVP_ADD_BUTTON_HEIGHT 3
+#define IVP_BUTTON_WIDTH 47
+#define IVP_BUTTON_HEIGHT 3
 
 #define IVP_CREATION_FORM_WIDTH 50
-#define IVP_CREATION_FORM_HEIGHT 25
+#define IVP_CREATION_FORM_HEIGHT 30
 
 #define IVP_UPDATED_FORM_WIDTH 50
 #define IVP_UPDATED_FORM_HEIGHT 25

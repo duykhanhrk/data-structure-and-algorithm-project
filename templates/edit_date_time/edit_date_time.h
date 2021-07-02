@@ -68,29 +68,31 @@ EditDateTime NewEditDateTime(
   edit_datetime->edit_year = NewEditInt(
     NULL,
     0, 0,
-    6, height,
+    8, height,
     position_x + 5, position_y,
-    EDIT_INT_FOREGROUND, EDIT_INT_BACKGROUND,
-    EDIT_INT_ACTIVE_FOREGROUND, EDIT_INT_ACTIVE_BACKGROUND
+    foreground, background,
+    active_foreground, active_background
   );
 
   edit_datetime->edit_month = NewEditInt(
     NULL,
     0, 0,
-    4, height,
-    position_x + 13, position_y,
-    EDIT_INT_FOREGROUND, EDIT_INT_BACKGROUND,
-    EDIT_INT_ACTIVE_FOREGROUND, EDIT_INT_ACTIVE_BACKGROUND
+    6, height,
+    position_x + 18, position_y,
+    foreground, background,
+    active_foreground, active_background
   );
 
   edit_datetime->edit_day = NewEditInt(
     NULL,
     0, 0,
-    4, height,
-    position_x + 26, position_y,
-    EDIT_INT_FOREGROUND, EDIT_INT_BACKGROUND,
-    EDIT_INT_ACTIVE_FOREGROUND, EDIT_INT_ACTIVE_BACKGROUND
+    6, height,
+    position_x + 28, position_y,
+    foreground, background,
+    active_foreground, active_background
   );
+
+  edit_datetime->active_element = edit_datetime->edit_year;
   return edit_datetime;
 }
 
@@ -116,20 +118,20 @@ void RenderEditDateTime(EditDateTime edit_datetime, status_tp status = NORMAL_TE
 
   // Input
   WriteStr(
-    "Năm:",
-    edit_datetime->position_x, edit_datetime->position_y + edit_datetime->height / 2,
+    "Năm",
+    edit_datetime->position_x + 2, edit_datetime->position_y + edit_datetime->height / 2,
     foreground, background
   );
 
   WriteStr(
-    "Tháng:",
-    edit_datetime->position_x + 15, edit_datetime->position_y + edit_datetime->height / 2,
+    "Tháng",
+    edit_datetime->position_x + 13, edit_datetime->position_y + edit_datetime->height / 2,
     foreground, background
   );
 
   WriteStr(
     "Ngày",
-    edit_datetime->position_x + 21, edit_datetime->position_y + edit_datetime->height / 2,
+    edit_datetime->position_x + 24, edit_datetime->position_y + edit_datetime->height / 2,
     foreground, background
   );
 
@@ -165,7 +167,7 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
   edit_datetime->edit_month->num = &(_dt->month);
   edit_datetime->edit_day->num = &(_dt->day);
 
-  keycode_tp keycode;
+  keycode_tp keycode = '\0';
   while (true) {
     // Navigate
     if (edit_datetime->console(keycode)) break;
@@ -188,10 +190,15 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
       keycode = ActiveEditInt(edit_datetime->edit_day);
 
       // Navigate
-      if (keycode == KEY_RIGHT)
-        edit_datetime->active_element = edit_datetime->edit_year;
-      else if (keycode == KEY_LEFT)
+//       if (keycode == KEY_RIGHT) {
+//         edit_datetime->active_element = edit_datetime->edit_year;
+//         keycode = NULL_KEY;
+//       } else
+
+      if (keycode == KEY_LEFT) {
         edit_datetime->active_element = edit_datetime->edit_month;
+        keycode = NULL_KEY;
+      }
     } else if (edit_datetime->active_element == edit_datetime->edit_month) {
       // Set February
       days[1] = IsLeapYear(_dt->year) ? 29 : 28;
@@ -227,11 +234,15 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
       }
 
       // Navigate
-      if (keycode == KEY_RIGHT || keycode == SLASH || keycode == ENTER)
+      if (keycode == KEY_RIGHT || keycode == SLASH || keycode == ENTER) {
         edit_datetime->active_element = edit_datetime->edit_day;
-      else if (keycode == KEY_LEFT)
+        keycode = NULL_KEY;
+      }
+      else if (keycode == KEY_LEFT) {
         edit_datetime->active_element = edit_datetime->edit_year;
-    } else if (edit_datetime->active_element == edit_datetime->edit_day) {
+        keycode = NULL_KEY;
+      }
+    } else if (edit_datetime->active_element == edit_datetime->edit_year) {
       // Year input
       keycode = ActiveEditInt(edit_datetime->edit_year);
 
@@ -268,10 +279,14 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
       }
 
       // Navigate
-      if (keycode == KEY_RIGHT || keycode == SLASH || keycode == ENTER)
-        edit_datetime->active_element = edit_datetime->edit_day;
-      else if (keycode == KEY_LEFT)
-        edit_datetime->active_element = edit_datetime->edit_day;
+      if (keycode == KEY_RIGHT || keycode == SLASH || keycode == ENTER) {
+        edit_datetime->active_element = edit_datetime->edit_month;
+        keycode = NULL_KEY;
+      }
+//       else if (keycode == KEY_LEFT) {
+//         edit_datetime->active_element = edit_datetime->edit_day;
+//         keycode = NULL_KEY;
+//       }
     }
 
     *(edit_datetime->datetime) = DateTimeToTimeT(_dt);

@@ -51,14 +51,16 @@ void InvoiceSeed() {
   invoice_detail = NewInvoiceDetail("VATTU1", 10, 10, 0);
   AddItemToInvoiceDetailList(invoice->invoice_detail_list, invoice_detail);
 //   SaveInvoiceDetailToArchive("A", invoice);
-  message_tp message = SaveInvoiceToArchive("A", invoice);
-  ShowInvoiceListInArchiveByStaff(GetStaffInArchive("A"));
+  message_tp message = SaveInvoiceToArchive("C", invoice);
+  ShowInvoiceListInArchiveByStaff(GetStaffInArchive("C"));
   double total_price = CalculateTotalPriceOfInvoice(invoice);
   WriteDouble(total_price);
   show(total_price);
   show(message);
   getch();
 }
+
+#include <math.h>
 
 int main() {
   // Config console

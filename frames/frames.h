@@ -7,6 +7,7 @@ extern "C" {
 
 #include "material/material.h"
 #include "staff/staff.h"
+#include "invoice_detail/invoice_detail.h"
 #include "invoice/invoice.h"
 #include "main/main.h"
 

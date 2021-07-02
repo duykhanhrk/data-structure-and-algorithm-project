@@ -37,19 +37,21 @@ void DestroyListViewScrollField(ListViewScrollField &field) {
 
 typedef struct ListViewScrollT {
   void * data;
+  void * filter;
   int page;
   LinearList fields;
-  int (* items_count) ();
-  void (* take_items) (LinearList, int, int);
+  int (* items_count) (void *, void *);
+  void (* take_items) (void *, void *, LinearList, int, int);
   ListView list_view;
 } ListViewScrollT, * ListViewScroll;
 
 ListViewScroll NewListViewScroll(
   void * data,
+  void * filter,
   int page,
   int fields_count,
-  int (* items_count) (),
-  void (* take_items) (LinearList, int, int),
+  int (* items_count) (void *, void *),
+  void (* take_items) (void *, void *, LinearList, int, int),
   size_tp width = LIST_VIEW_WIDTH,
   size_tp height = LIST_VIEW_HEIGHT,
   position_tp position_x = CURSOR_POSITION_X,
@@ -105,6 +107,10 @@ void AddFieldForListViewScroll(ListViewScroll list_view_scroll, const char * nam
   AddItemToLinearList(list_view_scroll->fields, NewListViewScrollField(name, width));
 }
 
+void * GetSelectedItemInListViewScroll(ListViewScroll list_view_scroll) {
+  return GetItemInLinearListByIndex(list_view_scroll->list_view->linear_list, list_view_scroll->list_view->selected_item);
+}
+
 // Render Header
 void LVPRenderListViewScrollHeader(ListViewScroll list_view_scroll) {
   size_tp width = list_view_scroll->list_view->width;
@@ -135,7 +141,7 @@ void LVPRenderListViewScrollFooter(ListViewScroll list_view_scroll) {
   color_tp foreground = LIST_VIEW_SCROLL_FOOTER_FOREGROUND;
   color_tp background = LIST_VIEW_SCROLL_FOOTER_BACKGROUND;
 
-  int items_count = list_view_scroll->items_count();
+  int items_count = list_view_scroll->items_count(list_view_scroll->data, list_view_scroll->filter);
   int total_page = items_count / ((list_view_scroll->list_view->height) / list_view_scroll->list_view->item_context->height);
   if (items_count % ((list_view_scroll->list_view->height) / list_view_scroll->list_view->item_context->height) != 0)
     total_page ++;
@@ -157,7 +163,7 @@ void RenderListViewScroll(ListViewScroll list_view_scroll) {
   // List (exclude header and footer)
   int limit = (list_view_scroll->list_view->height / list_view_scroll->list_view->item_context->height);
   EmptyLinearList(list_view_scroll->list_view->linear_list);
-  list_view_scroll->take_items(list_view_scroll->list_view->linear_list, list_view_scroll->page * limit, limit);
+  list_view_scroll->take_items(list_view_scroll->data, list_view_scroll->filter, list_view_scroll->list_view->linear_list, list_view_scroll->page * limit, limit);
   RenderListView(list_view_scroll->list_view);
 
   // Footer
@@ -179,16 +185,16 @@ void LVPUpdatePageOnListViewScrollFooter(ListViewScroll list_view_scroll, int to
 }
 
 void LVPListViewScrollTurnToPage(ListViewScroll list_view_scroll, int limit, int total_page) {
-  list_view_scroll->take_items(list_view_scroll->list_view->linear_list, list_view_scroll->page * limit, limit);
+  list_view_scroll->take_items(list_view_scroll->data, list_view_scroll->filter, list_view_scroll->list_view->linear_list, list_view_scroll->page * limit, limit);
   LVPUpdatePageOnListViewScrollFooter(list_view_scroll, total_page);
   RenderListView(list_view_scroll->list_view);
 }
 
 keycode_tp ActiveListViewScroll(ListViewScroll list_view_scroll) {
-  if (list_view_scroll->items_count() == 0)
+  if (list_view_scroll->items_count(list_view_scroll->data, list_view_scroll->filter) == 0)
     return NULL_KEY;
 
-  int items_count = list_view_scroll->items_count();
+  int items_count = list_view_scroll->items_count(list_view_scroll->data, list_view_scroll->filter);
   int total_page = items_count / ((list_view_scroll->list_view->height) / list_view_scroll->list_view->item_context->height);
   if (items_count % ((list_view_scroll->list_view->height) / list_view_scroll->list_view->item_context->height) != 0)
     total_page ++;

@@ -210,7 +210,7 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
       // Close
       keycode = ActiveButton(close_button);
       if (keycode == ENTER) {
-        DestroyStaff(staff);
+        RevokeStaff(staff);
         frame->active_element = 0;
       }
       else if (keycode == KEY_UP)

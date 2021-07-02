@@ -210,6 +210,74 @@ message_tp DeleteItemInMaterialListByCode(MaterialList &material_list, const cha
 }
 
 /* -----------------------------------------------------------------------------
+For list view scroll
+----------------------------------------------------------------------------- */
+
+// filter by code and name
+int MaterialListCountWithFilter(MaterialList material_list, const char * filter) {
+  if (material_list != NULL) {
+    int a = 0;
+    if (IsCrestOfStringTypeA(material_list->material->name, filter) || IsCrestOfStringTypeA(material_list->material->code, filter))
+      a = 1;
+    return (a + MaterialListCount(material_list->left_node) + MaterialListCount(material_list->right_node));
+  }
+
+  return 0;
+}
+
+// filter by name and code
+void TakeItemsInMaterialListWithFilter(
+  MaterialList material_list,
+  const char * filter,
+  LinearList linear_list,
+  int &offset,
+  int &limit)
+{
+  if (material_list == NULL || limit == 0) return;
+
+  TakeItemsInMaterialList(material_list->left_node, linear_list, offset, limit);
+
+  if (offset > 0) {
+    offset --;
+  } else if (limit > 0 && (IsCrestOfStringTypeA(material_list->material->name, filter) || IsCrestOfStringTypeA(material_list->material->code, filter))) {
+    AddItemToLinearList(linear_list, material_list->material);
+    limit --;
+  }
+
+  TakeItemsInMaterialList(material_list->right_node, linear_list, offset, limit);
+}
+
+int CountMaterials(void * material_list, void * filter) {
+  if (filter == NULL)
+    return MaterialListCount((MaterialList) material_list);
+
+  return MaterialListCountWithFilter((MaterialList) material_list, (char *) filter);
+}
+
+void TakeMaterials(
+  void * material_list,
+  void * filter,
+  LinearList linear_list,
+  int offset,
+  int limit
+) {
+  if (filter == NULL)
+    return TakeItemsInMaterialList(
+      (MaterialList) material_list,
+      linear_list,
+      offset, limit
+    );
+
+  return TakeItemsInMaterialListWithFilter(
+    (MaterialList) material_list,
+    (char *) filter,
+    linear_list,
+    offset,
+    limit
+  );
+}
+
+/* -----------------------------------------------------------------------------
 Test
 ----------------------------------------------------------------------------- */
 

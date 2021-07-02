@@ -32,9 +32,10 @@ void ActiveMaterialFrame(Frame frame) {
   // Material list view
   ListViewScroll list_view_scroll = NewListViewScroll(
     MATERIAL_LIST_IN_ARCHIVE, // data
+    NULL,
     0, 4, // page, fields count
-    CountMaterialsInArchive, // items count
-    TakeMaterialsInArchive, // take items
+    CountMaterials, // items count
+    TakeMaterials, // take items
     MTP_MATERIAL_LIST_WIDTH, MTP_MATERIAL_LIST_HEIGHT,
     frame->position_x + 2, frame->position_y + 5,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,

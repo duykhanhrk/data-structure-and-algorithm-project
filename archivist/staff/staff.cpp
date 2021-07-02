@@ -29,7 +29,9 @@ message_tp StaffValidation(Staff staff, bool strict = true) {
 }
 
 /* Standard */
-int CountStaffsInArchive() {
+
+// TODO: (1) work with data and filter
+int CountStaffsInArchive(void * data, void * filter) {
   return StaffListCount(archive->staff_list);
 }
 
@@ -37,7 +39,8 @@ Staff GetStaffInArchive(const char * code) {
   return GetItemInStaffListByCode(archive->staff_list, code);
 }
 
-void TakeStaffsInArchive(LinearList linear_list, int offset, int limit) {
+// TODO: (2) work with data and filter
+void TakeStaffsInArchive(void * data, void * filter, LinearList linear_list, int offset, int limit) {
   EmptyLinearList(linear_list);
   TakeItemsInStaffList(archive->staff_list, linear_list, offset, limit);
 }

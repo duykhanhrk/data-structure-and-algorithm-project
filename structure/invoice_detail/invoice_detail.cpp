@@ -244,6 +244,23 @@ message_tp DeleteItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detai
   return OK;
 }
 
+// Rapid
+
+int CountInvoiceDetails(void * data, void * filter) {
+  // TODO: for fast will not use filter
+  InvoiceDetailList idl = (InvoiceDetailList) data;
+  return idl->count;
+}
+
+void TakeInvoiceDetails(void * data, void * filter, LinearList linear_list, int offset, int limit) {
+  // TODO: optimize the code later
+  EmptyLinearList(linear_list);
+  InvoiceDetailList idl = (InvoiceDetailList) data;
+  if (offset >= idl->count) return;
+  for (int interact = offset; interact < idl->count && limit > 0; interact ++, limit --)
+    AddItemToLinearList(linear_list, idl->invoice_details[interact]);
+}
+
 /* -----------------------------------------------------------------------------
 Test
 ----------------------------------------------------------------------------- */

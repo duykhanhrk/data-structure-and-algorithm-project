@@ -75,6 +75,19 @@ extern "C" {
 
 /* String */
 
+// Char
+char UpcaseChar(char c) {
+  if ('a' <= c && c <= 'z') return c - 32;
+
+  return c;
+}
+
+char DowncaseChar(char c) {
+  if ('A' <= c && c <= 'Z') return c + 32;
+
+  return c;
+}
+
 bool IsBlankString(const char * str) {
   for (const char * c = str; *c != '\0'; c ++)
     if (*c != ' ') return false;
@@ -118,6 +131,18 @@ bool IsASString(const char * str) {
   return true;
 }
 
+bool IsCrestOfStringTypeA(const char * str, const char * _str) {
+  const char * c = str;
+  const char * _c = _str;
+  while (*c != '\0') {
+    if (DowncaseChar(*c) != DowncaseChar(*_c) || *_c == '\0') return false;
+    c ++;
+    _c ++;
+  }
+
+  return true;
+}
+
 char EndOfString(const char * str) {
   return str[strlen(str) - 1];
 }
@@ -136,17 +161,27 @@ int StringToInt(const char * str) {
   return num;
 }
 
-// Char
-char UpcaseChar(char c) {
-  if ('a' <= c && c <= 'z') return c - 32;
+// String to float
+float StringToFloat(const char * str) {
+  bool sign = (*str == '-');
+  float num = 0.0f;
+  const char * c = str;
+  while ( *c != '\0' && *c != '.') {
+    if (!IsNumericChar(*c)) return 0;
+    num = num * 10 + CharToInt(*c);
+    c ++;
+  }
 
-  return c;
-}
+  if (*c == '\0') return num;
+  c ++;
+  float div = 10.0f;
+  while (*c != '\0') {
+    num += CharToInt(*c) / div;
+    div *= 10;
+    c ++;
+  }
 
-char DowncaseChar(char c) {
-  if ('A' <= c && c <= 'Z') return c + 32;
-
-  return c;
+  return num;
 }
 
 #ifdef __cplusplus

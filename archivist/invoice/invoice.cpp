@@ -77,7 +77,8 @@ Invoice GetInvoiceInArchive(const char * staff_code, const char * number) {
   return GetItemInInvoiceListByNumber(staff->invoice_list, number);
 }
 
-int CountInvoicesInArchive() {
+// TODO: (1) filter by created_at
+int CountInvoicesInArchive(void * data, void * filter) {
   int count = 0;
   InvoiceList invoice_list;
 
@@ -89,7 +90,8 @@ int CountInvoicesInArchive() {
   return count;
 }
 
-void TakeInvoicesInArchive(LinearList linear_list, int offset, int limit) {
+// TODO: (2) filter by created_at
+void TakeInvoicesInArchive(void * data, void * filter, LinearList linear_list, int offset, int limit) {
   for (int interact = 0; interact < linear_list->count; interact ++)
     DestroyLinearList((LinearList) (linear_list->data[interact]));
   EmptyLinearList(linear_list);
