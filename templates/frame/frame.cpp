@@ -5,8 +5,8 @@ Frame NewFrame(
   size_tp height = 0,
   position_tp position_x = 0,
   position_tp position_y = 0,
-  color_tp foreground = CURRENT_FOREGROUND,
-  color_tp background = CURRENT_BACKGROUND,
+  color_tp foreground = PROGRAM_FOREGROUND_REVERSE,
+  color_tp background = PROGRAM_THEME_BACKGROUND,
   index_tp active_element = 1
 ) {
   Frame frame = (Frame) malloc(sizeof(FrameT));

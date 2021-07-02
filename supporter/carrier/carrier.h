@@ -1,4 +1,18 @@
-#include "linear_list.h"
+#ifndef __SUPPORT_LINEAR_LIST__
+#define __SUPPORT_LINEAR_LIST__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct LinearListT {
+  void ** data;
+  int count;
+  int max_items;
+} LinearListT, * LinearList;
+
+LinearList NewLinearList(int);
+void DestroyLinearList(LinearList);
 
 LinearList NewLinearList(int max_items) {
   LinearList linear_list = (LinearList) malloc(sizeof(LinearListT));
@@ -17,11 +31,6 @@ void DestroyLinearList(LinearList linear_list) {
 
 void EmptyLinearList(LinearList &linear_list) {
   linear_list->count = 0;
-}
-
-void EmptyLinearListWithItemIsLinearList(LinearList &linear_list) {
-  for (int interact = 0; interact < linear_list->count - 1; interact ++)
-    DestroyLinearList((LinearList) linear_list->data[interact]);
 }
 
 int LinearListCount(LinearList &linear_list) {
@@ -64,3 +73,13 @@ void * GetItemInLinearListByIndex(LinearList linear_list, int index) {
 
   return linear_list->data[index];
 }
+
+/* includes */
+
+#include "linear_list.cpp"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

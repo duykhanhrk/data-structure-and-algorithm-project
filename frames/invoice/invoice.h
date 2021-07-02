@@ -5,7 +5,7 @@
 
 #include "../../archivist/invoice/invoice.h"
 #include "creation_form.h"
-// #include "updated_form.h"
+#include "show.h"
 
 #define IVP_INVOICE_LIST_ITEMS 22
 #define IVP_INVOICE_LIST_WIDTH 96

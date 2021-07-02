@@ -70,6 +70,15 @@ double CalculateTotalPriceOfInvoice(Invoice invoice) {
   return total_price;
 }
 
+Staff GetCreatedInvoiceStaff(const char * invoice_number) {
+  for (int interact = 0; interact < archive->staff_list->count; interact ++) {
+    if (IsNumberInInvoiceList(archive->staff_list->staffs[interact]->invoice_list, invoice_number))
+      return archive->staff_list->staffs[interact];
+  }
+
+  return NULL;
+}
+
 Invoice GetInvoiceInArchive(const char * staff_code, const char * number) {
   Staff staff = GetItemInStaffListByCode(archive->staff_list, staff_code);
   if (IsNull(staff)) return NULL;

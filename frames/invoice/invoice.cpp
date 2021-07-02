@@ -1,5 +1,15 @@
-
 #include "invoice.h"
+
+// Rapid - ivp
+#define ivp_render_invoice_frame IVPRenderInvoiceFrame(\
+                                   add_button,\
+                                   edit_query,\
+                                   edit_from,\
+                                   edit_to,\
+                                   filter_button,\
+                                   list_view_scroll\
+                                 )
+
 bool IVPAddButtonConsole(keycode_tp c) {
   return (c == KEY_LEFT || c == KEY_RIGHT || c == KEY_DOWN || c == ENTER || c == BACKSPACE);
 }
@@ -18,8 +28,32 @@ void IVPRecovery(Frame frame) {
   );
 }
 
+void IVPRenderInvoiceFrame(
+  Button add_button,
+  EditStr edit_query,
+  EditDateTime edit_from,
+  EditDateTime edit_to,
+  Button filter_button,
+  ListViewScroll list_view_scroll
+) {
+  RenderButton(add_button);
+  RenderEditStr(edit_query);
+  RenderEditDateTime(edit_from);
+  RenderEditDateTime(edit_to);
+  RenderButton(filter_button);
+  RenderListViewScroll(list_view_scroll);
+}
+
 void ActiveInvoiceFrame(Frame frame) {
-  // Button
+  // Variable
+  LinearList linear_list;
+  Invoice invoice;
+  char query[33];
+  strcpy(query, "\0");
+  time_t from_date = 1388534400;
+  time_t to_date = TimeNow();
+
+  // Init templates
   Button add_button = NewButton(
     " Thêm", ALIGN_CENTER,
     IVP_BUTTON_WIDTH, IVP_BUTTON_HEIGHT, 0,
@@ -29,10 +63,6 @@ void ActiveInvoiceFrame(Frame frame) {
     IVPAddButtonConsole
   );
 
-  char query[33];
-  strcpy(query, "\0");
-
-  // Init templates
   EditStr edit_query = NewEditStr(
     query,
     32, 0,
@@ -42,10 +72,6 @@ void ActiveInvoiceFrame(Frame frame) {
     EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND,
     CODE_FORMAT_CHAR_SET
   );
-
-  // date
-  time_t from_date = 1388534400;
-  time_t to_date = TimeNow();
 
   EditDateTime edit_from = NewEditDateTime(
     &(from_date),
@@ -65,8 +91,6 @@ void ActiveInvoiceFrame(Frame frame) {
     EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND
   );
 
-  // filter
-  // Button
   Button filter_button = NewButton(
     " Lọc", ALIGN_CENTER,
     22, 3, 0,
@@ -76,7 +100,6 @@ void ActiveInvoiceFrame(Frame frame) {
     IVPAddButtonConsole
   );
 
-  // Invoice list view
   // TODO: add filter by created_at
   ListViewScroll list_view_scroll = NewListViewScroll(
     STAFF_LIST_IN_ARCHIVE, // data,
@@ -116,15 +139,16 @@ void ActiveInvoiceFrame(Frame frame) {
     frame->position_y + (frame->height - IVP_UPDATED_FORM_HEIGHT) / 2
   );
 
-  RenderButton(add_button);
-  RenderEditStr(edit_query);
-  RenderEditDateTime(edit_from);
-  RenderEditDateTime(edit_to);
-  RenderButton(filter_button);
-  RenderListViewScroll(list_view_scroll);
+  // show frame
+  Frame show_frame = NewFrame(
+    frame->width, frame->height,
+    frame->position_x, frame->position_y
+  );
+
+  // Render - using rapid
+  ivp_render_invoice_frame;
 
   // Active
-  Invoice invoice;
   keycode_tp keycode;
   while (frame->active_element != 0) {
     if (frame->active_element == 1) {
@@ -134,14 +158,13 @@ void ActiveInvoiceFrame(Frame frame) {
         frame->active_element = 0;
       } else if (keycode == KEY_RIGHT) {
         frame->active_element = 3;
-      } else if (keycode == KEY_DOWN)
+      } else if (keycode == KEY_DOWN) {
         frame->active_element = 4;
-      else if (keycode == ENTER) {
-        creation_frame->active_element = 1;
+      } else if (keycode == ENTER) {
         IVPRecovery(frame);
+        creation_frame->active_element = 1;
         ActiveInvoiceCreationFrame(creation_frame);
-        RenderButton(add_button);
-        RenderListViewScroll(list_view_scroll);
+        ivp_render_invoice_frame;
         frame->active_element = 1;
       } else if (keycode == BACKSPACE) {
          frame->active_element = 0;
@@ -150,7 +173,11 @@ void ActiveInvoiceFrame(Frame frame) {
       // List
       keycode = ActiveListViewScroll(list_view_scroll);
       if (keycode == ENTER) {
-
+        IVPRecovery(frame);
+        linear_list = (LinearList) GetSelectedItemInListViewScroll(list_view_scroll);
+        invoice = (Invoice) GetFirstItemInLinearList(linear_list);
+        ActiveInvoiceShowFrame(show_frame, invoice);
+        ivp_render_invoice_frame;
       } else if (keycode == BACKSPACE) {
         frame->active_element = 1;
       } else if (keycode == KEY_UP) {

@@ -84,6 +84,13 @@ void WriteDouble(double obj, wrp_context_arguments) {
   wrp_apply_color_context;
 }
 
+void WriteFloat(float obj, wrp_context_arguments) {
+  wrp_save_color_context;
+  wrp_apply_context_arguments;
+  printf("%.2f", obj);
+  wrp_apply_color_context;
+}
+
 void WriteDate(time_t obj, wrp_context_arguments) {
   tm time_info = *(localtime(&obj));
   wrp_save_color_context;
