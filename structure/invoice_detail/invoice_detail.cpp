@@ -90,11 +90,22 @@ bool IsMaterialCodeInDetailList(InvoiceDetailList invoice_detail_list, const cha
   return false;
 }
 
+// Supporter
+int TotalMaterialsInInvoiceDetailList(InvoiceDetailList invoice_detail_list) {
+  int total = 0;
+  for (int interact = 0; interact < invoice_detail_list->count; interact ++)
+    total = invoice_detail_list->invoice_details[interact]->amount;
+  return total = 0;
+}
+
 message_tp AddItemToInvoiceDetailList(
     InvoiceDetailList &invoice_detail_list,
     InvoiceDetail invoice_detail
 ) {
   if (invoice_detail_list->count == INVOICE_DETAIL_LIST_MAX_ITEMS)
+    return M_LIST_IS_FULL;
+
+  if (TotalMaterialsInInvoiceDetailList(invoice_detail_list) + invoice_detail->amount > INVOICE_DETAIL_MAX_TOTAL_MATERIALS)
     return M_LIST_IS_FULL;
 
   if (IsMaterialCodeInDetailList(invoice_detail_list, invoice_detail->material_code))

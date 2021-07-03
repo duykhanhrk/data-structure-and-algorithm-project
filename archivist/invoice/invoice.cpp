@@ -27,6 +27,9 @@ message_tp InvoiceDetailListValidation(InvoiceDetailList invoice_detail_list, bo
   if (IsNull(invoice_detail_list) || IsZero(invoice_detail_list->count))
     return M_INVOICE_INVOICE_DETAILS_INVALID;
 
+  if (TotalMaterialsInInvoiceDetailList(invoice_detail_list) > INVOICE_DETAIL_MAX_TOTAL_MATERIALS)
+    return M_INVOICE_INVOICE_DETAILS_INVALID;
+
   for (int interact = 0; interact < invoice_detail_list->count; interact ++) {
     message_tp mess = InvoiceDetailValidation(invoice_detail_list->invoice_details[interact], strict, invoice_type);
     if (mess != OK) return mess;
