@@ -6,6 +6,42 @@
 #define ICP_INPUT_WIDTH 36
 #define ICP_INPUT_HEIGHT 3
 
+// rapid - icp
+
+#define icp_form_label(text, y)\
+        WriteStr(text, frame->position_x + 2, frame->position_y + 2 + 4 * y)
+
+#define icp_render_form_background\
+        DrawRecShape(\
+          frame->width, frame->height, ' ', frame->position_x, frame->position_y,\
+          CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND\
+        );
+
+#define icp_render_form_lablels\
+        icp_form_label("Số", 0);\
+        icp_form_label("Ngày lập", 1);\
+        icp_form_label("Loại", 2);\
+        icp_form_label("Người lập", 3)
+
+#define icp_render_templates\
+        ICPRender(\
+          invoice,\
+          staff,\
+          edit_number,\
+          edit_created_at,\
+          type_button,\
+          staff_button,\
+          ivd_list_button,\
+          save_button,\
+          close_button\
+        )
+
+#define icp_render\
+        icp_render_form_background;\
+        icp_render_form_lablels;\
+        icp_render_templates
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,7 +54,6 @@ void ICPRecovery(Frame frame) {
 }
 
 void ICPRender(
-  Frame frame,
   Invoice invoice,
   Staff staff,
   EditStr edit_number,
@@ -29,17 +64,6 @@ void ICPRender(
   Button save_button,
   Button close_button
 ) {
-  // Init form
-  DrawRecShape(
-    frame->width, frame->height, ' ', frame->position_x, frame->position_y,
-    CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND
-  );
-
-  WriteStr("Số", frame->position_x + 2, frame->position_y + 2);
-  WriteStr("Ngày lập", frame->position_x + 2, frame->position_y + 6);
-  WriteStr("Loại", frame->position_x + 2, frame->position_y + 10);
-  WriteStr("Người lập", frame->position_x + 2, frame->position_y + 14);
-
   if (staff != NULL) SetButtonText(staff_button, staff->first_name);
   else SetButtonText(staff_button, "Chọn người lập");
 
@@ -71,7 +95,7 @@ void ActiveInvoiceCreationFrame(Frame frame) {
     frame->position_x + 12, frame->position_y + 1,
     EDIT_STR_FOREGROUND, EDIT_STR_BACKGROUND,
     EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND,
-    CODE_FORMAT_CHAR_SET
+    NUMERIC_CHAR_SET
   );
 
   EditDateTime edit_created_at = NewEditDateTime(
@@ -139,18 +163,14 @@ void ActiveInvoiceCreationFrame(Frame frame) {
     20, frame->position_y
   );
 
-  ICPRender(
-    frame,
-    invoice,
-    staff,
-    edit_number,
-    edit_created_at,
-    type_button,
-    staff_button,
-    ivd_list_button,
-    save_button,
-    close_button
+  // Render
+  DrawRecShape(
+    frame->width, frame->height, ' ', frame->position_x, frame->position_y,
+    CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND
   );
+
+  // Render - using rapid
+  icp_render;
 
   // Active
   message_tp message;
@@ -205,24 +225,11 @@ void ActiveInvoiceCreationFrame(Frame frame) {
         frame->active_element = 7;
     } else if (frame->active_element == 4) {
       // Staff
-      // TODO: re-render (important!)
       keycode = ActiveButton(staff_button);
       if (keycode == ENTER) {
         ICPRecovery(frame);
-        support_frame->active_element = 1;
         staff = ActiveStaffSelectionListFrame(support_frame);
-        ICPRender(
-          frame,
-          invoice,
-          staff,
-          edit_number,
-          edit_created_at,
-          type_button,
-          staff_button,
-          ivd_list_button,
-          save_button,
-          close_button
-        );
+        icp_render;
       } else if (keycode == KEY_DOWN)
         frame->active_element = 5;
       else if (keycode == KEY_UP)
@@ -237,19 +244,8 @@ void ActiveInvoiceCreationFrame(Frame frame) {
       if (keycode == ENTER) {
         ICPRecovery(frame);
         support_frame->active_element = 1;
-        ActiveInvoiceDetailFrame(support_frame, invoice->invoice_detail_list);
-        ICPRender(
-          frame,
-          invoice,
-          staff,
-          edit_number,
-          edit_created_at,
-          type_button,
-          staff_button,
-          ivd_list_button,
-          save_button,
-          close_button
-        );
+        ActiveInvoiceDetailFrame(support_frame, invoice->invoice_detail_list, invoice->type);
+        icp_render;
       } else if (keycode == KEY_DOWN)
         frame->active_element = 6;
       else if (keycode == KEY_UP)
@@ -262,39 +258,55 @@ void ActiveInvoiceCreationFrame(Frame frame) {
       // Save
       keycode = ActiveButton(save_button);
       if (keycode == ENTER) {
-//         message = SaveInvoiceToArchive(invoice);
-//         if (message == OK) {
-//           RenderNotify(notify, SUCCESS_NOTIFY, "Lưu thành công");
-//           invoice = NewInvoice();
-//           edit_code->str = invoice->code;
-//           edit_last_name->str = invoice->last_name;
-//           edit_first_name->str = invoice->first_name;
-//           SetButtonText(sex_button, "Nữ");
-//           RenderEditStr(edit_code);
-//           RenderEditStr(edit_last_name);
-//           RenderEditStr(edit_first_name);
-//           RenderButton(sex_button);
-//         } else {
-//           if (message == M_CONFLICT) {
-//             RenderNotify(notify, ERROR_NOTIFY, "Mã đã được sử dụng");
-//             frame->active_element = 1;
-//           }
-//           else if (message == M_INVOICE_CODE_INVALID) {
-//             RenderNotify(notify, ERROR_NOTIFY, "Mã không được để trắng");
-//             frame->active_element = 1;
-//           }
-//           else if (message == M_INVOICE_LAST_NAME_INVALID) {
-//             RenderNotify(notify, ERROR_NOTIFY, "Tên không được để trắng");
-//             frame->active_element = 2;
-//           }
-//           else if (message == M_INVOICE_FIRST_NAME_INVALID) {
-//             RenderNotify(notify, ERROR_NOTIFY, "ĐVT không được để trắng");
-//             frame->active_element = 3;
-//           }
-//           else {
-//             RenderNotify(notify, ERROR_NOTIFY, "Thông tin cung cấp không hợp lệ");
-//           }
-//         }
+        if (IsNull(staff)) {
+          RenderNotify(notify, ERROR_NOTIFY, "Người lập chưa được chọn");
+          frame->active_element = 4;
+          continue;
+        }
+
+        message = SaveInvoiceToArchive(staff->code, invoice);
+        if (message == OK) {
+          RenderNotify(notify, SUCCESS_NOTIFY, "Lưu thành công");
+          invoice = NewInvoice();
+          edit_number->str = invoice->number;
+          edit_created_at->datetime = &(invoice->created_at);
+          icp_render_templates;
+        } else {
+          if (message == M_CONFLICT) {
+            RenderNotify(notify, ERROR_NOTIFY, "Số đã được sử dụng");
+            frame->active_element = 1;
+          }
+          else if (message == M_INVOICE_NUMBER_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Số không được để trắng");
+            frame->active_element = 1;
+          } else if (message == M_INVOICE_CREATED_AT_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Ngày lập không vượt quá thời gian hiện tại");
+            frame->active_element = 2;
+          } else if (message == M_INVOICE_CREATED_AT_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Ngày lập không vượt quá thời gian hiện tại");
+            frame->active_element = 2;
+          } else if (message == M_INVOICE_INVOICE_DETAILS_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Phải có ít nhất một vật tư");
+            frame->active_element = 5;
+          } else if (message == M_INVOICE_INVOICE_DETAILS_TOTAL_MATERIALS_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Số lượng vật tư không vượt quá hai mươi");
+            frame->active_element = 5;
+          } else if (message == M_INVOICE_DETAIL_MATERIAL_CODE_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Mã vật tư không tồn tại");
+            frame->active_element = 1;
+          } else if (message == M_INVOICE_DETAIL_AMOUNT_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Số lượng không hợp lệ");
+            frame->active_element = 2;
+          } else if (message == M_INVOICE_DETAIL_PRICE_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "Giá bán không hợp lệ");
+            frame->active_element = 3;
+          } else if (message == M_INVOICE_DETAIL_VAT_INVALID) {
+            RenderNotify(notify, ERROR_NOTIFY, "VAT không hợp lệ");
+            frame->active_element = 4;
+          } else {
+            RenderNotify(notify, ERROR_NOTIFY, "Thông tin cung cấp không hợp lệ");
+          }
+        }
       }
       else if (keycode == KEY_RIGHT)
         frame->active_element = 7;
@@ -304,7 +316,7 @@ void ActiveInvoiceCreationFrame(Frame frame) {
       // Close
       keycode = ActiveButton(close_button);
       if (keycode == ENTER) {
-//         DestroyInvoice(invoice);
+        DestroyInvoice(invoice);
         frame->active_element = 0;
       }
       else if (keycode == KEY_UP)

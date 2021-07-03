@@ -10,15 +10,15 @@
 
 /* Logic */
 
-bool IsInvoiceNumberValid(Invoice invoice) {
+message_tp InvoiceNumberValid(Invoice invoice) {
   if (IsNull(invoice->number) || !IsNumericString(invoice->number) || strlen(invoice->number) > INVOICE_NUMBER_MAX_LEN)
-    return false;
+    return M_INVOICE_NUMBER_INVALID;
   for (int interact = 0; interact < archive->staff_list->count; interact ++) {
     if (IsNumberInInvoiceList(archive->staff_list->staffs[interact]->invoice_list, invoice->number))
-      return false;
+      return M_CONFLICT;
   }
 
-  return true;
+  return OK;
 }
 
 /* Validation */
@@ -28,7 +28,7 @@ message_tp InvoiceDetailListValidation(InvoiceDetailList invoice_detail_list, bo
     return M_INVOICE_INVOICE_DETAILS_INVALID;
 
   if (TotalMaterialsInInvoiceDetailList(invoice_detail_list) > INVOICE_DETAIL_MAX_TOTAL_MATERIALS)
-    return M_INVOICE_INVOICE_DETAILS_INVALID;
+    return M_INVOICE_INVOICE_DETAILS_TOTAL_MATERIALS_INVALID;
 
   for (int interact = 0; interact < invoice_detail_list->count; interact ++) {
     message_tp mess = InvoiceDetailValidation(invoice_detail_list->invoice_details[interact], strict, invoice_type);
@@ -41,9 +41,10 @@ message_tp InvoiceDetailListValidation(InvoiceDetailList invoice_detail_list, bo
 message_tp InvoiceValidation(Invoice invoice, bool strict = true) {
   if (IsNull(invoice)) return M_NULL;
 
-  if (strict == true)
-  if (!IsInvoiceNumberValid(invoice))
-    return M_INVOICE_NUMBER_INVALID;
+  if (strict == true) {
+    message_tp mess = InvoiceNumberValid(invoice);
+    if (mess != OK) return mess;
+  }
 
   if (invoice->created_at > TimeNow())
     return M_INVOICE_CREATED_AT_INVALID;

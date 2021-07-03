@@ -4,6 +4,7 @@
 #define __SUPPORT_UTILITY__
 
 #include <string.h>
+#include <math.h>
 
 // Type
 #define str_tp char *
@@ -143,9 +144,67 @@ bool IsCrestOfStringTypeA(const char * str, const char * _str) {
   return true;
 }
 
+bool IsCharInString(char _c, const char * str) {
+  for (const char * c = str; *c != '\0'; c ++)
+    if (_c == *c) return true;
+  return false;
+}
+
+index_tp IndexOfCharInString(char _c, const char * str) {
+  int index = 0;
+  for (const char * c = str; *c != '\0'; c ++) {
+    if (_c == *c) return index;
+    index ++;
+  }
+  return -1;
+}
+
+int DigitsOfInt(int num) {
+  if (num == 0) return 1;
+
+  int count = 0;
+  while (num != 0) {
+    num /= 10;
+    count ++;
+  }
+
+  return count;
+}
+
+int DigitOfIntExceptTrailingZeros(int num) {
+  int count = 0;
+  bool latch = false;
+  while (num != 0) {
+    if (num % 10 != 0) latch = true;
+    if (latch) count ++;
+    num /= 10;
+  }
+
+  return count;
+}
+
+int DigitsOfFloatAfterDot(float _num, int round_to_digit) {
+  long long int pot = pow(10, round_to_digit);
+  long long int num = (long long int) roundf(_num * pot);
+  return DigitOfIntExceptTrailingZeros(num % pot);
+}
+
+long long int RemoveTrailingZerosOfLong(long long int num) {
+  if (num == 0) return  0;
+  while (num % 10 == 0) num /= 10;
+
+  return num;
+}
+
 char EndOfString(const char * str) {
   return str[strlen(str) - 1];
 }
+
+char IntToChar(int num) {
+  char x = (char) num;
+  return (48 + x);
+}
+
 
 // String to Int
 int StringToInt(const char * str) {

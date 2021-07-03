@@ -18,7 +18,7 @@ void IDPRecovery(Frame frame) {
   );
 }
 
-void ActiveInvoiceDetailFrame(Frame frame, InvoiceDetailList invoice_detail_list) {
+void ActiveInvoiceDetailFrame(Frame frame, InvoiceDetailList invoice_detail_list, char invoice_type) {
   // Button
   Button add_button = NewButton(
     "Thêm", ALIGN_CENTER,
@@ -86,7 +86,7 @@ void ActiveInvoiceDetailFrame(Frame frame, InvoiceDetailList invoice_detail_list
       else if (keycode == ENTER) {
         creation_form->active_element = 1;
         IDPRecovery(frame);
-        ActiveInvoiceDetailCreationFrame(creation_form);
+        ActiveInvoiceDetailCreationFrame(creation_form, invoice_detail_list, invoice_type);
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 1;

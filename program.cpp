@@ -80,8 +80,6 @@ int main() {
   LoadMaterialListFromStorageToArchive();
   LoadStaffListFromStorageToArchive();
 
-  InvoiceSeed();
-
   // Init main frame
   Frame main_frame = NewFrame(WINDOW_COLUMNS, WINDOW_ROWS);
 

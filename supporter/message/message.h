@@ -13,7 +13,7 @@
 3: File           | 3: Not found | exists | comflict | 3:
 4: Program        | 4: Program error                 | 4:
 5: Material       | 5: Validates                     | 5:
-6: Staff          | 6:                               | 6:
+6: Staff          | 6: Custom                        | 6:
 7: Invoice        | 7: Couldn't open | Not support   | 7:
 8: Invoice Detail | 8:                               | 8:
 9:                | 9:                               | 9:
@@ -57,6 +57,7 @@
 #define M_INVOICE_CREATED_AT_INVALID 752
 #define M_INVOICE_TYPE_INVALID 753
 #define M_INVOICE_INVOICE_DETAILS_INVALID 754
+#define M_INVOICE_INVOICE_DETAILS_TOTAL_MATERIALS_INVALID 755
 
 // Invoice Detail
 #define M_INVOICE_DETAIL_MATERIAL_CODE_INVALID 851

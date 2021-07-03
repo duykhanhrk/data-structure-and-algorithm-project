@@ -9,6 +9,8 @@ void SLPRecovery(Frame frame) {
 }
 
 Staff ActiveStaffSelectionListFrame(Frame frame) {
+  // Default
+  frame->active_element = 1;
   // Material list view
   ListViewScroll list_view_scroll = NewListViewScroll(
     STAFF_LIST_IN_ARCHIVE, // data

@@ -84,10 +84,12 @@ void WriteDouble(double obj, wrp_context_arguments) {
   wrp_apply_color_context;
 }
 
-void WriteFloat(float obj, wrp_context_arguments) {
+void WriteFloat(float obj, wrp_context_arguments, int round_to_digit = 2) {
   wrp_save_color_context;
   wrp_apply_context_arguments;
-  printf("%.2f", obj);
+  char format[5] = "%.2f";
+  format[2] = IntToChar(DigitsOfFloatAfterDot(obj, round_to_digit));
+  printf(format, obj);
   wrp_apply_color_context;
 }
 

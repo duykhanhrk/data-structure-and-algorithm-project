@@ -237,9 +237,10 @@ void TakeItemsInMaterialListWithFilter(
 
   TakeItemsInMaterialList(material_list->left_node, linear_list, offset, limit);
 
+  // FIXME: && (IsCrestOfStringTypeA(material_list->material->name, filter) || IsCrestOfStringTypeA(material_list->material->code, filter))
   if (offset > 0) {
     offset --;
-  } else if (limit > 0 && (IsCrestOfStringTypeA(material_list->material->name, filter) || IsCrestOfStringTypeA(material_list->material->code, filter))) {
+  } else if (limit > 0) {
     AddItemToLinearList(linear_list, material_list->material);
     limit --;
   }
@@ -248,10 +249,10 @@ void TakeItemsInMaterialListWithFilter(
 }
 
 int CountMaterials(void * material_list, void * filter) {
-  if (filter == NULL)
+//   if (filter == NULL)
     return MaterialListCount((MaterialList) material_list);
 
-  return MaterialListCountWithFilter((MaterialList) material_list, (char *) filter);
+//   return MaterialListCountWithFilter((MaterialList) material_list, (char *) filter);
 }
 
 void TakeMaterials(
