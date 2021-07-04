@@ -125,9 +125,9 @@ keycode_tp ActiveEditInt(EditInt edit_int) {
   char c = '\0';
   // Input
   while (true) {
-    if (edit_int->console(c)) break;
+    if (edit_int->console(c) && c != BACKSPACE) break;
     c = Console();
-    if (edit_int->console(c)) break;
+    if (edit_int->console(c) && c != BACKSPACE) break;
 
     if (IsNumericChar(c)) {
       if ((sign == 1 && NumViolatesMaxValue(*(edit_int->num), c, edit_int->max_value)) || (sign == -1 && NumViolatesMinValue(*(edit_int->num), c, edit_int->min_value))) {

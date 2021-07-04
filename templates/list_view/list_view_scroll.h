@@ -73,6 +73,7 @@ ListViewScroll NewListViewScroll(
 ) {
   ListViewScroll list_view_scroll = (ListViewScroll) malloc(sizeof(ListViewScrollT));
   list_view_scroll->data = data;
+  list_view_scroll->filter = filter;
   list_view_scroll->page = page;
   list_view_scroll->fields = NewLinearList(fields_count);
   list_view_scroll->items_count = items_count;

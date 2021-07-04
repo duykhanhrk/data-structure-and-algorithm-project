@@ -63,9 +63,6 @@ void InvoiceSeed() {
 #include <math.h>
 
 int main() {
-  double d = 9999999900 / 100.0;
-  EchoDouble(d);
-  getch();
   // Config console
   CursorVisible(false);
   SetConsoleOutputCP(65001);

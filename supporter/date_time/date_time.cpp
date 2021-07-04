@@ -120,3 +120,24 @@ time_t DateTimeToTimeT(DateTime date_time) {
 
   return mktime(&_tm);
 }
+
+// TimeT
+time_t EndOfDayTimeT(time_t t, bool utc = false) {
+  tm _tm;
+  if (utc == false) _tm = *localtime(&t);
+  else _tm = *gmtime(&t);
+  _tm.tm_hour = 23;
+  _tm.tm_min = 59;
+  _tm.tm_sec = 59;
+  return mktime(&_tm);
+}
+
+time_t BeginningOfDayTimeT(time_t t, bool utc = false) {
+  tm _tm;
+  if (utc == false) _tm = *localtime(&t);
+  else _tm = *gmtime(&t);
+  _tm.tm_hour = 0;
+  _tm.tm_min = 0;
+  _tm.tm_sec = 0;
+  return mktime(&_tm);
+}

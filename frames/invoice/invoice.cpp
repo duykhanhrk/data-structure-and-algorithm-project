@@ -50,7 +50,7 @@ void ActiveInvoiceFrame(Frame frame) {
   // Variable
   LinearList linear_list;
   Invoice invoice;
-  char query[33];
+  char query[INVOICE_NUMBER_MAX_LEN + 1];
   strcpy(query, "\0");
   time_t from_date = 1388534400;
   time_t to_date = TimeNow();
@@ -135,6 +135,13 @@ void ActiveInvoiceFrame(Frame frame) {
     frame->position_x, frame->position_y
   );
 
+  // filter form
+  Frame filter_form = NewFrame(
+    IVP_FILTER_FORM_WIDTH, IVP_FILTER_FORM_HEIGHT,
+    frame->position_x + (frame->width - IVP_FILTER_FORM_WIDTH) / 2,
+    frame->position_y + (frame->height - IVP_FILTER_FORM_HEIGHT) / 2
+  );
+
   // Render - using rapid
   ivp_render_templates;
 
@@ -171,7 +178,7 @@ void ActiveInvoiceFrame(Frame frame) {
       } else if (keycode == KEY_UP) {
         frame->active_element = 4;
       } else if (keycode == NULL_KEY) {
-        frame->active_element = 1;
+        frame->active_element = 4;
       } else if (keycode == KEY_RIGHT) {
         frame->active_element = 3;
       } else if (keycode == KEY_LEFT) {
@@ -205,13 +212,17 @@ void ActiveInvoiceFrame(Frame frame) {
       if (keycode == KEY_UP) {
         frame->active_element = 1;
       } else if (keycode == ENTER) {
-        frame->active_element = 4;
+        ConcealInvoiceFrame(frame, ivp_templates_params);
+        ActiveInvoiceFilterForm(filter_form);
+        ivp_render_templates;
       } else if (keycode == KEY_LEFT) {
         frame->active_element = 1;
       } else if (keycode == KEY_RIGHT) {
         frame->active_element = 3;
       } else if (keycode == KEY_DOWN) {
         frame->active_element = 2;
+      } else if (keycode == BACKSPACE) {
+        frame->active_element = 0;
       }
     }
   }

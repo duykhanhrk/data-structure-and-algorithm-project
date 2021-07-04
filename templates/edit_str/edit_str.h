@@ -113,9 +113,9 @@ keycode_tp ActiveEditStr(EditStr edit_str) {
   int len = strlen(edit_str->str);
   char c = '\0';
   while (true) {
-    if (edit_str->console(c)) break;
+    if (edit_str->console(c) && c != BACKSPACE) break;
     c = Console();
-    if (edit_str->console(c)) break;
+    if (edit_str->console(c) && c != BACKSPACE) break;
 
     if (edit_str->char_set(c, edit_str->str) != '\0') {
       if (len >= edit_str->max_len) {

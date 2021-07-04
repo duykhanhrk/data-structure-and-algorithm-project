@@ -90,7 +90,6 @@ Invoice GetInvoiceInArchive(const char * staff_code, const char * number) {
   return GetItemInInvoiceListByNumber(staff->invoice_list, number);
 }
 
-// TODO: (1) filter by created_at
 int CountInvoicesInArchive(void * data, void * filter) {
   int count = 0;
   InvoiceList invoice_list;
@@ -103,7 +102,6 @@ int CountInvoicesInArchive(void * data, void * filter) {
   return count;
 }
 
-// TODO: (2) filter by created_at
 void TakeInvoicesInArchive(void * data, void * filter, LinearList linear_list, int offset, int limit) {
   for (int interact = 0; interact < linear_list->count; interact ++)
     DestroyLinearList((LinearList) (linear_list->data[interact]));
@@ -121,6 +119,51 @@ void TakeInvoicesInArchive(void * data, void * filter, LinearList linear_list, i
         AddItemToLinearList(container, archive->staff_list->staffs[interact]);
         AddItemToLinearList(linear_list, container);
         limit --;
+      }
+      invoice_node = invoice_node->next_node;
+    }
+  }
+}
+
+int CountInvoicesInArchiveWithFilter(void * data, void * filter) {
+  int count = 0;
+  InvoiceNode invoice_node;
+  time_t from = *((time_t *) GetFirstItemInLinearList((LinearList) filter));
+  time_t to = *((time_t *) GetLastItemInLinearList((LinearList) filter));
+
+  for (int interact = 0; interact < archive->staff_list->count; interact ++) {
+    invoice_node = archive->staff_list->staffs[interact]->invoice_list;
+    while (invoice_node != NULL) {
+      if (from <= invoice_node->invoice->created_at && invoice_node->invoice->created_at <= to)
+        count ++;
+      invoice_node = invoice_node->next_node;
+    }
+  }
+
+  return count;
+}
+
+void TakeInvoicesInArchiveWithFilter(void * data, void * filter, LinearList linear_list, int offset, int limit) {
+  for (int interact = 0; interact < linear_list->count; interact ++)
+    DestroyLinearList((LinearList) (linear_list->data[interact]));
+  EmptyLinearList(linear_list);
+  time_t from = *((time_t *) GetFirstItemInLinearList((LinearList) filter));
+  time_t to = *((time_t *) GetLastItemInLinearList((LinearList) filter));
+
+  InvoiceNode invoice_node;
+  LinearList container;
+  for (int interact = 0; interact < archive->staff_list->count; interact ++) {
+    invoice_node = archive->staff_list->staffs[interact]->invoice_list;
+    while (invoice_node != NULL && limit > 0) {
+      if (from <= invoice_node->invoice->created_at && invoice_node->invoice->created_at <= to) {
+        if (offset > 0) offset --;
+        else {
+          container = NewLinearList(2);
+          AddItemToLinearList(container, invoice_node->invoice);
+          AddItemToLinearList(container, archive->staff_list->staffs[interact]);
+          AddItemToLinearList(linear_list, container);
+          limit --;
+        }
       }
       invoice_node = invoice_node->next_node;
     }

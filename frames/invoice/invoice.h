@@ -6,6 +6,7 @@
 #include "../../archivist/invoice/invoice.h"
 #include "creation_form.h"
 #include "show.h"
+#include "filter.h"
 
 #define IVP_INVOICE_LIST_ITEMS 22
 #define IVP_INVOICE_LIST_WIDTH 96
@@ -21,6 +22,9 @@
 
 #define IVP_UPDATED_FORM_WIDTH 50
 #define IVP_UPDATED_FORM_HEIGHT 25
+
+#define IVP_FILTER_FORM_WIDTH 50
+#define IVP_FILTER_FORM_HEIGHT 17
 
 #ifdef __cplusplus
 extern "C" {

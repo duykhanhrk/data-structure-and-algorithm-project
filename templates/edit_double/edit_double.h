@@ -144,9 +144,9 @@ keycode_tp ActiveEditDouble(EditDouble edit_double) {
   char c = '\0';
   // Input
   while (true) {
-    if (edit_double->console(c)) break;
+    if (edit_double->console(c) && c != BACKSPACE) break;
     c = Console();
-    if (edit_double->console(c)) break;
+    if (edit_double->console(c) && c != BACKSPACE) break;
 
     if (IsNumericChar(c)) {
       if ((sign == 1 && NumViolatesMaxValue(num, c, max_value)) || (sign == -1 && NumViolatesMinValue(num, c, min_value))) {

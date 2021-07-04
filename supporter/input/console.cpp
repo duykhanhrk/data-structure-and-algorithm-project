@@ -1,7 +1,7 @@
 #include "console.h"
 
 bool StandardConsole(char c) {
-  return (c == ENTER || c == KEY_UP || c == KEY_DOWN || c == KEY_RIGHT || c == KEY_LEFT);
+  return (c == ENTER || c == BACKSPACE || c == KEY_UP || c == KEY_DOWN || c == KEY_RIGHT || c == KEY_LEFT);
 }
 
 bool ListViewEEConsole(char c) {
