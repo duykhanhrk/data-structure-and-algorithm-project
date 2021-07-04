@@ -176,7 +176,7 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
       days[1] = IsLeapYear(_dt->year) ? 29 : 28;
 
       // Set max day
-      if (_dt->year == _max->year && _dt->month == _max->year) max_day = _max->day;
+      if (_dt->year == _max->year && _dt->month == _max->month) max_day = _max->day;
       else max_day = days[_dt->month - 1];
 
       // Set min day
@@ -188,12 +188,6 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
 
       // Day input
       keycode = ActiveEditInt(edit_datetime->edit_day);
-
-      // Navigate
-//       if (keycode == KEY_RIGHT) {
-//         edit_datetime->active_element = edit_datetime->edit_year;
-//         keycode = NULL_KEY;
-//       } else
 
       if (keycode == KEY_LEFT) {
         edit_datetime->active_element = edit_datetime->edit_month;
@@ -283,10 +277,6 @@ keycode_tp ActiveEditDateTime(EditDateTime edit_datetime) {
         edit_datetime->active_element = edit_datetime->edit_month;
         keycode = NULL_KEY;
       }
-//       else if (keycode == KEY_LEFT) {
-//         edit_datetime->active_element = edit_datetime->edit_day;
-//         keycode = NULL_KEY;
-//       }
     }
 
     *(edit_datetime->datetime) = DateTimeToTimeT(_dt);

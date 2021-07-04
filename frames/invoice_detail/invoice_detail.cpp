@@ -19,6 +19,9 @@ void IDPRecovery(Frame frame) {
 }
 
 void ActiveInvoiceDetailFrame(Frame frame, InvoiceDetailList invoice_detail_list, char invoice_type) {
+  // Varialbe
+  InvoiceDetail invoice_detail;
+
   // Button
   Button add_button = NewButton(
     "Thêm", ALIGN_CENTER,
@@ -97,16 +100,17 @@ void ActiveInvoiceDetailFrame(Frame frame, InvoiceDetailList invoice_detail_list
       // List
       keycode = ActiveListViewScroll(list_view_scroll);
       if (keycode == ENTER) {
-//         updated_form->active_element = 2;
-//         IDPRecovery(frame);
-//         invoice_detail = (InvoiceDetail) GetItemInLinearListByIndex(
-//           list_view_scroll->list_view->linear_list,
-//           list_view_scroll->list_view->selected_item
-//         );
-//         if (invoice_detail == NULL) continue;
-//         ActiveInvoiceDetailUpdatedFrame(updated_form, invoice_detail);
-//         RenderButton(add_button);
-//         RenderListViewScroll(list_view_scroll);
+        IDPRecovery(frame);
+        invoice_detail = (InvoiceDetail) GetSelectedItemInListViewScroll(list_view_scroll);
+        if (invoice_detail == NULL) continue;
+        ActiveInvoiceDetailUpdatedFrame(
+          updated_form,
+          invoice_detail_list,
+          invoice_type,
+          invoice_detail
+        );
+        RenderButton(add_button);
+        RenderListViewScroll(list_view_scroll);
         frame->active_element = 2;
       } else if (keycode == BACKSPACE) {
         frame->active_element = 1;

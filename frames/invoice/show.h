@@ -76,8 +76,8 @@ void ISPRenderInvoiceInfoForm(Frame frame, Invoice invoice) {
   }
   Staff staff = GetCreatedInvoiceStaff(invoice->number);
   isp_info_form_element("Người lập", WriteStr, staff->code, 3);
-  float total_price = CalculateTotalPriceOfInvoice(invoice);
-  isp_info_form_element("Trị giá", WriteFloat, total_price, 4);
+  double total_price = CalculateTotalPriceOfInvoice(invoice);
+  isp_info_form_element("Trị giá", WriteDouble, total_price, 4);
 }
 
 void ActiveInvoiceShowFrame(Frame frame, Invoice invoice) {

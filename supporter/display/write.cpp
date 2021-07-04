@@ -35,6 +35,25 @@ void WriteStr(const char *obj, wrp_context_arguments) {
   wrp_apply_color_context;
 }
 
+void WriteDoubleStrV(const char *obj, const char *_obj, int max_len, wrp_context_arguments) {
+  wrp_save_color_context;
+  wrp_apply_context_arguments;
+
+  int obj_len = strlen(obj);
+  int _obj_len = strlen(_obj);
+  if (obj_len + _obj_len + 1 > max_len) {
+    printf("N/A");
+  } else {
+    char * __obj = (char *) malloc(strlen(obj) + strlen(_obj) + 2);
+    strcpy(__obj, obj);
+    strcat(__obj, " ");
+    strcat(__obj, _obj);
+    printf("%s", __obj);
+    free(__obj);
+  }
+  wrp_apply_color_context;
+}
+
 void WriteShort(short int obj, wrp_context_arguments) {
   wrp_save_color_context;
   wrp_apply_context_arguments;
@@ -77,19 +96,34 @@ void WriteULong(unsigned long long int obj, wrp_context_arguments) {
   wrp_apply_color_context;
 }
 
-void WriteDouble(double obj, wrp_context_arguments) {
+void WriteDouble(double obj, wrp_context_arguments, int round_to_digit = 2) {
   wrp_save_color_context;
   wrp_apply_context_arguments;
-  printf("%.2lf", obj);
+  char format[6] = "%.2lf";
+  format[2] = IntToChar(DigitsOfDoubleAfterDot(obj, round_to_digit));
+  printf(format, obj);
   wrp_apply_color_context;
 }
 
-void WriteFloat(float obj, wrp_context_arguments, int round_to_digit = 2) {
+void WriteDoubleP(double obj, int round_to_digit = 2, wrp_context_arguments) {
   wrp_save_color_context;
   wrp_apply_context_arguments;
-  char format[5] = "%.2f";
-  format[2] = IntToChar(DigitsOfFloatAfterDot(obj, round_to_digit));
+  char format[6] = "%.2lf";
+  format[2] = IntToChar(DigitsOfDoubleAfterDot(obj, round_to_digit));
   printf(format, obj);
+  wrp_apply_color_context;
+}
+
+void WriteDoubleV(double obj, int round_to_digit = 2, int max_len = 10, wrp_context_arguments) {
+  wrp_save_color_context;
+  wrp_apply_context_arguments;
+  if (DigitsOfDoubleIncludeDot(obj, round_to_digit) > max_len) {
+    printf("N/A");
+  } else {
+    char format[6] = "%.2lf";
+    format[2] = IntToChar(DigitsOfDoubleAfterDot(obj, round_to_digit));
+    printf(format, obj);
+  }
   wrp_apply_color_context;
 }
 

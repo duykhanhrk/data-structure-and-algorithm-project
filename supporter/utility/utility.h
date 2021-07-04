@@ -171,6 +171,18 @@ int DigitsOfInt(int num) {
   return count;
 }
 
+int DigitsOfLong(long long int num) {
+  if (num == 0) return 1;
+
+  int count = 0;
+  while (num != 0) {
+    num /= 10;
+    count ++;
+  }
+
+  return count;
+}
+
 int DigitOfIntExceptTrailingZeros(int num) {
   int count = 0;
   bool latch = false;
@@ -183,15 +195,38 @@ int DigitOfIntExceptTrailingZeros(int num) {
   return count;
 }
 
-int DigitsOfFloatAfterDot(float _num, int round_to_digit) {
+int DigitsOfDoubleAfterDot(double _num, int round_to_digit) {
   long long int pot = pow(10, round_to_digit);
   long long int num = (long long int) roundf(_num * pot);
-  return DigitOfIntExceptTrailingZeros(num % pot);
+  int delta = 0;
+  if (num % pot != 0) delta = round_to_digit - DigitsOfLong(num % pot);
+  return DigitOfIntExceptTrailingZeros(num % pot) + delta;
 }
 
-long long int RemoveTrailingZerosOfLong(long long int num) {
+// Double
+int DigitsOfDoubleIncludeDot(double _num, int round_to_digit) {
+  long long int pot = pow(10, round_to_digit);
+  long long int num = (long long int) roundf(_num * pot);
+  if (num == 0) return 1;
+
+  int count = 0;
+  while (num != 0) {
+    num /= 10;
+    count ++;
+  }
+
+  if (DigitOfIntExceptTrailingZeros(num % pot) != 0)
+    count ++;
+
+  return count;
+}
+
+long long int RemoveTrailingZerosOfLong(long long int num, int limit = -1) {
   if (num == 0) return  0;
-  while (num % 10 == 0) num /= 10;
+  while (num % 10 == 0 && limit != 0) {
+    num /= 10;
+    limit --;
+  }
 
   return num;
 }
@@ -220,10 +255,10 @@ int StringToInt(const char * str) {
   return num;
 }
 
-// String to float
-float StringToFloat(const char * str) {
+// String to double
+double StringToDouble(const char * str) {
   bool sign = (*str == '-');
-  float num = 0.0f;
+  double num = 0.0f;
   const char * c = str;
   while ( *c != '\0' && *c != '.') {
     if (!IsNumericChar(*c)) return 0;
@@ -233,7 +268,7 @@ float StringToFloat(const char * str) {
 
   if (*c == '\0') return num;
   c ++;
-  float div = 10.0f;
+  double div = 10.0f;
   while (*c != '\0') {
     num += CharToInt(*c) / div;
     div *= 10;

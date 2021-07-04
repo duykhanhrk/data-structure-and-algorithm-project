@@ -19,7 +19,7 @@
 #define IDP_UPDATED_FORM_HEIGHT 25
 
 #include "creation_form.h"
-// #include "updated_form.h"
+#include "updated_form.h"
 
 #ifdef __cplusplus
 extern "C" {

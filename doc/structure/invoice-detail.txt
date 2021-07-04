@@ -9,8 +9,8 @@ InvoiceDetail
 --------------------------------------
   material_code | string | max len: 10
   amount        | int    |
-  price         | float  |
-  vat           | float  |
+  price         | double  |
+  vat           | double  |
 
 InvoiceDetailList
 -----------------------------------------------------

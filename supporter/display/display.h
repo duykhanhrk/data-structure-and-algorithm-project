@@ -7,9 +7,9 @@ extern "C" {
 
 /* includes */
 
-#include "write.h"
 #include "print.h"
 #include "echo.h"
+#include "write.h"
 #include "draw.h"
 
 #ifdef __cplusplus

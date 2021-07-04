@@ -201,20 +201,9 @@ void RenderListViewItemWithDataAsInvoice(
 //   2 + 10 + 2 + 12 + 2 + 54 + 2 + 10 + 2
   WriteStr(invoice->number, position_x + 2, position_y, foreground, background);
   WriteDate(invoice->created_at, position_x + 14, position_y, foreground, background);
-  if (strlen(staff->last_name) + strlen(staff->first_name) + 1 <= 54) {
-    WriteStr(staff->last_name, position_x + 28, position_y, foreground, background);
-    WriteStr(" ", CURSOR_POSITION_X, position_y, foreground, background);
-    WriteStr(staff->first_name, CURSOR_POSITION_X, position_y, foreground, background);
-  } else {
-    WriteStr("N/A", position_x + 28, position_y, foreground, background);
-  }
-
+  WriteDoubleStrV(staff->last_name, staff->first_name, 54, position_x + 28, position_y, foreground, background);
   double total_price = CalculateTotalPriceOfInvoice(invoice);
-  if (total_price <= 9999999999) {
-    WriteDouble(total_price, position_x + 84, position_y, foreground, background);
-  } else {
-    WriteStr("N/A", position_x + 28, position_y, foreground, background);
-  }
+  WriteDoubleV(total_price, PROGRAM_DOUBLE_ROUND, 10, position_x + 84, position_y, foreground, background);
 }
 
 keycode_tp ActiveListViewItemWithDataAsInvoice(ListViewItemContext list_view_item_context) {
@@ -303,8 +292,8 @@ void RenderListViewItemWithDataAsInvoiceDetailTypeA(
 //   2 + 10 + 2 + 10 + 2 + 10 + 2 + 8 + 2
   WriteStr(invoice_detail->material_code, position_x + 2, position_y, foreground, background);
   WriteInt(invoice_detail->amount, position_x + 14, position_y, foreground, background);
-  WriteDouble(invoice_detail->price, position_x + 26, position_y, foreground, background);
-  WriteDouble(invoice_detail->vat, position_x + 38, position_y, foreground, background);
+  WriteDoubleV(invoice_detail->price, PROGRAM_DOUBLE_ROUND, 10, position_x + 26, position_y, foreground, background);
+  WriteDoubleV(invoice_detail->vat, PROGRAM_DOUBLE_ROUND, 8, position_x + 38, position_y, foreground, background);
 }
 
 keycode_tp ActiveListViewItemWithDataAsInvoiceDetailTypeA(ListViewItemContext list_view_item_context) {

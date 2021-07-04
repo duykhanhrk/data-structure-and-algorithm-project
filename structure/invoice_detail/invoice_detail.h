@@ -35,8 +35,8 @@ Struct
 typedef struct InvoiceDetailT {
   char material_code[MATERIAL_CODE_MAX_LEN + 1];
   int amount;
-  float price;
-  float vat;
+  double price;
+  double vat;
 } InvoiceDetailT, * InvoiceDetail;
 
 typedef struct InvoiceDetailListT {
@@ -47,7 +47,7 @@ typedef struct InvoiceDetailListT {
 /* -----------------------------------------------------------------------------
 Object
 ----------------------------------------------------------------------------- */
-InvoiceDetail NewInvoiceDetail(const char *, int, float, float);
+InvoiceDetail NewInvoiceDetail(const char *, int, double, double);
 void DestroyInvoiceDetail(InvoiceDetail &);
 void RevokeInvoiceDetail(InvoiceDetail &);
 

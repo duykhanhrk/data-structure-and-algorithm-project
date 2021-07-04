@@ -68,7 +68,7 @@ double CalculateTotalPriceOfInvoice(Invoice invoice) {
   for (int interact = 0; interact < invoice->invoice_detail_list->count; interact ++) {
     invoice_detail = GetItemInInvoiceDetailListByIndex(invoice->invoice_detail_list, interact);
     total_price += invoice_detail->amount * invoice_detail->price
-                   + (invoice_detail->amount * invoice_detail->price * invoice_detail->vat);
+                   + (invoice_detail->amount * invoice_detail->price * (invoice_detail->vat / 100.0));
   }
 
   return total_price;

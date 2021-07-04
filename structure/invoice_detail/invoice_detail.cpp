@@ -7,8 +7,8 @@ Object
 InvoiceDetail NewInvoiceDetail(
   const char * material_code = INVOICE_DETAIL_MATERIAL_CODE_DEFAULT_VALUE,
   int amount = INVOICE_DETAIL_AMOUNT_DEFAULT_VALUE,
-  float price = INVOICE_DETAIL_PRICE_DEFAULT_VALUE,
-  float vat = INVOICE_DETAIL_VAT_DEFAULT_VALUE
+  double price = INVOICE_DETAIL_PRICE_DEFAULT_VALUE,
+  double vat = INVOICE_DETAIL_VAT_DEFAULT_VALUE
 ) {
   InvoiceDetail invoice_detail = (InvoiceDetail) malloc(sizeof(struct InvoiceDetailT));
   strcpy(invoice_detail->material_code, material_code);
@@ -253,6 +253,19 @@ message_tp DeleteItemInInvoiceDetailListByIndex(InvoiceDetailList &invoice_detai
   invoice_detail_list->count --;
 
   return OK;
+}
+
+index_tp IndexOfInvoiceDetailInList(InvoiceDetail invoice_detail, InvoiceDetailList &invoice_detail_list) {
+  for (int interact = 0; interact < invoice_detail_list->count; interact ++)
+    if (invoice_detail_list->invoice_details[interact] == invoice_detail)
+      return interact;
+  return -1;
+}
+
+message_tp DeleteItemInInvoiceDetailList(InvoiceDetailList &invoice_detail_list, InvoiceDetail invoice_detail) {
+  index_tp index = IndexOfInvoiceDetailInList(invoice_detail, invoice_detail_list);
+  if (index == -1) return M_NOT_FOUND;
+  return DeleteItemInInvoiceDetailListByIndex(invoice_detail_list, index);
 }
 
 // Rapid

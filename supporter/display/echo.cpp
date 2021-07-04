@@ -86,6 +86,13 @@ void EchoULong(unsigned long long int obj, ecp_context_arguments) {
   ecp_apply_context;
 }
 
+void EchoDouble(double obj, ecp_context_arguments) {
+  ecp_save_context;
+  ecp_apply_context_arguments;
+  std::cout << std::fixed << obj;
+  ecp_apply_context;
+}
+
 void EchoDate(time_t obj, ecp_context_arguments) {
   struct tm time_info = *(localtime(&obj));
   ecp_save_context;
