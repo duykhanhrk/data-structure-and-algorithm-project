@@ -75,6 +75,13 @@ message_tp UpdateStaffInArchive(const char * code, Staff staff) {
   // tranfer data
   CopyStaff(_staff, staff);
 
+  // Additional: for sort order
+  RemoveItemInStaffListByCode(archive->staff_list, code);
+
+  // re-add
+  message_tp message = AddItemToStaffList(archive->staff_list, _staff);
+  if (message != OK) return message;
+
   // Save staff to storage
   SaveStaffListFromArchiveToStorage();
   return OK;

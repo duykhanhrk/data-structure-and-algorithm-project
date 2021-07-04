@@ -236,6 +236,16 @@ keycode_tp ActiveListViewScroll(ListViewScroll list_view_scroll) {
   return keycode;
 }
 
+// conceal
+tpp_define_conceal_method_type_a(
+  ConcealListViewScroll,
+  ListViewScroll,
+  list_view->width,
+  list_view->height + LIST_VIEW_SCROLL_HEADER_HEIGHT + LIST_VIEW_SCROLL_FOOTER_HEIGHT,
+  list_view->position_x,
+  list_view->position_y - LIST_VIEW_SCROLL_HEADER_HEIGHT
+)
+
 /* includes */
 
 // #include "list_view.cpp"

@@ -155,6 +155,7 @@ keycode_tp ActiveEditStr(EditStr edit_str) {
   return c;
 }
 
+tpp_define_conceal_method(ConcealEditStr, EditStr)
 
 #ifdef __cplusplus
 }

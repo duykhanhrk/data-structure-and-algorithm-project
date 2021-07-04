@@ -1,47 +1,49 @@
 #include "invoice.h"
 
 // Rapid - ivp
-#define ivp_render_invoice_frame IVPRenderInvoiceFrame(\
-                                   add_button,\
-                                   edit_query,\
-                                   edit_from,\
-                                   edit_to,\
-                                   filter_button,\
-                                   list_view_scroll\
-                                 )
+#define ivp_templates_args\
+        Button add_button,\
+        Button filter_button,\
+        EditStr edit_query,\
+        ListViewScroll list_view_scroll,\
+        Notify notify
 
+#define ivp_templates_params\
+        add_button,\
+        filter_button,\
+        edit_query,\
+        list_view_scroll,\
+        notify
+
+#define ivp_render_templates RenderInvoiceFrameTemplates(ivp_templates_params)
+
+// Custon console
 bool IVPAddButtonConsole(keycode_tp c) {
   return (c == KEY_LEFT || c == KEY_RIGHT || c == KEY_DOWN || c == ENTER || c == BACKSPACE);
 }
 
-void IVPRecovery(Frame frame) {
-  DrawRecShape(
-    IVP_INVOICE_LIST_ITEM_WIDTH, 3, ' ',
-    frame->position_x + 2, frame->position_y + 1,
-    CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND_LV1
-  );
-
-  DrawRecShape(
-    IVP_INVOICE_LIST_ITEM_WIDTH, WINDOW_ROWS - 6, ' ',
-    frame->position_x + 2, frame->position_y + 5,
-    CURRENT_FOREGROUND, PROGRAM_THEME_BACKGROUND_LV1
-  );
+void ConcealInvoiceFrame(Frame frame, ivp_templates_args) {
+  ConcealButton(add_button);
+  ConcealButton(filter_button);
+  ConcealEditStr(edit_query);
+  ConcealNotify(notify);
+  ConcealListViewScroll(list_view_scroll);
 }
 
-void IVPRenderInvoiceFrame(
-  Button add_button,
-  EditStr edit_query,
-  EditDateTime edit_from,
-  EditDateTime edit_to,
-  Button filter_button,
-  ListViewScroll list_view_scroll
-) {
+void RenderInvoiceFrameTemplates(ivp_templates_args) {
   RenderButton(add_button);
-  RenderEditStr(edit_query);
-  RenderEditDateTime(edit_from);
-  RenderEditDateTime(edit_to);
   RenderButton(filter_button);
+  RenderEditStr(edit_query);
   RenderListViewScroll(list_view_scroll);
+  RenderNotify(notify, NORMAL_NOTIFY, "In hóa đơn nhanh với thanh nhập phía trên");
+}
+
+void DestroyInvoiceFrameTemplates(ivp_templates_args) {
+  DestroyButton(add_button);
+  DestroyButton(filter_button);
+  DestroyEditStr(edit_query);
+  DestroyNotify(notify);
+  DestroyListViewScroll(list_view_scroll);
 }
 
 void ActiveInvoiceFrame(Frame frame) {
@@ -63,41 +65,29 @@ void ActiveInvoiceFrame(Frame frame) {
     IVPAddButtonConsole
   );
 
+  Button filter_button = NewButton(
+    "     Lọc hóa đơn theo khoảng thời gian", ALIGN_CENTER,
+    IVP_BUTTON_WIDTH, IVP_BUTTON_HEIGHT, 0,
+    frame->position_x + 2, frame->position_y + 5,
+    PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
+    PROGRAM_THEME_FOREGROUND, PROGRAM_BACKGROUND,
+    STANDARD_CONSOLE
+  );
+
   EditStr edit_query = NewEditStr(
     query,
-    32, 0,
+    INVOICE_NUMBER_MAX_LEN, 0,
     IVP_BUTTON_WIDTH, IVP_BUTTON_HEIGHT,
     frame->position_x + 51, frame->position_y + 1,
     EDIT_STR_FOREGROUND, PROGRAM_THEME_BACKGROUND,
     EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND,
-    CODE_FORMAT_CHAR_SET
+    NUMERIC_CHAR_SET
   );
 
-  EditDateTime edit_from = NewEditDateTime(
-    &(from_date),
-    to_date, from_date,
-    36, 3,
-    frame->position_x + 2, frame->position_y + 5,
-    EDIT_STR_FOREGROUND, PROGRAM_THEME_BACKGROUND,
-    EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND
-  );
-
-  EditDateTime edit_to = NewEditDateTime(
-    &(to_date),
-    to_date, from_date,
-    36, 3,
-    frame->position_x + 39, frame->position_y + 5,
-    EDIT_STR_FOREGROUND, PROGRAM_THEME_BACKGROUND,
-    EDIT_STR_ACTIVE_FOREGROUND, EDIT_STR_ACTIVE_BACKGROUND
-  );
-
-  Button filter_button = NewButton(
-    " Lọc", ALIGN_CENTER,
-    22, 3, 0,
-    frame->position_x + 76, frame->position_y + 5,
-    PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
-    PROGRAM_THEME_FOREGROUND, PROGRAM_BACKGROUND,
-    IVPAddButtonConsole
+  Notify notify = NewNotify(
+    IVP_BUTTON_WIDTH, IVP_BUTTON_HEIGHT, 0,
+    frame->position_x + 51, frame->position_y + 5,
+    PROGRAM_FOREGROUND, BACKGROUND_LIGHT_AQUA
   );
 
   // TODO: add filter by created_at
@@ -146,7 +136,7 @@ void ActiveInvoiceFrame(Frame frame) {
   );
 
   // Render - using rapid
-  ivp_render_invoice_frame;
+  ivp_render_templates;
 
   // Active
   keycode_tp keycode;
@@ -154,17 +144,15 @@ void ActiveInvoiceFrame(Frame frame) {
     if (frame->active_element == 1) {
       // Add button
       keycode = ActiveButton(add_button);
-      if (keycode == KEY_LEFT) {
-        frame->active_element = 0;
-      } else if (keycode == KEY_RIGHT) {
+      if (keycode == KEY_RIGHT) {
         frame->active_element = 3;
       } else if (keycode == KEY_DOWN) {
         frame->active_element = 4;
       } else if (keycode == ENTER) {
-        IVPRecovery(frame);
+        ConcealInvoiceFrame(frame, ivp_templates_params);
         creation_frame->active_element = 1;
         ActiveInvoiceCreationFrame(creation_frame);
-        ivp_render_invoice_frame;
+        ivp_render_templates;
         frame->active_element = 1;
       } else if (keycode == BACKSPACE) {
          frame->active_element = 0;
@@ -173,58 +161,66 @@ void ActiveInvoiceFrame(Frame frame) {
       // List
       keycode = ActiveListViewScroll(list_view_scroll);
       if (keycode == ENTER) {
-        IVPRecovery(frame);
+        ConcealInvoiceFrame(frame, ivp_templates_params);
         linear_list = (LinearList) GetSelectedItemInListViewScroll(list_view_scroll);
         invoice = (Invoice) GetFirstItemInLinearList(linear_list);
         ActiveInvoiceShowFrame(show_frame, invoice);
-        ivp_render_invoice_frame;
+        ivp_render_templates;
       } else if (keycode == BACKSPACE) {
         frame->active_element = 1;
       } else if (keycode == KEY_UP) {
-        frame->active_element = 1;
+        frame->active_element = 4;
       } else if (keycode == NULL_KEY) {
+        frame->active_element = 1;
+      } else if (keycode == KEY_RIGHT) {
+        frame->active_element = 3;
+      } else if (keycode == KEY_LEFT) {
         frame->active_element = 1;
       }
     } else if (frame->active_element == 3) {
+      // Query
       keycode = ActiveEditStr(edit_query);
       if (keycode == KEY_LEFT) {
         frame->active_element = 1;
       } else if (keycode == KEY_DOWN)
-        frame->active_element = 5;
-      else if (keycode == ENTER) {
         frame->active_element = 2;
+      else if (keycode == ENTER) {
+        if (IsBlankString(edit_query->str)) {
+          RenderNotify(notify, WARNING_NOTIFY, "Không được để trắng");
+          continue;
+        }
+
+        invoice = GetInvoiceInArchiveByNumber(edit_query->str);
+        if (IsNull(invoice)) {
+          RenderNotify(notify, ERROR_NOTIFY, "Không tìm thấy hóa đơn");
+          continue;
+        }
+
+        ConcealInvoiceFrame(frame, ivp_templates_params);
+        ActiveInvoiceShowFrame(show_frame, invoice);
+        ivp_render_templates;
       }
     } else if (frame->active_element == 4) {
-      keycode = ActiveEditDateTime(edit_from);
+      keycode = ActiveButton(filter_button);
       if (keycode == KEY_UP) {
         frame->active_element = 1;
-      } else if (keycode == KEY_DOWN)
-        frame->active_element = 2;
-      else if (keycode == KEY_RIGHT)
-        frame->active_element = 5;
-      else if (keycode == ENTER) {
-        frame->active_element = 2;
-      }
-    } else if (frame->active_element == 5) {
-      keycode = ActiveEditDateTime(edit_to);
-      if (keycode == KEY_UP) {
-        frame->active_element = 3;
-      } else if (keycode == KEY_DOWN)
-        frame->active_element = 2;
-      else if (keycode == KEY_LEFT)
+      } else if (keycode == ENTER) {
         frame->active_element = 4;
-      else if (keycode == ENTER) {
+      } else if (keycode == KEY_LEFT) {
+        frame->active_element = 1;
+      } else if (keycode == KEY_RIGHT) {
+        frame->active_element = 3;
+      } else if (keycode == KEY_DOWN) {
         frame->active_element = 2;
       }
     }
   }
 
+  // Recovery
+  ConcealInvoiceFrame(frame, ivp_templates_params);
+
   // Release
-  DestroyButton(add_button);
-  DestroyListViewScroll(list_view_scroll);
+  DestroyInvoiceFrameTemplates(ivp_templates_params);
   DestroyFrame(creation_frame);
   DestroyFrame(updated_frame);
-
-  // Recovery
-  IVPRecovery(frame);
 }

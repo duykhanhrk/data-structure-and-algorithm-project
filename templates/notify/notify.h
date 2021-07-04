@@ -114,6 +114,8 @@ void RenderNotify(Notify notify, status_tp status, const char * message) {
   );
 }
 
+// methods - using rapid
+tpp_define_conceal_method(ConcealNotify, Notify)
 
 #ifdef __cplusplus
 }

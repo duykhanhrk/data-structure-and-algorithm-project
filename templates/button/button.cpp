@@ -96,3 +96,5 @@ keycode_tp ActiveButton(Button button) {
   RenderButton(button, NORMAL_BUTTON);
   return c;
 }
+
+tpp_define_conceal_method(ConcealButton, Button)

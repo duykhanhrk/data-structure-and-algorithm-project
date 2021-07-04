@@ -73,6 +73,14 @@ void DestroyStaffList(StaffList &staff_list) {
     DestroyStaff(staff_list->staffs[staff_list->count]);
 }
 
+// int IndexOfStaffIn
+int IndexOfStaffInList(Staff staff, StaffList staff_list) {
+  for (int interact = 0; interact < staff_list->count; interact ++)
+    if (staff_list->staffs[interact] == staff) return interact;
+
+  return -1;
+}
+
 // Logic
 bool IsStaffListEmpty(StaffList staff_list) {
   return (staff_list->count == 0);
@@ -95,19 +103,6 @@ int StaffListCount(StaffList staff_list) {
 }
 
 // Insert
-message_tp AddItemToStaffList(StaffList &staff_list, Staff staff) {
-  if (staff_list->count == STAFF_LIST_MAX_ITEMS)
-    return M_LIST_IS_FULL;
-
-  if (IsCodeInStaffList(staff_list, staff->code))
-    return M_CONFLICT;
-
-  staff_list->staffs[staff_list->count] = staff;
-  staff_list->count ++;
-
-  return OK;
-}
-
 message_tp InsertItemToBeginningOfStaffList(StaffList &staff_list, Staff staff) {
   if (staff_list->count == STAFF_LIST_MAX_ITEMS)
     return M_LIST_IS_FULL;
@@ -143,6 +138,30 @@ message_tp InsertItemToStaffListByIndex(StaffList &staff_list, Staff staff, int 
   staff_list->staffs[index] = staff;
 
   staff_list->count ++;
+
+  return OK;
+}
+
+message_tp AddItemToStaffList(StaffList &staff_list, Staff staff) {
+  if (staff_list->count == STAFF_LIST_MAX_ITEMS)
+    return M_LIST_IS_FULL;
+
+  if (IsCodeInStaffList(staff_list, staff->code))
+    return M_CONFLICT;
+
+  int interact = 0;
+  while (
+    interact < staff_list->count &&
+    strcmp(staff_list->staffs[interact]->first_name, staff->first_name) < 0
+  ) interact ++;
+
+  while (
+    interact < staff_list->count &&
+    strcmp(staff_list->staffs[interact]->first_name, staff->first_name) == 0 &&
+    strcmp(staff_list->staffs[interact]->last_name, staff->last_name) < 0
+  ) interact ++;
+
+  InsertItemToStaffListByIndex(staff_list, staff, interact);
 
   return OK;
 }
@@ -222,6 +241,27 @@ message_tp DeleteItemInStaffListByCode(StaffList &staff_list, const char * code)
   for (int interact = 0; interact < staff_list->count; interact ++)
     if (strcmp(staff_list->staffs[interact]->code, code) == 0)
       return DeleteItemInStaffListByIndex(staff_list, interact);
+
+  return M_NOT_FOUND;
+}
+
+// Remove
+message_tp RemoveItemInStaffListByIndex(StaffList &staff_list, int index) {
+  if (staff_list->count == 0 || index < 0 || index > staff_list->count - 1)
+    return M_NOT_FOUND;
+
+  for (int interact = index; interact < staff_list->count - 1; interact ++)
+    staff_list->staffs[interact] = staff_list->staffs[interact + 1];
+
+  staff_list->count --;
+
+  return OK;
+}
+
+message_tp RemoveItemInStaffListByCode(StaffList &staff_list, const char * code) {
+  for (int interact = 0; interact < staff_list->count; interact ++)
+    if (strcmp(staff_list->staffs[interact]->code, code) == 0)
+      return RemoveItemInStaffListByIndex(staff_list, interact);
 
   return M_NOT_FOUND;
 }
