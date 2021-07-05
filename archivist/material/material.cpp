@@ -108,6 +108,34 @@ message_tp UpdateMaterialInArchiveNS(Material _material, Material material) {
   return OK;
 }
 
+// For list view
+int CountMaterials(void * material_list, void * filter) {
+  return MaterialListCount((MaterialList) material_list);
+}
+
+void TakeMaterials(void * material_list, void * filter, LinearList linear_list, int offset, int limit) {
+  EmptyLinearList(linear_list);
+  TakeItemsInMaterialList((MaterialList) material_list, linear_list, offset, limit);
+}
+
+// Test
+
+void TakeMaterialsInArchiveTypeV(MaterialNode material_node, LinearList linear_list, int &limit) {
+  if (material_node == NULL || limit == 0) return;
+  TakeMaterialsInArchiveTypeV(material_node->right_node, linear_list, limit);
+  if (limit > 0) {
+    AddItemToLinearList(linear_list, material_node->material);
+    limit --;
+  }
+  TakeMaterialsInArchiveTypeV(material_node->left_node, linear_list, limit);
+}
+
+/* Top materials in archive */
+void TopMaterialInArchive(LinearList linear_list, int limit) {
+  EmptyLinearList(linear_list);
+  TakeMaterialsInArchiveTypeV(archive->material_list, linear_list, limit);
+}
+
 /* Debug */
 
 void ShowMaterialListInArchive() {

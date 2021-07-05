@@ -248,36 +248,6 @@ void TakeItemsInMaterialListWithFilter(
   TakeItemsInMaterialList(material_list->right_node, linear_list, offset, limit);
 }
 
-int CountMaterials(void * material_list, void * filter) {
-//   if (filter == NULL)
-    return MaterialListCount((MaterialList) material_list);
-
-//   return MaterialListCountWithFilter((MaterialList) material_list, (char *) filter);
-}
-
-void TakeMaterials(
-  void * material_list,
-  void * filter,
-  LinearList linear_list,
-  int offset,
-  int limit
-) {
-  if (filter == NULL)
-    return TakeItemsInMaterialList(
-      (MaterialList) material_list,
-      linear_list,
-      offset, limit
-    );
-
-  return TakeItemsInMaterialListWithFilter(
-    (MaterialList) material_list,
-    (char *) filter,
-    linear_list,
-    offset,
-    limit
-  );
-}
-
 /* -----------------------------------------------------------------------------
 Test
 ----------------------------------------------------------------------------- */

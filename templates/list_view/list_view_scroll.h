@@ -163,7 +163,7 @@ void RenderListViewScroll(ListViewScroll list_view_scroll) {
 
   // List (exclude header and footer)
   int limit = (list_view_scroll->list_view->height / list_view_scroll->list_view->item_context->height);
-  EmptyLinearList(list_view_scroll->list_view->linear_list);
+//   EmptyLinearList(list_view_scroll->list_view->linear_list);
   list_view_scroll->take_items(list_view_scroll->data, list_view_scroll->filter, list_view_scroll->list_view->linear_list, list_view_scroll->page * limit, limit);
   RenderListView(list_view_scroll->list_view);
 

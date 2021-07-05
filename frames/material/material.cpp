@@ -86,6 +86,7 @@ void ActiveMaterialFrame(Frame frame) {
         creation_frame->active_element = 1;
         MTPRecovery(frame);
         ActiveMaterialCreationFrame(creation_frame);
+        list_view_scroll->data = MATERIAL_LIST_IN_ARCHIVE;
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 1;
@@ -102,8 +103,8 @@ void ActiveMaterialFrame(Frame frame) {
           list_view_scroll->list_view->linear_list,
           list_view_scroll->list_view->selected_item
         );
-        if (material == NULL) continue;
         ActiveMaterialUpdatedFrame(updated_frame, material);
+        list_view_scroll->data = MATERIAL_LIST_IN_ARCHIVE;
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 2;
