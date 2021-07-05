@@ -126,7 +126,7 @@ void ActiveStaffCreationFrame(Frame frame) {
       keycode = ActiveEditStr(edit_last_name);
       if (keycode == ENTER) {
         if (IsBlankString(edit_last_name->str))
-          RenderNotify(notify, WARNING_NOTIFY, "Tên không được để trắng");
+          RenderNotify(notify, WARNING_NOTIFY, "Họ không được để trắng");
         else frame->active_element = 3;
       }
       else if (keycode == KEY_DOWN)
@@ -142,7 +142,7 @@ void ActiveStaffCreationFrame(Frame frame) {
       keycode = ActiveEditStr(edit_first_name);
       if (keycode == ENTER) {
         if (IsBlankString(edit_first_name->str))
-          RenderNotify(notify, WARNING_NOTIFY, "ĐVT không được để trắng");
+          RenderNotify(notify, WARNING_NOTIFY, "Tên không được để trắng");
         else frame->active_element = 4;
       }
       else if (keycode == KEY_DOWN)

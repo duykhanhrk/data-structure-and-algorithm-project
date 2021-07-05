@@ -164,3 +164,5 @@ keycode_tp ActiveListViewStraight(ListView list_view) {
   LVPUnselectItem(list_view);
   return keycode;
 }
+
+tpp_define_conceal_method(ConcealListView, ListView)

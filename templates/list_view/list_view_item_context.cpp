@@ -149,8 +149,8 @@ void RenderListViewItemWithDataAsStaff(
   position_tp position_y = list_view_item_context->position_y + list_view_item_context->height / 2;
 //   2 + 10 + 2 + 32 + 2 + 32 + 2 + 12 + 2
   WriteStr(staff->code, position_x + 2, position_y, foreground, background);
-  WriteStr(staff->first_name, position_x + 14, position_y, foreground, background);
-  WriteStr(staff->last_name, position_x + 48, position_y, foreground, background);
+  WriteStr(staff->last_name, position_x + 14, position_y, foreground, background);
+  WriteStr(staff->first_name, position_x + 48, position_y, foreground, background);
   if (staff->sex == FEMALE_STAFF)
     WriteStr("Nữ", position_x + 82, position_y, foreground, background);
   else if (staff->sex == MALE_STAFF)
@@ -198,10 +198,10 @@ void RenderListViewItemWithDataAsInvoice(
 
   position_tp position_x = list_view_item_context->position_x;
   position_tp position_y = list_view_item_context->position_y + list_view_item_context->height / 2;
-//   2 + 10 + 2 + 12 + 2 + 54 + 2 + 10 + 2
+//   2 + 20 + 2 + 10 + 2 + 46 + 2 + 10 + 2
   WriteStr(invoice->number, position_x + 2, position_y, foreground, background);
-  WriteDate(invoice->created_at, position_x + 14, position_y, foreground, background);
-  WriteDoubleStrV(staff->last_name, staff->first_name, 54, position_x + 28, position_y, foreground, background);
+  WriteDate(invoice->created_at, position_x + 24, position_y, foreground, background);
+  WriteDoubleStrV(staff->last_name, staff->first_name, 46, position_x + 36, position_y, foreground, background);
   double total_price = CalculateTotalPriceOfInvoice(invoice);
   WriteDoubleV(total_price, PROGRAM_DOUBLE_ROUND, 10, position_x + 84, position_y, foreground, background);
 }

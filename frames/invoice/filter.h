@@ -153,6 +153,7 @@ void ActiveInvoiceFilterForm(Frame frame) {
         from = BeginningOfDayTimeT(from);
         to = EndOfDayTimeT(to);
 
+        ConcealInvoiceFilterForm(frame);
         ActiveInvoiceListByFromTo(support_frame, from, to);
 
         ifp_render;

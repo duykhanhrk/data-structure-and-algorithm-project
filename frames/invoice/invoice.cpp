@@ -110,9 +110,9 @@ void ActiveInvoiceFrame(Frame frame) {
     0
   );
 
-  AddFieldForListViewScroll(list_view_scroll, "Số", 10);
-  AddFieldForListViewScroll(list_view_scroll, "Ngày lập", 12);
-  AddFieldForListViewScroll(list_view_scroll, "Người lập", 54);
+  AddFieldForListViewScroll(list_view_scroll, "Số", 20);
+  AddFieldForListViewScroll(list_view_scroll, "Ngày lập", 10);
+  AddFieldForListViewScroll(list_view_scroll, "Người lập", 46);
   AddFieldForListViewScroll(list_view_scroll, "Trị giá", 10);
 
   // creation

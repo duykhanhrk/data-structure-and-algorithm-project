@@ -9,6 +9,7 @@ extern "C" {
 #include "staff/staff.h"
 #include "invoice_detail/invoice_detail.h"
 #include "invoice/invoice.h"
+#include "statistic/statistic.h"
 #include "main/main.h"
 
 #ifdef __cplusplus

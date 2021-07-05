@@ -69,7 +69,7 @@ void ActiveMainFrame(Frame frame) {
       } else if (list_view->selected_item == 3) {
         // Statistics
         content_frame->active_element = 1;
-//         ActiveStatisticFilterForm(content_frame);
+        ActiveStatisticFrame(content_frame);
         frame->active_element = 1;
       } else if (list_view->selected_item == 4) {
         // Exit

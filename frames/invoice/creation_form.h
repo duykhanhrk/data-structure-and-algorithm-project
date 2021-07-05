@@ -64,7 +64,7 @@ void ICPRender(
   Button save_button,
   Button close_button
 ) {
-  if (staff != NULL) SetButtonText(staff_button, staff->first_name);
+  if (staff != NULL) SetButtonText(staff_button, staff->code);
   else SetButtonText(staff_button, "Chọn người lập");
 
   if (invoice->type == IMPORT_INVOICE) {
@@ -187,9 +187,9 @@ void ActiveInvoiceCreationFrame(Frame frame) {
       else if (keycode == KEY_DOWN)
         frame->active_element = 2;
       else if (keycode == KEY_LEFT)
-        frame->active_element = 5;
-      else if (keycode == KEY_RIGHT)
         frame->active_element = 6;
+      else if (keycode == KEY_RIGHT)
+        frame->active_element = 7;
     } else if (frame->active_element == 2) {
       // Name
       keycode = ActiveEditDateTime(edit_created_at);
@@ -201,9 +201,9 @@ void ActiveInvoiceCreationFrame(Frame frame) {
       else if (keycode == KEY_UP)
         frame->active_element = 1;
       else if (keycode == KEY_LEFT)
-        frame->active_element = 5;
-      else if (keycode == KEY_RIGHT)
         frame->active_element = 6;
+      else if (keycode == KEY_RIGHT)
+        frame->active_element = 7;
     } else if (frame->active_element == 3) {
       // Type
       keycode = ActiveButton(type_button);
@@ -275,8 +275,7 @@ void ActiveInvoiceCreationFrame(Frame frame) {
           if (message == M_CONFLICT) {
             RenderNotify(notify, ERROR_NOTIFY, "Số đã được sử dụng");
             frame->active_element = 1;
-          }
-          else if (message == M_INVOICE_NUMBER_INVALID) {
+          } else if (message == M_INVOICE_NUMBER_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Số không được để trắng");
             frame->active_element = 1;
           } else if (message == M_INVOICE_CREATED_AT_INVALID) {
@@ -293,16 +292,16 @@ void ActiveInvoiceCreationFrame(Frame frame) {
             frame->active_element = 5;
           } else if (message == M_INVOICE_DETAIL_MATERIAL_CODE_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Mã vật tư không tồn tại");
-            frame->active_element = 1;
+            frame->active_element = 5;
           } else if (message == M_INVOICE_DETAIL_AMOUNT_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Số lượng không hợp lệ");
-            frame->active_element = 2;
+            frame->active_element = 5;
           } else if (message == M_INVOICE_DETAIL_PRICE_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Giá bán không hợp lệ");
-            frame->active_element = 3;
+            frame->active_element = 5;
           } else if (message == M_INVOICE_DETAIL_VAT_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "VAT không hợp lệ");
-            frame->active_element = 4;
+            frame->active_element = 5;
           } else {
             RenderNotify(notify, ERROR_NOTIFY, "Thông tin cung cấp không hợp lệ");
           }

@@ -2,7 +2,7 @@
 #define __FRAMES_STATISTIC_FILTER_FORM__
 
 /* includes */
-// #include "invoice_list_by_from_to.h"
+#include "list.h"
 
 /* Private key - STFP */
 
@@ -74,7 +74,7 @@ void ActiveStatisticFilterForm(Frame frame) {
 
   // Variable
   LinearList linear_list;
-  Statistic invoice;
+  Invoice invoice;
   time_t from = 1388534400; // 2014-01-01
   time_t to = TimeNow();
 
@@ -153,7 +153,8 @@ void ActiveStatisticFilterForm(Frame frame) {
         from = BeginningOfDayTimeT(from);
         to = EndOfDayTimeT(to);
 
-//         ActiveStatisticListByFromTo(support_frame, from, to);
+        ConcealInvoiceFilterForm(frame);
+        ActiveTopTenMaterialsFrame(support_frame, from, to);
 
         stfp_render;
       }

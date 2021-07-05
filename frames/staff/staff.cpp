@@ -50,8 +50,8 @@ void ActiveStaffFrame(Frame frame) {
   );
 
   AddFieldForListViewScroll(list_view_scroll, "Mã", 10);
-  AddFieldForListViewScroll(list_view_scroll, "Tên", 32);
   AddFieldForListViewScroll(list_view_scroll, "Họ", 32);
+  AddFieldForListViewScroll(list_view_scroll, "Tên", 32);
   AddFieldForListViewScroll(list_view_scroll, "Giới tính", 12);
 
   // creation
