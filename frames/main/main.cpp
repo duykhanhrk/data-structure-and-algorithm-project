@@ -81,4 +81,7 @@ void ActiveMainFrame(Frame frame) {
   // Release
   DestroyListView(list_view);
   DestroyFrame(content_frame);
+
+  // Initialize
+  ClearScreenWithBackground(BACKGROUND_BLACK);
 }

@@ -4,6 +4,12 @@
 #include <iostream>
 #define show(x) std::cout << x << std::endl;
 
+/* Includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
 /* Makers */
 #include "supporter/supporter.h"
 #include "structure/structure.h"
@@ -59,8 +65,6 @@ void InvoiceSeed() {
   show(message);
   getch();
 }
-
-#include <math.h>
 
 int main() {
   // Config console

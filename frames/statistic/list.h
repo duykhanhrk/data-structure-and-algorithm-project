@@ -60,9 +60,9 @@ void ActiveTopTenMaterialsFrame(Frame frame, time_t from, time_t to) {
   // Header
   DrawRecShape(frame->width - 4, 1, ' ', frame->position_x + 2, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
   WriteStr("Mã", frame->position_x + 4, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
-  WriteStr("Tên", frame->position_x + 14, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
-  WriteStr("ĐVT", frame->position_x + 72, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
-  WriteStr("Số lượng", frame->position_x + 84, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
+  WriteStr("Tên", frame->position_x + 16, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
+  WriteStr("ĐVT", frame->position_x + 74, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
+  WriteStr("Số lượng", frame->position_x + 86, frame->position_y + 5, LIST_VIEW_SCROLL_HEADER_FOREGROUND, LIST_VIEW_SCROLL_HEADER_BACKGROUND);
 
   // List
   RenderListView(list_view);
