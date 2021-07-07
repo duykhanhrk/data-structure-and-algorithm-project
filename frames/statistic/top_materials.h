@@ -70,8 +70,8 @@ void SortSTMFlexs(STMFlex * list, int left, int right) {
   STMFlex stmf = list[(left + right) / 2];
   do
   {
-    while (list[i]->total_price < stmf->total_price) i ++;
-    while (list[j]->total_price > stmf->total_price) j --;
+    while (list[i]->total_price > stmf->total_price) i ++;
+    while (list[j]->total_price < stmf->total_price) j --;
     if (i <= j) {
       SwapSTMFlexs(list[i], list[j]);
 	    i ++;
@@ -83,6 +83,7 @@ void SortSTMFlexs(STMFlex * list, int left, int right) {
 }
 
 void SortSTMFlexList(STMFlexList list) {
+  if (list->count == 0) return;
   SortSTMFlexs(list->stm_flexs, 0, list->count - 1);
 }
 

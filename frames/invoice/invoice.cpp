@@ -34,8 +34,8 @@ void RenderInvoiceFrameTemplates(ivp_templates_args) {
   RenderButton(add_button);
   RenderButton(filter_button);
   RenderEditStr(edit_query);
-  RenderListViewScroll(list_view_scroll);
   RenderNotify(notify, NORMAL_NOTIFY, "In hóa đơn nhanh với thanh nhập phía trên");
+  RenderListViewScroll(list_view_scroll);
 }
 
 void DestroyInvoiceFrameTemplates(ivp_templates_args) {

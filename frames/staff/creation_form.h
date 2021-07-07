@@ -198,11 +198,11 @@ void ActiveStaffCreationFrame(Frame frame) {
             frame->active_element = 1;
           }
           else if (message == M_STAFF_LAST_NAME_INVALID) {
-            RenderNotify(notify, ERROR_NOTIFY, "Tên không được để trắng");
+            RenderNotify(notify, ERROR_NOTIFY, "Họ không được để trắng");
             frame->active_element = 2;
           }
           else if (message == M_STAFF_FIRST_NAME_INVALID) {
-            RenderNotify(notify, ERROR_NOTIFY, "ĐVT không được để trắng");
+            RenderNotify(notify, ERROR_NOTIFY, "Tên không được để trắng");
             frame->active_element = 3;
           }
           else {

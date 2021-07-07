@@ -1,6 +1,8 @@
 #ifndef __FRAMES_INVOICE_DETAIL_CREATION_FORM__
 #define __FRAMES_INVOICE_DETAIL_CREATION_FORM__
 
+#include "material_selection_list.h"
+
 #define IDCP_INPUT_WIDTH 36
 #define IDCP_INPUT_HEIGHT 3
 
@@ -21,7 +23,7 @@
 #define idcp_form_label(text, y)\
         WriteStr(text, frame->position_x + 2, frame->position_y + 2 + 4 * y)
 
-#define idcp_render_form\
+#define idcp_render_template\
         IDCPRenderInvoiceDetailFrame(\
           edit_material_code,\
           edit_amount,\
@@ -30,6 +32,14 @@
           save_button,\
           close_button\
         )
+
+#define idcp_render\
+        idcp_form_background;\
+        idcp_form_label("Mã vật tư", 0);\
+        idcp_form_label("Số lượng", 1);\
+        idcp_form_label("Giá bán", 2);\
+        idcp_form_label("VAT", 3);\
+        idcp_render_template;
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,6 +70,7 @@ void IDCPRenderInvoiceDetailFrame(
 
 void ActiveInvoiceDetailCreationFrame(Frame frame, InvoiceDetailList invoice_detail_list, char invoice_type) {
   // Varialbes
+  Material material = NULL;
   InvoiceDetail invoice_detail = NewInvoiceDetail();
 
   // Init templates
@@ -124,15 +135,13 @@ void ActiveInvoiceDetailCreationFrame(Frame frame, InvoiceDetailList invoice_det
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_FOREGROUND_REVERSE
   );
 
-  // Draw
-  idcp_form_background;
-  idcp_form_label("Mã vật tư", 0);
-  idcp_form_label("Số lượng", 1);
-  idcp_form_label("Giá bán", 2);
-  idcp_form_label("VAT", 3);
+  Frame support_frame = NewFrame(
+    WINDOW_COLUMNS - 20, WINDOW_ROWS,
+    20, 0
+  );
 
   // Render - using rapid
-  idcp_render_form;
+  idcp_render;
 
   // Active
   message_tp message;
@@ -150,8 +159,13 @@ void ActiveInvoiceDetailCreationFrame(Frame frame, InvoiceDetailList invoice_det
         frame->active_element = 2;
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
-      else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
+      else if (keycode == KEY_RIGHT) {
+        ConcealFrame(frame);
+        material = ActiveMaterialSelectionListFrame(support_frame);
+        if (material != NULL) SetEditStrText(edit_material_code, material->code);
+        idcp_render;
+        frame->active_element = 2;
+      }
     } else if (frame->active_element == 2) {
       // Name
       keycode = ActiveEditInt(edit_amount);
@@ -207,7 +221,7 @@ void ActiveInvoiceDetailCreationFrame(Frame frame, InvoiceDetailList invoice_det
             edit_amount->num = &(invoice_detail->amount);
             edit_price->num = &(invoice_detail->price);
             edit_vat->num = &(invoice_detail->vat);
-            idcp_render_form;
+            idcp_render_template;
           } else if (message == M_CONFLICT) {
             RenderNotify(notify, ERROR_NOTIFY, "Vật tư đã tồn tại");
             frame->active_element = 1;
@@ -258,8 +272,9 @@ void ActiveInvoiceDetailCreationFrame(Frame frame, InvoiceDetailList invoice_det
   DestroyButton(save_button);
   DestroyButton(close_button);
   DestroyNotify(notify);
+  DestroyFrame(support_frame);
 
-  IDCPRecovery(frame);
+  ConcealFrame(frame);
 }
 
 #ifdef __cplusplus

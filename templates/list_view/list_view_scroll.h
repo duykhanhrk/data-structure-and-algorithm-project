@@ -163,7 +163,18 @@ void RenderListViewScroll(ListViewScroll list_view_scroll) {
 
   // List (exclude header and footer)
   int limit = (list_view_scroll->list_view->height / list_view_scroll->list_view->item_context->height);
+
+  // OPTIMIZE: Blank page
+  int items_count = list_view_scroll->items_count(list_view_scroll->data, list_view_scroll->filter);
+  if (list_view_scroll->page * limit >= items_count) {
+    list_view_scroll->page = items_count / ((list_view_scroll->list_view->height) / list_view_scroll->list_view->item_context->height) - 1;
+    list_view_scroll->list_view->selected_item = limit;
+  }
+  list_view_scroll->page = list_view_scroll->page < 0 ? 0 : list_view_scroll->page;
+
+  // FIXME: Empty linear list with linear list's items are linear lists
 //   EmptyLinearList(list_view_scroll->list_view->linear_list);
+
   list_view_scroll->take_items(list_view_scroll->data, list_view_scroll->filter, list_view_scroll->list_view->linear_list, list_view_scroll->page * limit, limit);
   RenderListView(list_view_scroll->list_view);
 

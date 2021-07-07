@@ -82,6 +82,10 @@ void DestroyEditStr(EditStr &edit_str) {
   edit_str = NULL;
 }
 
+void SetEditStrText(EditStr edit_str, const char * text) {
+  strcpy(edit_str->str, text);
+}
+
 void RenderEditStr(EditStr edit_str, status_tp status = NORMAL_EDIT_STR) {
   color_tp foreground = edit_str->foreground;
   color_tp background = edit_str->background;

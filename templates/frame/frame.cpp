@@ -25,3 +25,5 @@ void DestroyFrame(Frame &frame) {
   free(frame);
   frame = NULL;
 }
+
+tpp_define_conceal_method(ConcealFrame, Frame)

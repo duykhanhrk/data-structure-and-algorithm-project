@@ -86,6 +86,7 @@ void ActiveInvoiceCreationFrame(Frame frame) {
   // Init invoice and staff
   Invoice invoice = NewInvoice();
   Staff staff = NULL;
+  Staff _staff = NULL;
 
   // Init templates
   EditStr edit_number = NewEditStr(
@@ -160,7 +161,7 @@ void ActiveInvoiceCreationFrame(Frame frame) {
 
   Frame support_frame = NewFrame(
     WINDOW_COLUMNS - 20, WINDOW_ROWS,
-    20, frame->position_y
+    20, 0
   );
 
   // Render
@@ -228,7 +229,8 @@ void ActiveInvoiceCreationFrame(Frame frame) {
       keycode = ActiveButton(staff_button);
       if (keycode == ENTER) {
         ICPRecovery(frame);
-        staff = ActiveStaffSelectionListFrame(support_frame);
+        _staff = ActiveStaffSelectionListFrame(support_frame);
+        if (_staff != NULL) staff = _staff;
         icp_render;
       } else if (keycode == KEY_DOWN)
         frame->active_element = 5;
