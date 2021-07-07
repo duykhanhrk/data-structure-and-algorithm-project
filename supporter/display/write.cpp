@@ -108,7 +108,7 @@ void WriteDouble(double obj, wrp_context_arguments, int round_to_digit = 2) {
 void WriteDoubleP(double obj, int round_to_digit = 2, wrp_context_arguments) {
   wrp_save_color_context;
   wrp_apply_context_arguments;
-  char format[6] = "%.2lf";
+  char format[6] = "%.0lf";
   format[2] = IntToChar(DigitsOfDoubleAfterDot(obj, round_to_digit));
   printf(format, obj);
   wrp_apply_color_context;

@@ -33,7 +33,7 @@ typedef struct StaffT {
   char first_name[STAFF_FIRST_NAME_MAX_LEN + 1];
   char last_name[STAFF_LAST_NAME_MAX_LEN + 1];
   char sex;
-  InvoiceList invoice_list;
+  InvoiceListT * invoice_list;
 } StaffT, * Staff;
 
 typedef struct StaffListT {

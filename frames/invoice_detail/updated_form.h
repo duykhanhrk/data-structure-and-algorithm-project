@@ -135,7 +135,7 @@ void ActiveInvoiceDetailUpdatedFrame(
   idup_form_background;
   idup_form_label("Số lượng", 0);
   idup_form_label("Giá bán", 1);
-  idup_form_label("VAT", 2);
+  idup_form_label("VAT(%)", 2);
 
   // Render - using rapid
   idup_render_form;

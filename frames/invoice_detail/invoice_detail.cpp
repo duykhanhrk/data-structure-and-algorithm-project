@@ -55,7 +55,7 @@ void ActiveInvoiceDetailFrame(Frame frame, InvoiceDetailList invoice_detail_list
   AddFieldForListViewScroll(list_view_scroll, "Mã vật tư", 10);
   AddFieldForListViewScroll(list_view_scroll, "Số lượng", 32);
   AddFieldForListViewScroll(list_view_scroll, "Giá bán", 32);
-  AddFieldForListViewScroll(list_view_scroll, "VAT", 12);
+  AddFieldForListViewScroll(list_view_scroll, "VAT(%)", 12);
 
   // creation
   Frame creation_form = NewFrame(

@@ -41,7 +41,7 @@ typedef struct InvoiceT {
 typedef struct InvoiceNodeT {
   InvoiceT * invoice;
   InvoiceNodeT * next_node;
-} InvoiceNodeT, * InvoiceNode, * InvoiceList;
+} InvoiceNodeT, InvoiceListT, * InvoiceNode, * InvoiceList;
 
 /* -----------------------------------------------------------------------------
 Object

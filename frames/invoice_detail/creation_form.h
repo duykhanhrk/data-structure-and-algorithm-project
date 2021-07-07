@@ -38,7 +38,7 @@
         idcp_form_label("Mã vật tư", 0);\
         idcp_form_label("Số lượng", 1);\
         idcp_form_label("Giá bán", 2);\
-        idcp_form_label("VAT", 3);\
+        idcp_form_label("VAT(%)", 3);\
         idcp_render_template;
 
 #ifdef __cplusplus

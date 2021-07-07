@@ -100,11 +100,11 @@ void RenderEditDouble(EditDouble edit_double, status_tp status = NORMAL_EDIT_DOU
 
   // Round
   long long int pot = pow(10, edit_double->round_to_digit);
-  double num = roundf(*(edit_double->num) * pot) / pot;
+  double num = DoubleToLong(*(edit_double->num) * pot) / (double) pot;
 
   // Re-create the context
-  if (num < edit_double->min_value)
-    num = edit_double->min_value;
+//   if (num < edit_double->min_value)
+//     num = edit_double->min_value;
 
   WriteDoubleP(
     num, edit_double->round_to_digit,
@@ -129,9 +129,9 @@ keycode_tp ActiveEditDouble(EditDouble edit_double) {
 
   // Convert - pot: power of ten
   long long int pot = pow(10, edit_double->round_to_digit);
-  long long int num = (long long int) roundf(*(edit_double->num) * pot);
-  long long int max_value = (long long int) roundf(edit_double->max_value * pot);
-  long long int min_value = (long long int) roundf(edit_double->min_value * pot);
+  long long int num = DoubleToLong(*(edit_double->num) * pot);
+  long long int max_value = DoubleToLong(edit_double->max_value * pot);
+  long long int min_value = DoubleToLong(edit_double->min_value * pot);
 
   int dsad = DigitsOfDoubleAfterDot(*(edit_double->num), edit_double->round_to_digit);
   bool dot = (dsad > 0);
@@ -200,7 +200,7 @@ keycode_tp ActiveEditDouble(EditDouble edit_double) {
     } else if (c == '-' && num == 0 && sign == 1 && min_value < 0) {
       sign = -1;
       printf("%c", '-');
-    } else if (c == '.' && !dot) {
+    } else if (c == '.' && !dot && !(sign == 1 && NumViolatesMaxValue(num, c, max_value)) || (sign == -1 && NumViolatesMinValue(num, c, min_value))) {
       if (num == 0) printf("0%c", '.');
       else printf("%c", '.');
       dot = true;
@@ -216,11 +216,11 @@ keycode_tp ActiveEditDouble(EditDouble edit_double) {
   CursorVisible(false);
 
   // Check min_value and re-create the context
-  if (num < min_value) {
-    num = min_value;
-    if (edit_double->on_change != NULL)
-      edit_double->on_change('\0', edit_double);
-  }
+//   if (num < min_value) {
+//     num = min_value;
+//     if (edit_double->on_change != NULL)
+//       edit_double->on_change('\0', edit_double);
+//   }
 
   pot = pow(10, dsad);
   *(edit_double->num) = num / (double) pot;

@@ -195,9 +195,17 @@ int DigitOfIntExceptTrailingZeros(int num) {
   return count;
 }
 
+long long int DoubleToLong(double _num) {
+  double integral;
+  double fractional = modf(_num, &integral);
+
+  return (long long int) integral;
+}
+
+// OPTIMIZE: Need a review
 int DigitsOfDoubleAfterDot(double _num, int round_to_digit) {
   long long int pot = pow(10, round_to_digit);
-  long long int num = (long long int) roundf(_num * pot);
+  long long int num = DoubleToLong(_num * pot);
   int delta = 0;
   if (num % pot != 0) delta = round_to_digit - DigitsOfLong(num % pot);
   return DigitOfIntExceptTrailingZeros(num % pot) + delta;
@@ -206,7 +214,7 @@ int DigitsOfDoubleAfterDot(double _num, int round_to_digit) {
 // Double
 int DigitsOfDoubleIncludeDot(double _num, int round_to_digit) {
   long long int pot = pow(10, round_to_digit);
-  long long int num = (long long int) roundf(_num * pot);
+  long long int num = DoubleToLong(_num * pot);
   if (num == 0) return 1;
 
   int count = 0;
@@ -215,7 +223,7 @@ int DigitsOfDoubleIncludeDot(double _num, int round_to_digit) {
     count ++;
   }
 
-  if (DigitOfIntExceptTrailingZeros(num % pot) != 0)
+  if (DigitsOfDoubleAfterDot(_num, round_to_digit) != 0)
     count ++;
 
   return count;
@@ -230,6 +238,8 @@ long long int RemoveTrailingZerosOfLong(long long int num, int limit = -1) {
 
   return num;
 }
+
+// String char
 
 char EndOfString(const char * str) {
   return str[strlen(str) - 1];

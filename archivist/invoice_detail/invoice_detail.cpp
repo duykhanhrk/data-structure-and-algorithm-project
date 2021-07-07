@@ -18,8 +18,8 @@ message_tp InvoiceDetailValidation(InvoiceDetail invoice_detail, bool strict = t
   if (IsNegative(invoice_detail->price))
     return M_INVOICE_DETAIL_PRICE_INVALID;
 
-  if (IsNegative(invoice_detail->vat))
-    return M_INVOICE_DETAIL_VAT_INVALID;
+//   if (IsNegative(invoice_detail->vat))
+//     return M_INVOICE_DETAIL_VAT_INVALID;
 
   return OK;
 }

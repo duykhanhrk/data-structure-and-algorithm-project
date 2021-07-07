@@ -54,7 +54,7 @@ void ActiveTopTenMaterialsFrame(Frame frame, time_t from, time_t to) {
   );
   WriteStr("Từ ngày:", frame->position_x + 30, frame->position_y + 2, PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND);
   WriteDate(from, frame->position_x + 39, frame->position_y + 2, PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND);
-  WriteStr("Từ ngày:", frame->position_x + 50, frame->position_y + 2, PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND);
+  WriteStr("Đến ngày:", frame->position_x + 50, frame->position_y + 2, PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND);
   WriteDate(to, frame->position_x + 59, frame->position_y + 2, PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND);
 
   // Header

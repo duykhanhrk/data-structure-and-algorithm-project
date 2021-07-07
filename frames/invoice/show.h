@@ -106,7 +106,7 @@ void ActiveInvoiceShowFrame(Frame frame, Invoice invoice) {
   AddFieldForListViewScroll(list_view_scroll, "Mã vật tư", 10);
   AddFieldForListViewScroll(list_view_scroll, "Số lượng", 10);
   AddFieldForListViewScroll(list_view_scroll, "Giá bán", 10);
-  AddFieldForListViewScroll(list_view_scroll, "VAT", 8);
+  AddFieldForListViewScroll(list_view_scroll, "VAT(%)", 8);
 
   Frame info_form = NewFrame(
     (frame->width - 4) / 2 - 1, 21,
