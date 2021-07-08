@@ -63,7 +63,7 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
 
   Button save_button = NewButton(
     " Lưu", ALIGN_CENTER,
-    (frame->width - 6) / 2, 3, 0,
+    frame->width - 4, 3, 0,
     frame->position_x + 2, frame->position_y + 13,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
@@ -100,7 +100,7 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
   RenderEditStr(edit_first_name);
   RenderButton(sex_button);
   RenderButton(save_button);
-  RenderButton(delete_button);
+//   RenderButton(delete_button);
   RenderButton(close_button);
 
   // Active
@@ -120,7 +120,7 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
       else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
+        frame->active_element = 7;
     } else if (frame->active_element == 3) {
       // Unit
       keycode = ActiveEditStr(edit_first_name);
@@ -136,7 +136,7 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
       else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
+        frame->active_element = 7;
     } else if (frame->active_element == 4) {
       // Sex
       keycode = ActiveButton(sex_button);
@@ -155,7 +155,7 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
       else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
+        frame->active_element = 7;
     } else if (frame->active_element == 5) {
       // Save
       keycode = ActiveButton(save_button);
@@ -185,28 +185,31 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
           }
         }
       }
-      else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
+//       else if (keycode == KEY_RIGHT)
+//         frame->active_element = 6;
       else if (keycode == KEY_UP)
         frame->active_element = 4;
       else if (keycode == KEY_DOWN)
         frame->active_element = 7;
-    }  else if (frame->active_element == 6) {
+    }
+    // OPTIMIZE: close delete feature
+//     else if (frame->active_element == 6) {
       // Delete
-      keycode = ActiveButton(delete_button);
-      if (keycode == ENTER) {
-        message = DeleteStaffInArchive(_staff->code);
-        if (message != OK)
-          RenderNotify(notify, ERROR_NOTIFY, "Lỗi không xác định");
-        else frame->active_element = 0;
-      }
-      else if (keycode == KEY_UP)
-        frame->active_element = 4;
-      else if (keycode == KEY_LEFT)
-        frame->active_element = 5;
-      else if (keycode == KEY_DOWN)
-        frame->active_element = 7;
-    } else if (frame->active_element == 7) {
+//       keycode = ActiveButton(delete_button);
+//       if (keycode == ENTER) {
+//         message = DeleteStaffInArchive(_staff->code);
+//         if (message != OK)
+//           RenderNotify(notify, ERROR_NOTIFY, "Lỗi không xác định");
+//         else frame->active_element = 0;
+//       }
+//       else if (keycode == KEY_UP)
+//         frame->active_element = 4;
+//       else if (keycode == KEY_LEFT)
+//         frame->active_element = 5;
+//       else if (keycode == KEY_DOWN)
+//         frame->active_element = 7;
+//     }
+    else if (frame->active_element == 7) {
       // Close
       keycode = ActiveButton(close_button);
       if (keycode == ENTER) {
@@ -217,8 +220,8 @@ void ActiveStaffUpdatedFrame(Frame frame, Staff _staff) {
         frame->active_element = 5;
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
-      else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
+//       else if (keycode == KEY_RIGHT)
+//         frame->active_element = 6;
     }
   }
 
