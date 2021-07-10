@@ -44,6 +44,10 @@ MaterialList MaterialListInArchive() {
   return archive->material_list;
 }
 
+int CountMaterialsInArchive() {
+  return MaterialListCount(archive->material_list);
+}
+
 message_tp UpdateMaterialQuantityInArchive(const char * code, int quantity) {
   Material material = GetItemInMaterialListByCode(archive->material_list, code);
   if (material == NULL) return M_NOT_FOUND;
@@ -108,7 +112,49 @@ message_tp UpdateMaterialInArchiveNS(Material _material, Material material) {
   return OK;
 }
 
-// For list view
+// OPTIMIZE: code grouping
+// Sort by name
+void ExportMaterialListToLinearList(MaterialNode material_node, LinearList linear_list) {
+  if (material_node == NULL) return;
+  ExportMaterialListToLinearList(material_node->left_node, linear_list);
+  AddItemToLinearList(linear_list, material_node->material);
+  ExportMaterialListToLinearList(material_node->right_node, linear_list);
+}
+
+void SwapLinearListItems(void * &item, void * &_item) {
+  void * t = item;
+  item = _item;
+  _item = t;
+}
+
+void SortMaterialsInLinearListByName(void ** list, int left, int right) {
+  int i = left;
+  int j = right;
+  Material material = (Material) list[(left + right) / 2];
+  do
+  {
+    while (strcmp(((Material) list[i])->name, material->name) < 0) i ++;
+    while (strcmp(((Material) list[j])->name, material->name) > 0) j --;
+    if (i <= j) {
+      SwapLinearListItems(list[i], list[j]);
+	    i ++;
+	    j --;
+   }
+  } while (i <= j);
+  if (left < j) SortMaterialsInLinearListByName(list, left, j);
+  if (i < right) SortMaterialsInLinearListByName(list, i, right);
+}
+
+void TakeAllMaterialsInArchiveSortByName(LinearList linear_list) {
+  EmptyLinearList(linear_list);
+  ExportMaterialListToLinearList(archive->material_list, linear_list);
+  if (linear_list->count == 0) return;
+  SortMaterialsInLinearListByName(linear_list->data, 0, linear_list->count - 1);
+}
+
+// OPTIMIZE: remove redundant code
+// OPTIMIZE: suspended
+// For list view - suspended
 int CountMaterials(void * material_list, void * filter) {
   return MaterialListCount((MaterialList) material_list);
 }
@@ -118,8 +164,7 @@ void TakeMaterials(void * material_list, void * filter, LinearList linear_list, 
   TakeItemsInMaterialList((MaterialList) material_list, linear_list, offset, limit);
 }
 
-// Test
-
+// Test - No longer in use
 void TakeMaterialsInArchiveTypeV(MaterialNode material_node, LinearList linear_list, int &limit) {
   if (material_node == NULL || limit == 0) return;
   TakeMaterialsInArchiveTypeV(material_node->right_node, linear_list, limit);

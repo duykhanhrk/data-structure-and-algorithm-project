@@ -18,7 +18,24 @@ void MTPRecovery(Frame frame) {
   );
 }
 
+// Custom Count, Take
+int MTPCountMaterials(void * data, void * filter) {
+  return ((LinearList) data)->count;
+}
+
+void MTPTakeMaterials(void * data, void * filter, LinearList linear_list, int offset, int limit) {
+  EmptyLinearList(linear_list);
+  LinearList material_list = (LinearList) data;
+  if (offset >= material_list->count) return;
+  for (int interact = offset; interact < material_list->count && limit > 0; interact ++, limit --)
+    AddItemToLinearList(linear_list, material_list->data[interact]);
+}
+
 void ActiveMaterialFrame(Frame frame) {
+  // Variable
+  LinearList list = NewLinearList(CountMaterialsInArchive());
+  TakeAllMaterialsInArchiveSortByName(list);
+
   // Button
   Button add_button = NewButton(
     " Thêm", ALIGN_CENTER,
@@ -31,11 +48,11 @@ void ActiveMaterialFrame(Frame frame) {
 
   // Material list view
   ListViewScroll list_view_scroll = NewListViewScroll(
-    MATERIAL_LIST_IN_ARCHIVE, // data
+    list, // data
     NULL,
     0, 4, // page, fields count
-    CountMaterials, // items count
-    TakeMaterials, // take items
+    MTPCountMaterials, // items count
+    MTPTakeMaterials, // take items
     MTP_MATERIAL_LIST_WIDTH, MTP_MATERIAL_LIST_HEIGHT,
     frame->position_x + 2, frame->position_y + 5,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND,
@@ -86,7 +103,13 @@ void ActiveMaterialFrame(Frame frame) {
         creation_frame->active_element = 1;
         MTPRecovery(frame);
         ActiveMaterialCreationFrame(creation_frame);
-        list_view_scroll->data = MATERIAL_LIST_IN_ARCHIVE;
+
+        // OPTIMIZE: important! serious performance impact
+        DestroyLinearList(list);
+        list = NewLinearList(CountMaterialsInArchive());
+        TakeAllMaterialsInArchiveSortByName(list);
+        list_view_scroll->data = list;
+
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 1;
@@ -104,7 +127,13 @@ void ActiveMaterialFrame(Frame frame) {
           list_view_scroll->list_view->selected_item
         );
         ActiveMaterialUpdatedFrame(updated_frame, material);
-        list_view_scroll->data = MATERIAL_LIST_IN_ARCHIVE;
+
+        // OPTIMIZE: important! serious performance impact
+        DestroyLinearList(list);
+        list = NewLinearList(CountMaterialsInArchive());
+        TakeAllMaterialsInArchiveSortByName(list);
+        list_view_scroll->data = list;
+
         RenderButton(add_button);
         RenderListViewScroll(list_view_scroll);
         frame->active_element = 2;
@@ -123,6 +152,7 @@ void ActiveMaterialFrame(Frame frame) {
   DestroyListViewScroll(list_view_scroll);
   DestroyFrame(creation_frame);
   DestroyFrame(updated_frame);
+  DestroyLinearList(list);
 
   // Recovery
   MTPRecovery(frame);
