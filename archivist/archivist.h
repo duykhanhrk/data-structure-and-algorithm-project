@@ -17,12 +17,15 @@ extern "C" {
 typedef struct ArchiveT {
   MaterialList material_list;
   StaffList staff_list;
+  void * depot;
 } ArchiveT, * Archive;
 
 Archive archive;
 
 void InitArchive();
 void DestroyArchive();
+void SendToDepot(void *);
+void * TakeFromDepot();
 
 message_tp LoadMaterialListFromStorageToArchive();
 message_tp SaveMaterialListFromArchiveToStorage();

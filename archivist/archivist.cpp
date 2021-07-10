@@ -6,12 +6,23 @@ void InitArchive() {
   archive = (Archive) malloc(sizeof(ArchiveT));
   archive->material_list = NewMaterialList();
   archive->staff_list = NewStaffList();
+  archive->depot = NULL;
 }
 
 void DestroyArchive() {
   DestroyMaterialList(archive->material_list);
   DestroyStaffList(archive->staff_list);
   free(archive);
+}
+
+// OPTIMIZE: depot
+void SendToDepot(void * item) {
+  archive->depot = item;
+}
+
+void * TakeFromDepot() {
+  return archive->depot;
+  archive->depot = NULL;
 }
 
 /* Save support */

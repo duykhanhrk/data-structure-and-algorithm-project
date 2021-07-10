@@ -114,6 +114,85 @@ void RenderNotify(Notify notify, status_tp status, const char * message) {
   );
 }
 
+// OPTIMIZE: only int
+void RenderNotifyTypeI(Notify notify, status_tp status, const char * message, int num) {
+  color_tp foreground = notify->foreground;
+  color_tp background = notify->background;
+
+  if (status == ERROR_NOTIFY) {
+    foreground = notify->error_foreground;
+    background = notify->error_background;
+  } else if (status == WARNING_NOTIFY) {
+    foreground = notify->warning_foreground;
+    background = notify->warning_background;
+  } else if (status == SUCCESS_NOTIFY) {
+    foreground = notify->success_foreground;
+    background = notify->success_background;
+  }
+
+  if (notify->size > 0) {
+    notify->height = 2 * (notify->size - 1) + 1;
+    notify->width = strlen(message) + 2;
+  }
+
+  DrawRecShape(
+    notify->width, notify->height,
+    ' ',
+    notify->position_x, notify->position_y,
+    foreground, background
+  );
+
+  position_tp position_x = notify->position_x + 2;
+  position_tp position_y = notify->position_y + (notify->height / 2);
+
+  WriteStrTypeI(
+    message,
+    num,
+    position_x, position_y,
+    foreground, background
+  );
+}
+
+// OPTIMIZE: inconsistent
+void RenderNotifyTypeSI(Notify notify, status_tp status, const char * message, const char * str, int num) {
+  color_tp foreground = notify->foreground;
+  color_tp background = notify->background;
+
+  if (status == ERROR_NOTIFY) {
+    foreground = notify->error_foreground;
+    background = notify->error_background;
+  } else if (status == WARNING_NOTIFY) {
+    foreground = notify->warning_foreground;
+    background = notify->warning_background;
+  } else if (status == SUCCESS_NOTIFY) {
+    foreground = notify->success_foreground;
+    background = notify->success_background;
+  }
+
+  if (notify->size > 0) {
+    notify->height = 2 * (notify->size - 1) + 1;
+    notify->width = strlen(message) + 2;
+  }
+
+  DrawRecShape(
+    notify->width, notify->height,
+    ' ',
+    notify->position_x, notify->position_y,
+    foreground, background
+  );
+
+  position_tp position_x = notify->position_x + 2;
+  position_tp position_y = notify->position_y + (notify->height / 2);
+
+  WriteStrTypeSI(
+    message,
+    str,
+    num,
+    position_x, position_y,
+    foreground, background
+  );
+}
+
 // methods - using rapid
 tpp_define_conceal_method(ConcealNotify, Notify)
 

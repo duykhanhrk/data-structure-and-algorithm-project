@@ -20,7 +20,7 @@
 #define MTP_CREATION_FORM_HEIGHT 25
 
 #define MTP_UPDATED_FORM_WIDTH 50
-#define MTP_UPDATED_FORM_HEIGHT 25
+#define MTP_UPDATED_FORM_HEIGHT 21
 
 #ifdef __cplusplus
 extern "C" {

@@ -45,19 +45,19 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
     STANDARD_CHAR_SET
   );
 
-  EditInt edit_quantity = NewEditInt(
-    &(material->quantity),
-    MATERIAL_QUANTITY_MAX_VALUE, 0,
-    36, 3,
-    frame->position_x + 12, frame->position_y + 9,
-    EDIT_INT_FOREGROUND, EDIT_INT_BACKGROUND,
-    EDIT_INT_ACTIVE_FOREGROUND, EDIT_INT_ACTIVE_BACKGROUND
-  );
+//   EditInt edit_quantity = NewEditInt(
+//     &(material->quantity),
+//     MATERIAL_QUANTITY_MAX_VALUE, 0,
+//     36, 3,
+//     frame->position_x + 12, frame->position_y + 9,
+//     EDIT_INT_FOREGROUND, EDIT_INT_BACKGROUND,
+//     EDIT_INT_ACTIVE_FOREGROUND, EDIT_INT_ACTIVE_BACKGROUND
+//   );
 
   Button save_button = NewButton(
     " Lưu", ALIGN_CENTER,
     (frame->width - 6) / 2, 3, 0,
-    frame->position_x + 2, frame->position_y + 13,
+    frame->position_x + 2, frame->position_y + 9,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
     STANDARD_CONSOLE
@@ -66,7 +66,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
   Button delete_button = NewButton(
     " Xóa", ALIGN_CENTER,
     (frame->width - 6) / 2, 3, 0,
-    frame->position_x + (frame->width - 6) / 2 + 4, frame->position_y + 13,
+    frame->position_x + (frame->width - 6) / 2 + 4, frame->position_y + 9,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
     STANDARD_CONSOLE
@@ -75,7 +75,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
   Button close_button = NewButton(
     " Thoát", ALIGN_CENTER,
     frame->width - 4, 3, 0,
-    frame->position_x + 2, frame->position_y + 17,
+    frame->position_x + 2, frame->position_y + 13,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_THEME_BACKGROUND_LV1,
     PROGRAM_THEME_FOREGROUND_LV1, PROGRAM_BACKGROUND,
     STANDARD_CONSOLE
@@ -83,7 +83,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
 
   Notify notify = NewNotify(
     frame->width - 4, 3, 0,
-    frame->position_x + 2, frame->position_y + 21,
+    frame->position_x + 2, frame->position_y + 17,
     PROGRAM_FOREGROUND_REVERSE, PROGRAM_FOREGROUND_REVERSE
   );
 
@@ -91,7 +91,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
 
   RenderEditStr(edit_name);
   RenderEditStr(edit_unit);
-  RenderEditInt(edit_quantity);
+//   RenderEditInt(edit_quantity);
   RenderButton(save_button);
   RenderButton(delete_button);
   RenderButton(close_button);
@@ -120,28 +120,30 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
       if (keycode == ENTER) {
         if (IsBlankString(edit_unit->str))
           RenderNotify(notify, WARNING_NOTIFY, "ĐVT không được để trắng");
-        else frame->active_element = 4;
+        else frame->active_element = 5;
       }
       else if (keycode == KEY_DOWN)
-        frame->active_element = 4;
+        frame->active_element = 5;
       else if (keycode == KEY_UP)
         frame->active_element = 2;
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
       else if (keycode == KEY_RIGHT)
         frame->active_element = 6;
-    } else if (frame->active_element == 4) {
-      // Quantity
-      keycode = ActiveEditInt(edit_quantity);
-      if (keycode == ENTER || keycode == KEY_DOWN)
-        frame->active_element = 5;
-      else if (keycode == KEY_UP)
-        frame->active_element = 3;
-      else if (keycode == KEY_LEFT)
-        frame->active_element = 5;
-      else if (keycode == KEY_RIGHT)
-        frame->active_element = 6;
-    } else if (frame->active_element == 5) {
+    }
+//     else if (frame->active_element == 4) {
+//       // Quantity
+//       keycode = ActiveEditInt(edit_quantity);
+//       if (keycode == ENTER || keycode == KEY_DOWN)
+//         frame->active_element = 5;
+//       else if (keycode == KEY_UP)
+//         frame->active_element = 3;
+//       else if (keycode == KEY_LEFT)
+//         frame->active_element = 5;
+//       else if (keycode == KEY_RIGHT)
+//         frame->active_element = 6;
+//     }
+    else if (frame->active_element == 5) {
       // Save
       keycode = ActiveButton(save_button);
       if (keycode == ENTER) {
@@ -173,7 +175,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
       else if (keycode == KEY_RIGHT)
         frame->active_element = 6;
       else if (keycode == KEY_UP)
-        frame->active_element = 4;
+        frame->active_element = 3;
       else if (keycode == KEY_DOWN)
         frame->active_element = 7;
     } else if (frame->active_element == 6) {
@@ -186,7 +188,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
         else frame->active_element = 0;
       }
       else if (keycode == KEY_UP)
-        frame->active_element = 4;
+        frame->active_element = 3;
       else if (keycode == KEY_LEFT)
         frame->active_element = 5;
       else if (keycode == KEY_DOWN)
@@ -210,7 +212,7 @@ void ActiveMaterialUpdatedFrame(Frame frame, Material _material) {
   // Release
   DestroyEditStr(edit_name);
   DestroyEditStr(edit_unit);
-  DestroyEditInt(edit_quantity);
+//   DestroyEditInt(edit_quantity);
   DestroyButton(save_button);
   DestroyButton(delete_button);
   DestroyButton(close_button);

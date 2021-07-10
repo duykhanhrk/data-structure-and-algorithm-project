@@ -11,8 +11,10 @@ message_tp InvoiceDetailValidation(InvoiceDetail invoice_detail, bool strict = t
 
   if (strict == true) {
     if (invoice_type == EXPORT_INVOICE)
-      if (!IsMaterialAvailable(invoice_detail->material_code, invoice_detail->amount))
-        return M_INVOICE_DETAIL_AMOUNT_INVALID;
+      if (!IsMaterialAvailable(invoice_detail->material_code, invoice_detail->amount)) {
+        SendToDepot(GetMaterialInArchive(invoice_detail->material_code));
+        return M_INVOICE_DETAIL_MATERIAL_IS_NOT_AVAILABLE;
+      }
   }
 
   if (IsNegative(invoice_detail->price))

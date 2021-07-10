@@ -35,6 +35,21 @@ void WriteStr(const char *obj, wrp_context_arguments) {
   wrp_apply_color_context;
 }
 
+// OPTIMIZE: notify, only int
+void WriteStrTypeI(const char *obj , int num, wrp_context_arguments) {
+  wrp_save_color_context;
+  wrp_apply_context_arguments;
+  printf(obj, num);
+  wrp_apply_color_context;
+}
+
+void WriteStrTypeSI(const char *obj , const char * str, int num, wrp_context_arguments) {
+  wrp_save_color_context;
+  wrp_apply_context_arguments;
+  printf(obj, str, num);
+  wrp_apply_color_context;
+}
+
 void WriteDoubleStrV(const char *obj, const char *_obj, int max_len, wrp_context_arguments) {
   wrp_save_color_context;
   wrp_apply_context_arguments;

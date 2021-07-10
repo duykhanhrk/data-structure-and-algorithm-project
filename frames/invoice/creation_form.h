@@ -298,6 +298,13 @@ void ActiveInvoiceCreationFrame(Frame frame) {
           } else if (message == M_INVOICE_DETAIL_AMOUNT_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Số lượng không hợp lệ");
             frame->active_element = 5;
+          } else if (message == M_INVOICE_DETAIL_MATERIAL_IS_NOT_AVAILABLE) {
+            Material material = (Material) TakeFromDepot();
+            if (material != NULL)
+              RenderNotifyTypeSI(notify, ERROR_NOTIFY, "Số lượng vật tư không có sẵn (%s: %d)", material->code, material->quantity);
+            else
+              RenderNotify(notify, ERROR_NOTIFY, "Số lượng không hợp lệ");
+            frame->active_element = 5;
           } else if (message == M_INVOICE_DETAIL_PRICE_INVALID) {
             RenderNotify(notify, ERROR_NOTIFY, "Giá bán không hợp lệ");
             frame->active_element = 5;
