@@ -94,7 +94,7 @@ bool IsMaterialCodeInDetailList(InvoiceDetailList invoice_detail_list, const cha
 int TotalMaterialsInInvoiceDetailList(InvoiceDetailList invoice_detail_list) {
   int total = 0;
   for (int interact = 0; interact < invoice_detail_list->count; interact ++)
-    total = invoice_detail_list->invoice_details[interact]->amount;
+    total += invoice_detail_list->invoice_details[interact]->amount;
   return total;
 }
 
