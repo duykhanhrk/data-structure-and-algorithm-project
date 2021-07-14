@@ -64,6 +64,9 @@ void SwapSTMFlexs(STMFlex &stm_flex, STMFlex &_stm_flex) {
   _stm_flex = __stm_flex;
 }
 
+
+// OPTIMIZE: remove redundant code
+// Quick sort
 void SortSTMFlexs(STMFlex * list, int left, int right) {
   int i = left;
   int j = right;
@@ -85,6 +88,40 @@ void SortSTMFlexs(STMFlex * list, int left, int right) {
 void SortSTMFlexList(STMFlexList list) {
   if (list->count == 0) return;
   SortSTMFlexs(list->stm_flexs, 0, list->count - 1);
+}
+
+// Heap sort
+void HeapSTMFlexs(STMFlex * list, int count, int index) {
+    int node = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if (left < count && list[left]->total_price > list[node]->total_price)
+        node = left;
+
+    if (right < count && list[right]->total_price > list[node]->total_price)
+        node = right;
+
+    if (node != index) {
+        SwapSTMFlexs(list[index], list[node]);
+        HeapSTMFlexs(list, count, node);
+    }
+}
+
+void SortSTMFlexListH(STMFlexList list, LinearList linear_list, int limit) {
+  for (int interact = list->count / 2 - 1; interact >= 0; interact --)
+    HeapSTMFlexs(list->stm_flexs, list->count, interact);
+
+  for (int interact = list->count - 1; interact > 0; interact --) {
+    limit --;
+
+    SwapSTMFlexs(list->stm_flexs[0], list->stm_flexs[interact]);
+    AddItemToLinearList(linear_list, list->stm_flexs[interact]->material);
+
+    if (limit == 0) return;
+
+    HeapSTMFlexs(list->stm_flexs, interact, 0);
+  }
 }
 
 void STMTakeTopMaterials(time_t from, time_t to, LinearList linear_list, int limit) {
@@ -119,13 +156,8 @@ void STMTakeTopMaterials(time_t from, time_t to, LinearList linear_list, int lim
   }
 
   // Sort
-  SortSTMFlexList(list);
-
-  // Render data
   EmptyLinearList(linear_list);
-  if (limit > list->count) limit = list->count;
-  for (int interact = 0; interact < limit; interact ++)
-    AddItemToLinearList(linear_list, list->stm_flexs[interact]->material);
+  SortSTMFlexListH(list, linear_list, limit);
 
   // Release
   DestroySTMFlexList(list);
