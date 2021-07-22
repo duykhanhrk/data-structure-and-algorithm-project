@@ -2,10 +2,10 @@
 Data structure and algorithm project.
 Subject: Material management.
 
-#### Design
+## Design
 [Take a look here](https://github.com/lqrk/data-structure-and-algorithm-project/tree/master/doc)
 
-#### Usage
+## Usage
 ```
 Require: Make sure that the g++ compiler is accessible from anywhere and that the Windows operating system is required.
 
@@ -13,7 +13,7 @@ Require: Make sure that the g++ compiler is accessible from anywhere and that th
 2. Open a command prompt at the location where the program.cpp file is located and use 'run'
 ```
 
-#### Instructions for using the program
+## Instructions for using the program
 
 Navigation keys
 ```
